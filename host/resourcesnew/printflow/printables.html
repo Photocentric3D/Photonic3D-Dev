@@ -2,71 +2,7 @@
     <head>
         <title>main menu</title>
         <style>
-        .screen{
-	        width: 800px;
-	        height: 480px;
-			background-image: url("images/emptybackground.png");
-        }
-        .main{
-	        height: 480px;
-	        max-height:480px;
-	        max-width: inherit;
-	        padding-bottom: 40px;
-	        padding-top: 40px;
-        }
-		
-		.time { 
-			position: absolute; 
-			top: 350px; 
-			left: 75px; 
-			color: white;
-			text-align: center;
-			font-size: large;
-		}
-		.wifi{
-			position: absolute; 
-			top: 60px; 
-			left: 740px; 
-		}
-		
-		.homehighlight{
-			position: absolute; 
-			top: 50px; 
-			left: 10px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		
-		.bigbuttonhighlight{
-			position: absolute; 
-			top: 63px; 
-			left: 86px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		@keyframes rotate{
-			from {
-				transform: rotate(0deg);
-			}
-			to {
-				transform: rotate(360deg);
-			}
-		}
-		
+
 		.printbutton { 
 			position: absolute; 
 			top: 315px; 
@@ -103,13 +39,7 @@
 			border: 0;
 			border-radius: 10px;
 		}
-		.warn { 
-			position: absolute; 
-			top: 230px; 
-			left: 630px;
-			width:130px;
-			color: red;
-		}
+
         </style>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
@@ -124,6 +54,8 @@
         <script src="../angular/js/angular.min.js"></script>
 
         <script src="js/moment.min.js"></script>
+		
+		<link href="css/printflow.css" rel="stylesheet">
     </head>
     <body style="background-color: black;" onload="fillList();">
 		<script>
@@ -183,7 +115,7 @@
 		</script>
         <div class="screen">
             <div class="main">
-				<img src="images/printables.png" usemap="printables">
+				<img src="images/printables.png" usemap="printables" class="uilayer">
 				<map name="printables" style="z-index: 100;">
 					<area  alt="" title="" shape="poly" coords="160,40,137,45,118,58,105,77,100,100,105,123,118,142,137,155,160,160,183,155,202,142,215,123,220,100,215,77,202,58,183,45" style="outline:none;" target="_self" onClick="startPrint();"     />
 					<area  alt="" title="" href="index.html" shape="poly" coords="48,16,35,19,25,26,18,36,15,49,18,62,25,72,35,79,48,82,61,79,71,72,78,62,81,49,78,36,71,26,61,19" style="outline:none;" target="_self"     />

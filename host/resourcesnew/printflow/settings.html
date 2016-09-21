@@ -2,78 +2,7 @@
     <head>
         <title>Settings</title>
         <style>
-        .screen{
-	        width: 800px;
-	        height: 480px;
-			background-image: url("images/emptybackground.png");
-        }
-		
-		.homehighlight{
-			position: absolute; 
-			top: 50px; 
-			left: 10px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		.smallbuttonhighlight{
-			position: absolute; 
-			top: 170px; 
-			left: 27px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		.bigbuttonhighlight{
-			position: absolute; 
-			top: 63px; 
-			left: 86px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		@keyframes rotate{
-			from {
-				transform: rotate(0deg);
-			}
-			to {
-				transform: rotate(360deg);
-			}
-		}
-        .main{
-	        height: 480px;
-	        max-height:480px;
-	        max-width: inherit;
-	        padding-bottom: 40px;
-	        padding-top: 40px;
-        }
-		
-		.time { 
-			position: absolute; 
-			top: 350px; 
-			left: 75px; 
-			color: white;
-			text-align: center;
-			font-size: large;
-		}
+
 		.hwrev { 
 			position: absolute; 
 			top: 140px; 
@@ -98,11 +27,6 @@
 			left: 630px; 
 			color: white;
 		}
-		.wifi{
-			position: absolute; 
-			top: 60px; 
-			left: 740px; 
-		}
 
         </style>
         <!-- Latest compiled and minified CSS -->
@@ -118,6 +42,8 @@
         <script src="../angular/js/angular.min.js"></script>
 
         <script src="js/moment.min.js"></script>
+		
+		<link href="css/printflow.css" rel="stylesheet">
     </head>
     <body style="background-color: black;">
 		<script>
@@ -132,7 +58,7 @@
 		</script>
         <div class="screen">
             <div class="main">
-				<img src="images/settings.png" usemap="settings">
+				<img src="images/settings.png" usemap="settings" class="uilayer">
 				<map name="settings">
 					<area  alt="" title="" href="fwupdate.html" shape="rect" coords="273,91,588,153" style="outline:none;" target="_self"     />
 					<area  alt="" title="" href="wifisettings.html" shape="rect" coords="273,152,589,217" style="outline:none;" target="_self"     />

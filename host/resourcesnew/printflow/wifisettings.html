@@ -2,82 +2,6 @@
     <head>
         <title>wifisetup</title>
         <style>
-        .screen{
-	        width: 800px;
-	        height: 480px;
-			background-image: url("images/emptybackground.png");
-        }
-        .main{
-	        height: 480px;
-	        max-height:480px;
-	        max-width: inherit;
-	        padding-bottom: 40px;
-	        padding-top: 40px;
-        }
-		.homehighlight{
-			position: absolute; 
-			top: 50px; 
-			left: 10px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		.smallbuttonhighlight{
-			position: absolute; 
-			top: 170px; 
-			left: 27px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		.bigbuttonhighlight{
-			position: absolute; 
-			top: 63px; 
-			left: 86px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		@keyframes rotate{
-			from {
-				transform: rotate(0deg);
-			}
-			to {
-				transform: rotate(360deg);
-			}
-		}
-		.time { 
-			position: absolute; 
-			top: 350px; 
-			left: 75px; 
-			color: white;
-			text-align: center;
-			font-size: large;
-		}
-		.wifi{
-			position: absolute; 
-			top: 60px; 
-			left: 740px; 
-		}
-
 		.Nettitle { 
 			position: absolute; 
 			top: 120px; 
@@ -153,6 +77,8 @@
         <script src="../angular/js/angular.min.js"></script>
 
         <script src="js/moment.min.js"></script>
+		
+		<link href="css/printflow.css" rel="stylesheet">
     </head>
     <body style="background-color: black;" onload="WifiAPs();">
 		<script>
@@ -204,7 +130,7 @@
 		</script>
         <div class="screen">
             <div class="main">
-				<img src="images/wifisettings.png" usemap="wifisettings">
+				<img src="images/wifisettings.png" usemap="wifisettings" class="uilayer">
 				<map name="wifisettings">
 					<area  alt="" title="" href="wifisettings.html" shape="poly" coords="160,40,137,45,118,58,105,77,100,100,105,123,118,142,137,155,160,160,183,155,202,142,215,123,220,100,215,77,202,58,183,45" style="outline:none;" target="_self"     />
 					<area  alt="" title="" href="settings.html" shape="poly" coords="65,132,52,135,40,142,33,154,30,167,33,180,40,192,52,199,65,202,78,199,90,192,97,180,100,167,97,154,90,142,78,135" style="outline:none;" target="_self"     />

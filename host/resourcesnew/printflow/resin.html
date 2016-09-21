@@ -2,83 +2,6 @@
     <head>
         <title>Resin Settings</title>
         <style>
-        .screen{
-	        width: 800px;
-	        height: 480px;
-			background-image: url("images/emptybackground.png");
-        }
-        .main{
-	        height: 480px;
-	        max-height:480px;
-	        max-width: inherit;
-	        padding-bottom: 40px;
-	        padding-top: 40px;
-        }
-		
-		.homehighlight{
-			position: absolute; 
-			top: 50px; 
-			left: 10px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		.smallbuttonhighlight{
-			position: absolute; 
-			top: 170px; 
-			left: 27px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		.bigbuttonhighlight{
-			position: absolute; 
-			top: 63px; 
-			left: 86px;
-			animation-iteration-count: infinite;
-			animation-name: rotate;
-			animation-duration: 2s;
-			animation-timing-function: linear;
-			-webkit-animation-name: rotate;
-			-webkit-animation-duration: 2s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-iteration-count: infinite;
-		}
-		
-		@keyframes rotate{
-			from {
-				transform: rotate(0deg);
-			}
-			to {
-				transform: rotate(360deg);
-			}
-		}
-		
-		.time { 
-			position: absolute; 
-			top: 350px; 
-			left: 75px; 
-			color: white;
-			text-align: center;
-			font-size: large;
-		}
-		.wifi{
-			position: absolute; 
-			top: 60px; 
-			left: 740px; 
-		}
 		.layerheight { 
 			position: absolute; 
 			top: 205px; 
@@ -118,12 +41,12 @@
 			font-size: 20px;
 			padding: 10px;
 		
-    line-height: 1;
-    border: 0;
-    border-radius: 10px;
-    background: url(images/dropdown.png) no-repeat right transparent;
-    -webkit-appearance: none;
-    background-position-x: 300px;
+			line-height: 1;
+			border: 0;
+			border-radius: 10px;
+			background: url(images/dropdown.png) no-repeat right transparent;
+			-webkit-appearance: none;
+			background-position-x: 300px;
 		}
 
 		option{
@@ -143,6 +66,8 @@
         <script src="../angular/js/angular.min.js"></script>
 
         <script src="js/moment.min.js"></script>
+		
+		<link href="css/printflow.css" rel="stylesheet" class="uilayer">
     </head>
     <body style="background-color: black;">
 		<script>
