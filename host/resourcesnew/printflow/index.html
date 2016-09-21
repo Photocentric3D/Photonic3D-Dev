@@ -1,0 +1,209 @@
+<html>
+    <head>
+        <title>Main Menu</title>
+        <style>
+        .screen{
+	        width: 800px;
+	        height: 480px;
+			background-image: url("images/emptybackground.png");
+        }
+        .main{
+	        height: 480px;
+	        max-height:480px;
+	        max-width: inherit;
+	        padding-bottom: 40px;
+	        padding-top: 40px;
+        }
+		
+		.time { 
+			position: absolute; 
+			top: 350px; 
+			left: 75px; 
+			color: white;
+			text-align: center;
+			font-size: large;
+		}
+		.wifi{
+			position: absolute; 
+			top: 60px; 
+			left: 740px; 
+		}
+		
+		.print{
+			position: absolute; 
+			top: 130px; 
+			left: 328px;
+			animation-iteration-count: infinite;
+			animation-name: rotate;
+			animation-duration: 2s;
+			animation-timing-function: linear;
+			-webkit-animation-name: rotate;
+			-webkit-animation-duration: 2s;
+			-webkit-animation-timing-function: linear;
+			-webkit-animation-iteration-count: infinite;
+			z-index: 5;
+		}
+		
+		
+		.resin{
+			position: absolute; 
+			top: 58px; 
+			left: 532px;
+			animation-iteration-count: infinite;
+			animation-name: rotate;
+			animation-duration: 2s;
+			animation-timing-function: linear;
+			
+			-webkit-animation-name: rotate;
+			-webkit-animation-duration: 2s;
+			-webkit-animation-timing-function: linear;
+			-webkit-animation-iteration-count: infinite;
+		}
+		
+		.maintain{
+			position: absolute; 
+			top: 168px; 
+			left: 630px;
+			animation-iteration-count: infinite;
+			animation-name: rotate;
+			animation-duration: 2s;
+			animation-timing-function: linear;
+			-webkit-animation-name: rotate;
+			-webkit-animation-duration: 2s;
+			-webkit-animation-timing-function: linear;
+			-webkit-animation-iteration-count: infinite;
+			z-index: 5;
+		}
+		
+		.settings{
+			position: absolute; 
+			top: 278px; 
+			left: 532px;
+			transform: rotate(180deg);
+			
+			animation-iteration-count: infinite;
+			animation-name: rotate;
+			animation-duration: 2s;
+			animation-timing-function: linear;
+			
+			-webkit-animation-name: rotate;
+			-webkit-animation-duration: 2s;
+			-webkit-animation-timing-function: linear;
+			-webkit-animation-iteration-count: infinite;
+			z-index: 5;
+		}
+		
+		.maintopconnector{
+			position: absolute; 
+			top: 108px; 
+			left: 453px;
+			animation-iteration-count: infinite;
+			animation-name: fade;
+			animation-duration: 2s;
+			animation-direction: alternate;
+			-webkit-animation-name: fade;
+			-webkit-animation-duration: 1s;
+			-webkit-animation-direction: alternate;
+			-webkit-animation-iteration-count: infinite;
+			z-index: 2;
+		}
+		
+		.mainmidconnector{
+			position: absolute; 
+			top: 226px; 
+			left: 476px;
+			animation-iteration-count: infinite;
+			animation-name: fade;
+			animation-duration: 2s;
+			animation-direction: alternate;
+			animation-delay: 0.3s;
+			-webkit-animation-name: fade;
+			-webkit-animation-duration: 1s;
+			-webkit-animation-direction: alternate;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-delay: 0.3s;
+			z-index: 2;
+		}
+		
+		.mainbotconnector{
+			position: absolute; 
+			top: 285px; 
+			left: 439px;
+			animation-iteration-count: infinite;
+			animation-name: fade;
+			animation-duration: 2s;
+			animation-direction: alternate;
+			animation-delay: 0.6s;
+			-webkit-animation-name: fade;
+			-webkit-animation-duration: 1s;
+			-webkit-animation-direction: alternate;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-delay: 0.6s;
+			z-index: 2;
+		}
+		
+		@keyframes rotate{
+			from {
+				transform: rotate(0deg);
+			}
+			to {
+				transform: rotate(360deg);
+			}
+		}
+		
+		@keyframes fade{
+			from {
+				opacity: 0.5;
+			}
+			to{
+				opacity: 1;
+			}
+		}
+		
+        </style>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="../jquery/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="../bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- Latest v1 Angular -->
+        <script src="../angular/js/angular.min.js"></script>
+
+        <script src="js/moment.min.js"></script>
+    </head>
+    <body style="background-color: black;">
+		<script>
+			setInterval(function() {
+				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
+			}, 1000);
+		</script>
+        <div class="screen">
+            <div class="main">
+				<img src="images/mainmenu.png" usemap="mainmenu">
+				<map name="mainmenu">
+					<area alt="" title="" href="printables.html" shape="poly" coords="411,104,384,109,362,125,346,147,341,174,346,201,362,223,384,239,411,244,438,239,460,223,476,201,481,174,476,147,460,125,438,109" style="outline:none;" target="_self" onClick="location.href='printables.html';"    />
+					<area alt="" title="" href="resin.html" shape="poly" coords="596,25,573,30,554,43,541,62,536,85,541,108,554,127,573,140,596,145,619,140,638,127,651,108,656,85,651,62,638,43,619,30" style="outline:none;" target="_self" onClick="location.href='resin.html';"    />
+					<area alt="" title="" href="maintain.html" shape="poly" coords="697,134,674,139,655,152,642,171,637,194,642,217,655,236,674,249,697,254,720,249,739,236,752,217,757,194,752,171,739,152,720,139" style="outline:none;" target="_self" onClick="location.href='maintain.html';"    />
+					<area alt="" title="" href="settings.html" shape="poly" coords="598,247,575,252,556,265,543,284,538,307,543,330,556,349,575,362,598,367,621,362,640,349,653,330,658,307,653,284,640,265,621,252" style="outline:none;" target="_self" onClick="location.href='settings.html';"    />
+				</map>
+				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
+				<img name="wifi" id="wifi" class="wifi" src="images/wifi.png">
+				
+				<img name="print" id="print" class="print" src="images/menumainbuttonANIM.png" onClick="location.href='printables.html';">
+				<img name="resin" id="resin" class="resin" src="images/menusubbuttonANIM.png" onClick="location.href='resin.html';">
+				<img name="maintain" id="maintain" class="maintain" src="images/menusubbuttonANIM.png" onClick="location.href='maintain.html';">
+				<img name="settings" id="settings" class="settings" src="images/menusubbuttonANIM.png" onClick="location.href='settings.html';">
+				
+				<img name="maintopconnector" id="maintopconnector" class="maintopconnector" src="images/maintopconnector.png">
+				<img name="mainmidconnector" id="mainmidconnector" class="mainmidconnector" src="images/mainmidconnector.png">
+				<img name="mainbotconnector" id="mainbotconnector" class="mainbotconnector" src="images/mainbotconnector.png">
+            </div>
+        </div>
+
+	
+    </body>
+</html>
