@@ -169,8 +169,8 @@
 		}
 		.wifi{
 			position: absolute; 
-			top: 60px; 
-			left: 740px;
+			top: 30px; 
+			left: 770px;
             user-drag: none; 
 			user-select: none;
 			-moz-user-select: none;
