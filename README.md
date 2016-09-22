@@ -11,6 +11,8 @@ The server is capable of printing a variety of formats, including:
  - Block of text, which Photonic3D will extrude using a system or user uploaded font
  - STL file, which Photonic3D will extrude and optionally print a 3D relief
 
+This version is branded for Photocentric3D's range of Liquid Crystal printers, and implements the Printflow touchscreen interface.
+
 
 Raspberry Pi Usage
 -------------------------------------------------------------------------------  
