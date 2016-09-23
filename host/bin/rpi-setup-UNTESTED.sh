@@ -78,8 +78,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
 		echo xset s off >> /home/pi/.xsession
 		echo xset -dpms >> /home/pi/.xsession
 		echo xset s noblank >> /home/pi/.xsession
-		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /home/pi/.splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
-		echo while true\; do >> /home/pi/.xsession
+		
 		
 		if [ $newhost == "4ktouch" ]; 
 			then
@@ -88,11 +87,17 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
 				target=$newhost
 		fi
 		
-		echo \#uzbl -u http://$target.local:9091/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
-		echo kweb -KJ http://$target.local:9091/printflow\; >> /home/pi/.xsession
-		#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
-		echo sleep 2s\; >> /home/pi/.xsession
-		echo done >> /home/pi/.xsession
+		
+		if [ $newhost == "4ktouch" ]; 
+			then
+			echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /home/pi/.splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
+			echo while true\; do >> /home/pi/.xsession
+			echo \#uzbl -u http://$target.local:9091/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
+			echo kweb -KJ http://$target.local:9091/printflow\; >> /home/pi/.xsession
+			#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
+			echo sleep 2s\; >> /home/pi/.xsession
+			echo done >> /home/pi/.xsession
+		fi
 		
 		#keeping this as a fallback for kweb as sometimes kweb servers can be offline
 		touch /home/pi/uzbl.conf
