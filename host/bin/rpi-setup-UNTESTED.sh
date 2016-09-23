@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # variables (per pi)
-newhost=4ktouch
+export newhost=4ktouch
 #can be either 4ktouch, 4kscreen or LCHR
 
 # DO FOR ALL
