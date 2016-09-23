@@ -9,6 +9,7 @@ echo "Getting updates and installing utilities"
 sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get -y install fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq
+git clone https://github.com/Photocentric3D/Photonic3D.git photonic-repo
 sudo rpi-update
 
 # redirect boot terminal output not to screen
@@ -19,18 +20,28 @@ sudo sh -c 'cat /boot/cmdline.old >> /boot/cmdline.txt'
 sudo sed -i "s/tty1/tty/g" /boot/cmdline.txt
 
 echo "installing common files"
-sudo rsync -av /opt/cwh/common /
+sudo rsync -avr photonic-repo/host/common/ /
+sudo rsync -avr photonic-repo/host/resourcesnew/printflow /opt/cwh/resourcesnew/ #keep printflow without the 
+sudo rsync -avr photonic-repo/host/os/Linux/armv61/ /opt/cwh/os/Linux/armv61
+sudo chown root /etc/splash.png
+sudo chmod 777 /etc/splash.png
 sudo chmod a+x /etc/init.d/aasplashscreen
-sudo insserv /etc/indit.d/aasplashscreen
+sudo insserv /etc/init.d/aasplashscreen
 
-Echo "disabling screen power down"
-sudo sed -i "s/=false/=true/g" /etc/default/nodm
+echo "disabling screen power down"
+if [ -e "/etc/default/nodm" ]
+	then
+		sudo sed -i "s/=false/=true/g" /etc/default/nodm
+		sudo sed -i "s/root/pi/g" /etc/default/nodm
+	else
+		echo "nodm doesn't exist"
+fi
 #this already happens once due to our rsync of an X11 config, but why not just make sure, eh?
 
-Echo "Working on per printer settings..."
+echo "Working on per printer settings..."
 sudo sh -c 'echo \#Photocentric mods >> /boot/config.txt'
 
-if [[${newhost} == "4ktouch"||${newhost}=="LCHR"]]
+if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
 	then
 		# Touchscreen pis only
 		echo "Modifying config files for touchscreen"
@@ -44,14 +55,10 @@ if [[${newhost} == "4ktouch"||${newhost}=="LCHR"]]
 		#./debinstall
 		#rm -rf kweb-1.7.4
 		wget -qO - http://bintray.com/user/downloadSubjectPublicKey?username=bintray | sudo apt-key add -
-		echo "deb http://dl.bintray.com/kusti8/chromium-rpi jessie main" | sudo tee -a /etc/apt/sources.list
-		apt-get update && apt-get install -y kweb
+		sudo sh -c 'echo "deb http://dl.bintray.com/kusti8/chromium-rpi jessie main" | sudo tee -a /etc/apt/sources.list'
+		sudo apt-get update && sudo apt-get install -y kweb youtube-dl
+		#installing youtube-dl just because it causes a script to ask a question that must be replied to on keyboard otherwise
 		
-fi
-
-if [[${newhost} == "4ktouch"]]
-	then
-		#4K touchscreen only
 		echo "Setting up kiosk-only mode"
 		touch /home/pi/.xsession
 		echo \#\!/bin/bash >> /home/pi/.xsession
@@ -65,13 +72,18 @@ if [[${newhost} == "4ktouch"]]
 		#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
 		echo sleep 2s\; >> /home/pi/.xsession
 		echo done >> /home/pi/.xsession
-		sudo sed -i "s/=false/=true/g" /etc/default/nodm
-		sudo sed -i "s/root/pi/g" /etc/default/nodm
 		
 		#keeping this as a fallback for kweb as sometimes kweb servers can be offline
 		touch /home/pi/uzbl.conf
 		echo set show_status=0 >> /home/pi/uzbl.conf
 		echo set geometry=maximized >> /home/pi/uzbl.conf
+		
+fi
+
+if [ "$newhost" == "4ktouch" ]
+	then
+		#4K touchscreen only
+
 		#enabling NTP listening 
 		echo setting up network time client
 		sudo sed -i "s/\#disable/disable/g" /etc/ntp.conf
@@ -79,7 +91,7 @@ if [[${newhost} == "4ktouch"]]
 		sudo /etc/init.d/ntp restart
 fi
 
-if [[${newhost} == "4kscreen"]]
+if [ "$newhost" == "4kscreen" ]
 	then
 		echo "Installing 4k support"
 		sudo sh -c 'echo hdmi_group=2 >> /boot/config.txt'
@@ -196,10 +208,15 @@ if [[${newhost} == "4kscreen"]]
 }' 'http://localhost:9091/services/printers/save'
 fi
 
-if [[${newhost} == "LCHR"]]
+if [ "$newhost" == "LCHR" ]
 	then
-		echo "setting up high resolution"
-		
+		echo "setting up high resolution screen"
+		sudo sh -c 'echo hdmi_group=2 >> /boot/config.txt'
+		sudo sh -c 'echo hdmi_mode=87 >> /boot/config.txt'
+		sudo sh -c 'echo hdmi_cvt 2048 1536 30 >> /boot/config.txt'
+		sudo sh -c 'echo max_framebuffer_width=2048 >> /boot/config.txt'
+		sudo sh -c 'echo max_framebuffer_height=1536 >> /boot/config.txt'
+		sudo sh -c 'echo hdmi_pixel_freq_limit=400000000 >> /boot/config.txt'
 		echo "installing LCHR profile"
 		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
   "configuration": {
@@ -315,6 +332,8 @@ echo "Existing hostname is $hostn, changing to $newhost"
 sudo sed -i "s/$hostn/$newhost/g" /etc/hosts
 sudo sed -i "s/$hostn/$newhost/g" /etc/hostname
 echo "Your new hostname is $newhost, accessible from $newhost.local"
+
+rm -rf photonic-repo
 
 sudo apt-get clean
 sudo reboot
