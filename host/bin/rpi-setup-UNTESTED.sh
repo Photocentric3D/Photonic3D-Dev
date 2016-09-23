@@ -34,6 +34,7 @@ echo "installing common files"
 sudo rsync -avr photonic-repo/host/common/ /
 sudo rsync -avr photonic-repo/host/resourcesnew/printflow /opt/cwh/resourcesnew/ #keep printflow without the 
 sudo rsync -avr photonic-repo/host/os/Linux/armv61/ /opt/cwh/os/Linux/armv61
+cp /etc/splash.png ~/.splash.png
 sudo chown root /etc/splash.png
 sudo chmod 777 /etc/splash.png
 sudo chmod a+x /etc/init.d/aasplashscreen
@@ -76,10 +77,18 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
 		echo xset s off >> /home/pi/.xsession
 		echo xset -dpms >> /home/pi/.xsession
 		echo xset s noblank >> /home/pi/.xsession
-		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /etc/splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
+		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /home/pi/.splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
 		echo while true\; do >> /home/pi/.xsession
-		echo \#uzbl -u http://4kscreen.local:9091/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
-		echo kweb -KJ http://4kscreen.local:9091/printflow \&\; >> /home/pi/.xsession
+		
+		if [ $newhost == "4ktouch" ]; 
+			then
+				target=4kscreen
+			else
+				target=$newhost
+		fi
+		
+		echo \#uzbl -u http://$target.local:9091/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
+		echo kweb -KJ http://$target.local:9091/printflow \&\; >> /home/pi/.xsession
 		#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
 		echo sleep 2s\; >> /home/pi/.xsession
 		echo done >> /home/pi/.xsession
