@@ -33,7 +33,7 @@ sudo sed -i "s/tty1/tty/g" /boot/cmdline.txt
 echo "installing common files"
 sudo rsync -avr photonic-repo/host/common/ /
 sudo rsync -avr photonic-repo/host/resourcesnew/printflow /opt/cwh/resourcesnew/ #keep printflow without the 
-sudo rsync -avr photonic-repo/host/os/Linux/armv61/ /opt/cwh/os/Linux/armv61
+sudo cp photonic-repo/host/os/Linux/armv61/pdp /opt/cwh/os/Linux/armv61/pdp
 cp /etc/splash.png ~/.splash.png
 sudo chown root /etc/splash.png
 sudo chmod 777 /etc/splash.png
