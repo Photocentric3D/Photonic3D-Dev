@@ -89,7 +89,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
 		fi
 		
 		echo \#uzbl -u http://$target.local:9091/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
-		echo kweb -KJ http://$target.local:9091/printflow \&\; >> /home/pi/.xsession
+		echo kweb -KJ http://$target.local:9091/printflow\; >> /home/pi/.xsession
 		#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
 		echo sleep 2s\; >> /home/pi/.xsession
 		echo done >> /home/pi/.xsession
