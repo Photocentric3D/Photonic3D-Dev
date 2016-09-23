@@ -2,7 +2,7 @@
 
 # variables (per pi)
 export newhost=4ktouch
-#can be either 4ktouch, 4kscreen or LCHR
+# can be either 4ktouch, 4kscreen or LCHR
 
 # DO FOR ALL
 echo "Getting updates and installing utilities"
@@ -11,6 +11,17 @@ sudo apt-get -y upgrade
 sudo apt-get -y install fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq
 git clone https://github.com/Photocentric3D/Photonic3D.git photonic-repo
 sudo rpi-update
+
+if [[ "[ "$newhost" == "4kscreen" ]" || "[ "$newhost" == "LCHR" ]" ]]
+	then
+		echo "update photonic"
+# would prefer to call this to update to a particular version,
+# but the auto-update in start.sh will flatten updates made in the next section
+# so doing this first.
+		sudo /opt/cwh/stop.sh
+		sudo /opt/cwh/start.sh
+fi
+
 
 # redirect boot terminal output not to screen
 echo "removing pi branding"
