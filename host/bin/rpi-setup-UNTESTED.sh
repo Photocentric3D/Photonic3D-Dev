@@ -68,8 +68,9 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
 		#rm -rf kweb-1.7.4
 		wget -qO - http://bintray.com/user/downloadSubjectPublicKey?username=bintray | sudo apt-key add -
 		sudo sh -c 'echo "deb http://dl.bintray.com/kusti8/chromium-rpi jessie main" | sudo tee -a /etc/apt/sources.list'
-		sudo apt-get update && sudo apt-get install -y kweb youtube-dl
-		#installing youtube-dl just because it causes a script to ask a question that must be replied to on keyboard otherwise
+		sudo apt-get update && sudo apt-get install -y youtube-dl
+		#HACK: installing youtube-dl just because it causes kweb installation script to ask a question that must be replied to on keyboard otherwise
+		sudo apt-get install -y kweb
 		
 		echo "Setting up kiosk-only mode"
 		touch /home/pi/.xsession
