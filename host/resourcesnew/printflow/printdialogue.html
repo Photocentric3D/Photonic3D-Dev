@@ -231,18 +231,26 @@
 			
 			setInterval(function() {
 				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-				progresspc = ((moment().valueOf()-starttime)/(endtime-starttime))*100;
-				document.getElementById("progress").style = "width:"+parseInt(progresspc)+"%";
+				
 				if (document.getElementById("pause").innerHTML=="Resume"){
 					endtime+=1000;
 					starttime+=1000;
 				}
 				if (moment().second()%10===0){
 					document.getElementById("layerslice").src=document.getElementById("layerslice").src+"?"+moment().second();
+					//check for updated information about the print
+					$.getJSON('../services/printJobs/get/'+printid)
+					.done(function(data){
+						endtime=starttime+data.elapsedTime+(parseInt(data.averageSliceTime)*(parseInt(data.totalSlices)-parseInt(data.currentSlice)));
+					});
+					
 				}
 				else{
 					document.getElementById("layerslice").src=document.getElementById("layerslice").src;
 				}
+				progresspc = ((moment().valueOf()-starttime)/(endtime-starttime))*100;
+				document.getElementById("progress").style = "width:"+parseInt(progresspc)+"%";
+				document.getElementById("totaltimes").innerHTML=moment.duration(endtime-starttime).humanize();
 				if (ready){
 					if (endtime-moment().valueOf()>=0){
 						document.getElementById("vartimeelapsed").innerHTML = moment.duration(moment().valueOf()-starttime).humanize();
