@@ -203,7 +203,14 @@
 					firstlayertime=parseInt(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].FirstLayerTime);
 					bottomlayers=parseInt(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].NumberofBottomLayers);
 					layertime=parseInt(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].LayerTime);
-					endtime=starttime+(firstlayertime*bottomlayers)+(layertime*(totalslices-bottomlayers));
+					//make the end time the biggest value of the two ways we try to calculate the data when we start the page. If it falls, that's ok, but it's preferable for the print time to fall.
+					if((starttime+data.elapsedTime+(parseInt(data.averageSliceTime)*(parseInt(data.totalSlices)-parseInt(data.currentSlice))))>starttime+(firstlayertime*bottomlayers)+(layertime*(totalslices-bottomlayers))){
+						endtime=starttime+data.elapsedTime+(parseInt(data.averageSliceTime)*(parseInt(data.totalSlices)-parseInt(data.currentSlice)));
+					}
+					else{
+						endtime=starttime+(firstlayertime*bottomlayers)+(layertime*(totalslices-bottomlayers));
+					}
+					
 					printid=data.id;
 					jobname=data.jobName;
 					document.getElementById("layerslice").src="../services/printJobs/currentSliceImage/"+printid;
@@ -239,7 +246,7 @@
 				if (moment().second()%10===0){
 					document.getElementById("layerslice").src=document.getElementById("layerslice").src+"?"+moment().second();
 					//check for updated information about the print
-					$.getJSON('../services/printJobs/get/'+printid)
+					$.getJSON('../services/printJobs/getByPrinterName/Photocentric%2010')
 					.done(function(data){
 						endtime=starttime+data.elapsedTime+(parseInt(data.averageSliceTime)*(parseInt(data.totalSlices)-parseInt(data.currentSlice)));
 					});
