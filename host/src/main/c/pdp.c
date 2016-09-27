@@ -71,7 +71,7 @@ void displayInfo( int id, char* name )
 
 void usage( char* name )
 {
-	printf( "usage: %s <display> <file>\n", name );
+	printf( "usage: %s <display> <duration in seconds> <file>\n", name );
 	displayInfo( DISPMANX_ID_MAIN_LCD, "Main LCD" );
 	displayInfo( DISPMANX_ID_AUX_LCD, "AUX LCD" );
 	displayInfo( DISPMANX_ID_HDMI, "HDMI" );

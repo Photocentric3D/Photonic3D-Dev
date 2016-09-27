@@ -8,7 +8,7 @@ export newhost=LCHR
 echo "Getting updates and installing utilities"
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq
+sudo apt-get -y install fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2
 git clone https://github.com/Photocentric3D/Photonic3D.git photonic-repo
 sudo rpi-update
 
@@ -68,8 +68,9 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
 		#rm -rf kweb-1.7.4
 		wget -qO - http://bintray.com/user/downloadSubjectPublicKey?username=bintray | sudo apt-key add -
 		sudo sh -c 'echo "deb http://dl.bintray.com/kusti8/chromium-rpi jessie main" | sudo tee -a /etc/apt/sources.list'
-		sudo apt-get update && sudo apt-get install -y kweb youtube-dl
-		#installing youtube-dl just because it causes a script to ask a question that must be replied to on keyboard otherwise
+		sudo apt-get update && sudo apt-get install -y youtube-dl
+		#HACK: installing youtube-dl just because it causes kweb installation script to ask a question that must be replied to on keyboard otherwise
+		sudo apt-get install -y kweb
 		
 		echo "Setting up kiosk-only mode"
 		touch /home/pi/.xsession
@@ -77,8 +78,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
 		echo xset s off >> /home/pi/.xsession
 		echo xset -dpms >> /home/pi/.xsession
 		echo xset s noblank >> /home/pi/.xsession
-		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /home/pi/.splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
-		echo while true\; do >> /home/pi/.xsession
+		
 		
 		if [ $newhost == "4ktouch" ]; 
 			then
@@ -87,11 +87,17 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
 				target=$newhost
 		fi
 		
-		echo \#uzbl -u http://$target.local:9091/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
-		echo kweb -KJ http://$target.local:9091/printflow \&\; >> /home/pi/.xsession
-		#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
-		echo sleep 2s\; >> /home/pi/.xsession
-		echo done >> /home/pi/.xsession
+		
+		if [ $newhost == "4ktouch" ]; 
+			then
+			echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /home/pi/.splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
+			echo while true\; do >> /home/pi/.xsession
+			echo \#uzbl -u http://$target.local:9091/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
+			echo kweb -KJ http://$target.local:9091/printflow\; >> /home/pi/.xsession
+			#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
+			echo sleep 2s\; >> /home/pi/.xsession
+			echo done >> /home/pi/.xsession
+		fi
 		
 		#keeping this as a fallback for kweb as sometimes kweb servers can be offline
 		touch /home/pi/uzbl.conf

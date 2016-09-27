@@ -158,7 +158,7 @@ if [ ! -f "/etc/init.d/cwhservice" ]; then
 	update-rc.d cwhservice defaults
 fi
 
-echo Determinging if one time install has occurred
+echo Determining if one time install has occurred
 performedOneTimeInstall=$(grep performedOneTimeInstall ${CONFIG_PROPS} | awk -F= '{print $2}')
 if [ -f "oneTimeInstall.sh" -a [${performedOneTimeInstall} != "true"] ]; then
 	./oneTimeInstall.sh
