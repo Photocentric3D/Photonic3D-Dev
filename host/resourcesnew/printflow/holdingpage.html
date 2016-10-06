@@ -1,0 +1,49 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Holding page</title>
+    <style>
+        .holdimage{
+			position: absolute; 
+			top: 0px; 
+			left: 0px;
+
+			user-drag: none; 
+			user-select: none;
+			-moz-user-select: none;
+			-webkit-user-drag: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+		
+    </style>
+</head>
+<body style="background-color: black;" onload="checkServerStatus(get('target'));">
+    <script>
+        function get(n) {
+           var half = location.search.split(n + '=')[1];
+           return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null;
+        }
+        
+            
+            function checkServerStatus(url){
+                    var img = document.body.appendChild(document.createElement("img"));
+                    img.style.display="none";
+                    img.onload = function()
+                    {
+                        console.log("up, redirecting...");
+                        window.location.href=get("target");
+                    };
+                    img.onerror = function()
+                    {
+                        setTimeout(function() {
+						checkServerStatus();
+                        }, 1000);
+                        console.log("not up");
+                    };
+                    img.src = url+"/images/dropdown.png";
+                }
+    </script>
+    <img src="images/holdscreen.png" id="holdimage" class="holdimage"></img>
+</body>
+</html>
