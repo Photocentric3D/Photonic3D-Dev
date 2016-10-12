@@ -2,7 +2,7 @@
 
 # variables (per pi)
 export newhost=LCHR
-# can be either 4ktouch, 4kscreen or LCHR
+# can be either 4ktouch, 4kscreen, standalone or LCHR
 
 # DO FOR ALL
 echo "Getting updates and installing utilities"
@@ -12,7 +12,7 @@ sudo apt-get -y install fbi git rsync rpi-update matchbox-window-manager uzbl xi
 git clone https://github.com/Photocentric3D/Photonic3D.git photonic-repo
 sudo rpi-update
 
-if [[ "[ "$newhost" == "4kscreen" ]" || "[ "$newhost" == "LCHR" ]" ]]
+if [[ "[ "$newhost" == "4kscreen" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhost" == "standalone" ]" ]]
 	then
 		echo "update photonic"
 # would prefer to call this to update to a particular version,
@@ -34,6 +34,7 @@ echo "installing common files"
 sudo rsync -avr photonic-repo/host/common/ /
 sudo rsync -avr photonic-repo/host/resourcesnew/printflow /opt/cwh/resourcesnew/ #keep printflow without the 
 sudo cp photonic-repo/host/os/Linux/armv61/pdp /opt/cwh/os/Linux/armv61/pdp
+sudo cp photonic-repo/host/resourcesnew/printflow/holdingpage.html /home/pi/holdingpage.html
 cp /etc/splash.png ~/.splash.png
 sudo chown root /etc/splash.png
 sudo chmod 777 /etc/splash.png
@@ -53,7 +54,7 @@ fi
 echo "Working on per printer settings..."
 sudo sh -c 'echo \#Photocentric mods >> /boot/config.txt'
 
-if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
+if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhost" == "standalone" ]" ]]
 	then
 		# Touchscreen pis only
 		echo "Modifying config files for touchscreen"
@@ -92,11 +93,14 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" ]]
 			then
 			echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /home/pi/.splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
 			echo while true\; do >> /home/pi/.xsession
-			echo \#uzbl -u http://$target.local:9091/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
-			echo kweb -KJ http://$target.local:9091/printflow\; >> /home/pi/.xsession
+			echo \#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:9091/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
+			echo kweb -KJ /home/pi/holdingpage.html?target=http://$target.local:9091/printflow; >> /home/pi/.xsession
 			#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
 			echo sleep 2s\; >> /home/pi/.xsession
 			echo done >> /home/pi/.xsession
+			else
+			echo setting up kiosk browser with photonic install
+			#TODO
 		fi
 		
 		#keeping this as a fallback for kweb as sometimes kweb servers can be offline
@@ -350,6 +354,12 @@ if [ "$newhost" == "LCHR" ]
 ' 'http://localhost:9091/services/printers/save'
 fi
 
+
+if [ "$newhost" == "standalone" ]
+	then
+		echo "creating standalone image..."
+		#TODO
+fi
 
 # Change hostname
 # left this 'til last for good reasons. Keep it last now.
