@@ -7,6 +7,7 @@ plugins {
   id 'org.ajoberstar.grgit' version '1.5.0'
   id 'org.ajoberstar.github-pages' version '1.5.0'
   id 'com.google.osdetector' version '1.4.0'
+//  id "c"
 }
 
 configurations {
@@ -111,6 +112,26 @@ eclipse {
     defaultOutputDir = file('srcbin')
   }
 }
+
+// // trying to add pdp compilation into gradle
+//model {
+//  buildTypes {
+//    release
+//  }
+//
+//  platforms {
+//    arm-v6 {
+//      architecture "arm_v6"
+//    }
+//  }
+//
+//  components {
+//    pdp(NativeLibrarySpec){
+//      binaries.all {
+//      }
+//    }
+//  }
+//}
 
 // PROJECT SETUP SCRIPT
 // --------------------
