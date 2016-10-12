@@ -3,6 +3,11 @@
 # variables (per pi)
 export newhost=LCHR
 # can be either 4ktouch, 4kscreen, standalone or LCHR
+export newpassword=photocentric
+# *** IMPORTANT NOTE *** declaring this as a variable in an open source project is totally insecure!
+# Ideally the password should be changed offline, and this repo should never be updated to match that.
+# but it's still better than sending out the hardware with the default pi user and password unchanged. Obviously.
+
 
 # DO FOR ALL
 echo "Getting updates and installing utilities"
@@ -170,7 +175,13 @@ sudo sed -i "s/$hostn/$newhost/g" /etc/hosts
 sudo sed -i "s/$hostn/$newhost/g" /etc/hostname
 echo "Your new hostname is $newhost, accessible from $newhost.local"
 
+echo "changing password"
+echo 'pi:$newpassword' | chpasswd
+echo "password updated!
+#if you haven't already, re-read the big important note at the top!
+
 rm -rf photonic-repo
+rm printerprofile.json
 
 sudo apt-get clean
 sudo reboot
