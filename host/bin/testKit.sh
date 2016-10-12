@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./start.sh "area515/Creation-Workshop-Host" "TestKit"
+./start.sh "Photocentric3D/Photonic3D" "TestKit"
