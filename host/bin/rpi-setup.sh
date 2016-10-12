@@ -132,110 +132,9 @@ if [ "$newhost" == "4kscreen" ]
 		sudo sh -c 'echo hdmi_pixel_freq_limit=400000000 >> /boot/config.txt'
 		
 		#TODO - add network time propogation to support 4ktouch. Currently built into WG images, but not setup by shell script yet
-		echo "setting up printer profile"
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
-  "configuration": {
-    "name": "Photocentric 10",
-    "machineConfig": {
-      "name": "Photocentric 10",
-      "FileVersion": 0,
-      "PlatformXSize": 450,
-      "PlatformYSize": 280,
-      "PlatformZSize": 300,
-      "MaxXFeedRate": 0,
-      "MaxYFeedRate": 0,
-      "MaxZFeedRate": 0,
-      "XRenderSize": 3840,
-      "YRenderSize": 2160,
-      "MotorsDriverConfig": {
-        "DriverType": "Photocentric",
-        "ComPortSettings": {
-          "PortName": "/dev/ttyACM0",
-          "Speed": 115200,
-          "Databits": 8,
-          "Parity": "None",
-          "Stopbits": "One",
-          "Handshake": "None"
-        }
-      },
-      "MonitorDriverConfig": {
-        "DLP_X_Res": 3840,
-        "DLP_Y_Res": 2160,
-        "MonitorID": "DISPLAY1",
-        "OSMonitorID": ":0.0",
-        "DisplayCommEnabled": false,
-        "ComPortSettings": {
-          "Handshake": "None"
-        },
-        "MonitorTop": 12,
-        "MonitorLeft": 11,
-        "MonitorRight": 11,
-        "MonitorBottom": 12,
-        "UseMask": false
-      },
-      "PauseOnPrinterResponseRegEx": ".*door.*open.*"
-    },
-    "slicingProfile": {
-      "gCodeHeader": "G91;\nM17;",
-      "gCodeFooter": "M18",
-      "gCodePreslice": null,
-      "gCodeLift": "G1 Z${ZLiftDist} F${ZLiftRate};\nG1 Z-${(ZLiftDist - LayerThickness)} F180;\nM17;\n;<delay> 1500;",
-      "gCodeShutter": null,
-      "name": "Hard daylight red 0.1",
-      "zliftDistanceGCode": null,
-      "zliftSpeedGCode": null,
-      "selectedInkConfigIndex": 0,
-      "DotsPermmX": 6.133261494252874,
-      "DotsPermmY": 6.130268199233716,
-      "XResolution": 3840,
-      "YResolution": 2160,
-      "BlankTime": 0,
-      "PlatformTemp": 0,
-      "ExportSVG": 0,
-      "Export": false,
-      "ExportPNG": false,
-      "Direction": "Bottom_Up",
-      "LiftDistance": 5,
-      "SlideTiltValue": 0,
-      "AntiAliasing": true,
-      "UseMainLiftGCode": false,
-      "AntiAliasingValue": 10,
-      "LiftFeedRate": 50,
-      "LiftRetractRate": 0,
-      "FlipX": false,
-      "FlipY": true,
-      "ZLiftDistanceCalculator": "var minLift = 4.5;\nvar value = 8.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = minLift  +  0.0015*Math.pow($buildAreaMM,1);\n}\nvalue",
-      "ZLiftSpeedCalculator": "var value = 50.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = 100.0 - 0.02 * Math.pow($buildAreaMM,1);\n}\nvalue",
-      "ExposureTimeCalculator": "var value = $FirstLayerTime;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = $LayerTime\n}\nvalue",
-      "SelectedInk": "Default",
-      "MinTestExposure": 0,
-      "TestExposureStep": 0,
-      "InkConfig": [
-        {
-          "PercentageOfPrintMaterialConsideredEmpty": 10,
-          "Name": "Default",
-          "SliceHeight": 0.05,
-          "LayerTime": 26000,
-          "FirstLayerTime": 140000,
-          "NumberofBottomLayers": 4,
-          "ResinPriceL": 65
-        }
-      ]
-    },
-    "MachineConfigurationName": "Photocentric 10",
-    "SlicingProfileName": "Hard daylight red 0.1",
-    "AutoStart": true,
-    "Calibrated": false
-  },
-  "started": true,
-  "shutterOpen": false,
-  "displayDeviceID": ":0.0",
-  "currentSlicePauseTime": 0,
-  "status": "Ready",
-  "printInProgress": false,
-  "printPaused": false,
-  "cachedBulbHours": null
-}' 'http://localhost:9091/services/printers/save'
+		echo "setting up Photocentric Pro profile"
+		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/Photocentric%20Pro.json -O printerprofile.json
+		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:9091/services/printers/save'
 fi
 
 if [ "$newhost" == "LCHR" ]
@@ -247,111 +146,10 @@ if [ "$newhost" == "LCHR" ]
 		sudo sh -c 'echo max_framebuffer_width=2048 >> /boot/config.txt'
 		sudo sh -c 'echo max_framebuffer_height=1536 >> /boot/config.txt'
 		sudo sh -c 'echo hdmi_pixel_freq_limit=400000000 >> /boot/config.txt'
-		echo "installing LCHR profile"
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
-  "configuration": {
-    "name": "Photocentric 10",
-    "machineConfig": {
-      "name": "Photocentric 10",
-      "FileVersion": 0,
-      "PlatformXSize": 160,
-      "PlatformYSize": 120,
-      "PlatformZSize": 200,
-      "MaxXFeedRate": 0,
-      "MaxYFeedRate": 0,
-      "MaxZFeedRate": 0,
-      "XRenderSize": 2048,
-      "YRenderSize": 1536,
-      "MotorsDriverConfig": {
-        "DriverType": "Photocentric",
-        "ComPortSettings": {
-          "PortName": "/dev/ttyACM0",
-          "Speed": 115200,
-          "Databits": 8,
-          "Parity": "None",
-          "Stopbits": "One",
-          "Handshake": "None"
-        }
-      },
-      "MonitorDriverConfig": {
-        "DLP_X_Res": 2048,
-        "DLP_Y_Res": 1536,
-        "MonitorID": "DISPLAY1",
-        "OSMonitorID": ":0.0",
-        "DisplayCommEnabled": false,
-        "ComPortSettings": {
-          "Handshake": "None"
-        },
-        "MonitorTop": 12,
-        "MonitorLeft": 11,
-        "MonitorRight": 11,
-        "MonitorBottom": 12,
-        "UseMask": false
-      },
-      "PauseOnPrinterResponseRegEx": ".*door.*open.*"
-    },
-    "slicingProfile": {
-      "gCodeHeader": "G91;\nM17;",
-      "gCodeFooter": "M18",
-      "gCodePreslice": null,
-      "gCodeLift": "G1 Z${ZLiftDist} F${ZLiftRate};\nG1 Z-${(ZLiftDist - LayerThickness)} F180;\nM17;\n;<delay> 1500;",
-      "gCodeShutter": null,
-      "name": "Hard daylight red 0.1",
-      "zliftDistanceGCode": null,
-      "zliftSpeedGCode": null,
-      "selectedInkConfigIndex": 0,
-      "DotsPermmX": 6.1,
-      "DotsPermmY": 6.1,
-      "XResolution": 2048,
-      "YResolution": 1536,
-      "BlankTime": 0,
-      "PlatformTemp": 0,
-      "ExportSVG": 0,
-      "Export": false,
-      "ExportPNG": false,
-      "Direction": "Bottom_Up",
-      "LiftDistance": 5,
-      "SlideTiltValue": 0,
-      "AntiAliasing": true,
-      "UseMainLiftGCode": false,
-      "AntiAliasingValue": 10,
-      "LiftFeedRate": 50,
-      "LiftRetractRate": 0,
-      "FlipX": false,
-      "FlipY": true,
-      "ZLiftDistanceCalculator": "var minLift = 4.5;\nvar value = 8.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = minLift  +  0.0015*Math.pow($buildAreaMM,1);\n}\nvalue",
-      "ZLiftSpeedCalculator": "var value = 50.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = 100.0 - 0.02 * Math.pow($buildAreaMM,1);\n}\nvalue",
-      "ExposureTimeCalculator": "var value = $FirstLayerTime;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = $LayerTime\n}\nvalue",
-      "SelectedInk": "Default",
-      "MinTestExposure": 0,
-      "TestExposureStep": 0,
-      "InkConfig": [
-        {
-          "PercentageOfPrintMaterialConsideredEmpty": 10,
-          "Name": "Default",
-          "SliceHeight": 0.025,
-          "LayerTime": 20000,
-          "FirstLayerTime": 140000,
-          "NumberofBottomLayers": 4,
-          "ResinPriceL": 65
-        }
-      ]
-    },
-    "MachineConfigurationName": "Photocentric 10",
-    "SlicingProfileName": "Hard daylight red 0.1",
-    "AutoStart": true,
-    "Calibrated": false
-  },
-  "started": true,
-  "shutterOpen": false,
-  "displayDeviceID": ":0.0",
-  "currentSlicePauseTime": 0,
-  "status": "Ready",
-  "printInProgress": false,
-  "printPaused": false,
-  "cachedBulbHours": null
-}
-' 'http://localhost:9091/services/printers/save'
+
+		echo "installing Photocentric Liquid Crystal HR profile"
+		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%20hr.json -O printerprofile.json
+		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:9091/services/printers/save'
 fi
 
 
@@ -359,6 +157,9 @@ if [ "$newhost" == "standalone" ]
 	then
 		echo "creating standalone image..."
 		#TODO
+		echo "installing Photocentric 10 profile"
+		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%2010.json -O printerprofile.json
+		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:9091/services/printers/save'
 fi
 
 # Change hostname
