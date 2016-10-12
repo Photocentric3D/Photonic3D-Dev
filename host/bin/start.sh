@@ -29,10 +29,10 @@ else
 fi;
 
 if [ "$2" == "TestKit" ]; then
-	downloadPrefix=cwh$2-
+	downloadPrefix=photonic$2-
 	installDirectory=/opt/cwh$2
 else
-	downloadPrefix=cwh-
+	downloadPrefix=photonic-
 	installDirectory=/opt/cwh
 fi;
 
