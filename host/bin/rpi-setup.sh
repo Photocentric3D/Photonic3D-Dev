@@ -13,7 +13,7 @@ export newpassword=photocentric
 echo "Getting updates and installing utilities"
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2
+sudo apt-get -y install fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl
 git clone https://github.com/Photocentric3D/Photonic3D.git photonic-repo
 sudo rpi-update
 
