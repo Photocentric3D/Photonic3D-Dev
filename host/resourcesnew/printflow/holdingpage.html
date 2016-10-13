@@ -18,7 +18,7 @@
 		
     </style>
 </head>
-<body style="background-color: black;" onload="setTimeout(function() {checkServerStatus();}, 1000);">
+<body style="background-color: black;" onload="setInterval(function() {checkServerStatus();}, 1000);">
     <script>
         function get(n) {
            var half = location.search.split(n + '=')[1];
