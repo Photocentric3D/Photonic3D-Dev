@@ -444,7 +444,7 @@ public class PrinterService {
 		
 		TwoDimensionalSettings settings = new TwoDimensionalSettings();
 		settings.setFont(DEFAULT_FONT);
-		settings.setPlatformCalculator("platformGraphics.fillRoundRect(centerX - (extrusionX / 2), centerY - (extrusionY / 2), extrusionX, extrusionY, 50, 50);");
+		settings.setPlatformCalculator("var extrusionX = printImage.getWidth();\nvar extrusionY = printImage.getHeight();\nplatformGraphics.fillRoundRect(centerX - (extrusionX / 2), centerY - (extrusionY / 2), extrusionX, extrusionY, 50, 50);");
 		settings.setExtrusionHeightMM(1.5);
 		settings.setPlatformHeightMM(1.5);
 		settings.setEdgeDetectionDisabled(false);
@@ -864,11 +864,14 @@ public class PrinterService {
 	
 	private Map<String, Object> buildPrintInProgressSimulation() {
 		BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR_PRE);
+		BufferedImage printImage = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR_PRE);
 		Map<String, Object> overrides = new HashMap<>();
 		overrides.put("platformGraphics", image.getGraphics());
 		overrides.put("platformRaster", image.getRaster());
-		overrides.put("extrusionX", 200);
-		overrides.put("extrusionY", 200);
+		overrides.put("buildPlatformImage", image);
+		overrides.put("buildPlatformGraphics", image.getGraphics());
+		overrides.put("buildPlatformRaster", image.getRaster());
+		overrides.put("printImage", printImage);
 		overrides.put("centerX", 100);
 		overrides.put("centerY", 100);
 		return overrides;

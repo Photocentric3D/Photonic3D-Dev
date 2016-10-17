@@ -1,8 +1,8 @@
 {
   "configuration": {
-    "name": "Photocentric 10",
+    "name": "Photocentric Pro",
     "machineConfig": {
-      "name": "Photocentric 10",
+      "name": "Photocentric Pro",
       "FileVersion": 0,
       "PlatformXSize": 450,
       "PlatformYSize": 280,
@@ -87,7 +87,7 @@
         }
       ]
     },
-    "MachineConfigurationName": "Photocentric 10",
+    "MachineConfigurationName": "Photocentric Pro",
     "SlicingProfileName": "Hard daylight red 0.1",
     "AutoStart": true,
     "Calibrated": false
