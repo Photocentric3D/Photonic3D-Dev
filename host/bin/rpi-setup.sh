@@ -113,7 +113,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 		echo then >> /home/pi/.xsession
 		echo break >> /home/pi/.xsession
 		echo fi >> /home/pi/.xsession
-		echo done
+		echo done >> /home/pi/.xsession
 		
 		echo \#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
 		echo kweb -KJ http://$target.local:$portno/printflow; >> /home/pi/.xsession
