@@ -170,6 +170,10 @@ if [ -f "eachStart.sh" ]; then
 	./eachStart.sh
 fi
 
+if [ -e "/opt/cwh/resourcesnew/printflow/js/printerconfig.js" ]; then
+	./.focus.sh &
+fi
+
 if [ "$2" == "debug" ]; then
 	pkill -9 -f "org.area515.resinprinter.server.Main"
 	echo "Starting printer host server($2)"
@@ -182,8 +186,4 @@ else
 	pkill -9 -f "org.area515.resinprinter.server.Main"
 	echo Starting printer host server
 	java -Xmx512m -Dlog4j.configurationFile=log4j2.properties -Djava.library.path=/usr/lib/jni:os/Linux/${cpu} -cp lib/*:. org.area515.resinprinter.server.Main > log.out 2> log.err &
-fi
-
-if [ -e "/opt/cwh/resourcesnew/printflow/js/printerconfig.js" ]; then
-	./.focus.sh &
 fi
