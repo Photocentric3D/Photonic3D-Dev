@@ -32,6 +32,7 @@
 			<zipfileset dir="common" includes="**/*"/>
 			<zipfileset dir="resources" prefix="resources" includes="**/*"/>
 			<zipfileset dir="resourcesnew" prefix="resourcesnew" includes="**/*"/>
+			<zipfileset dir="photocentric" prefix="photocentric" includes="**/*"/>
 			<zipfileset dir="build/install/photonic3d/lib" prefix="lib" includes="**/*.jar"/>
 		</zip>
 		<!--
