@@ -52,13 +52,16 @@
 
         <script src="js/moment.min.js"></script>
 		
+		<script src="js/printflow.js"></script>
+		<script src="js/printerconfig.js"></script>
+		
 		<link href="css/printflow.css" rel="stylesheet">
+		
+		
+		
     </head>
-    <body style="background-color: black;">
+    <body style="background-color: black;" onload="startpage();">
 		<script>
-			setInterval(function() {
-				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-			}, 1000);
 			firmwarerevision=0;
 			$.getJSON('../services/settings/releaseTagName').done(function (data){
 						firmwarerevision=data;

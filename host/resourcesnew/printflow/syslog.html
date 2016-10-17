@@ -30,14 +30,12 @@
 
         <script src="js/moment.min.js"></script>
 		
-				<link href="css/printflow.css" rel="stylesheet">
+		<script src="js/printflow.js"></script>
+		<script src="js/printerconfig.js"></script>
+		
+		<link href="css/printflow.css" rel="stylesheet">
     </head>
-    <body style="background-color: black;">
-		<script>
-			setInterval(function() {
-				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-			}, 1000);
-		</script>
+    <body style="background-color: black;" onload="startpage();">
         <div class="screen">
             <div class="main">
 				<img src="images/syslog.png" usemap="syslog" class="uilayer">

@@ -78,16 +78,15 @@
 
         <script src="js/moment.min.js"></script>
 		
+		<script src="js/printflow.js"></script>
+		<script src="js/printerconfig.js"></script>
+		
 		<link href="css/printflow.css" rel="stylesheet">
     </head>
     <body style="background-color: black;" onload="WifiAPs();">
 		<script>
-			
-			setInterval(function() {
-				
-				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-			}, 1000);
-			setInterval(WifiAPs(), 20000);
+			startpage();
+			setInterval(WifiAPs(), 10000);
 		//	$.getJSON( "test.js", { name: "John", time: "2pm" } )
 		//		.done(function( json ) {
 		//		console.log( "JSON Data: " + json.users[ 3 ].name );
