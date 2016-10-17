@@ -2,8 +2,10 @@
 
 # variables (per pi)
 export newhost=LCHR
-export portno=9091
 # can be either 4ktouch, 4kscreen, standalone or LCHR
+export portno=9091
+# currently set to 9091. Needs to be updated if the port config changes.
+# Installers will also need to double check and update this if the port no changes between builds.
 export newpassword=photocentric
 # *** IMPORTANT NOTE *** declaring this as a variable in an open source project is totally insecure!
 # Ideally the password should be changed offline, and this repo should never be updated to match that.
