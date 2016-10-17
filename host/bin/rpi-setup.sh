@@ -16,7 +16,7 @@ export newpassword=photocentric
 echo "Getting updates and installing utilities"
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl
+sudo apt-get -y install curl fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl
 git clone https://github.com/Photocentric3D/Photonic3D.git photonic-repo
 sudo rpi-update
 
@@ -91,7 +91,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 		
 		echo "Setting up kiosk-only mode"
 		touch /home/pi/.xsession
-		echo \#\!/bin/bash >> /home/pi/.xsession
+		echo \#\!/bin/bash > /home/pi/.xsession
 		echo xset s off >> /home/pi/.xsession
 		echo xset -dpms >> /home/pi/.xsession
 		echo xset s noblank >> /home/pi/.xsession
@@ -99,25 +99,27 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 		
 		if [ $newhost == "4ktouch" ]; 
 			then
-				target=4kscreen
+				export target=4kscreen
 			else
-				target=$newhost
+				export target=$newhost
 		fi
 		
 		
-		if [ $newhost == "4ktouch" ]; 
-			then
-			echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /home/pi/.splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
-			echo while true\; do >> /home/pi/.xsession
-			echo \#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
-			echo kweb -KJ /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow; >> /home/pi/.xsession
-			#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
-			echo sleep 2s\; >> /home/pi/.xsession
-			echo done >> /home/pi/.xsession
-			else
-			echo setting up kiosk browser with photonic install
-			#TODO
-		fi
+		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /home/pi/.splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
+		echo while true\; do >> /home/pi/.xsession
+		
+		echo while true\; do >> /home/pi/.xsession
+		echo if curl -fI http://$target.local:$portno/printflow/images/wifi-0.png >> /home/pi/.xsession			
+		echo then >> /home/pi/.xsession
+		echo break >> /home/pi/.xsession
+		echo fi >> /home/pi/.xsession
+		echo done
+		
+		echo \#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
+		echo kweb -KJ http://$target.local:$portno/printflow; >> /home/pi/.xsession
+		#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
+		echo sleep 2s\; >> /home/pi/.xsession
+		echo done >> /home/pi/.xsession
 		
 		#keeping this as a fallback for kweb as sometimes kweb servers can be offline
 		touch /home/pi/uzbl.conf
