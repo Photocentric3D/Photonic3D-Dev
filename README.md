@@ -78,8 +78,8 @@ Using pico, edit Line 4: export newhost=LCHR to match your printer:
 * `export newhost=4kscreen` for Photocentric Pro printers (display hardware)
 * `export newhost=4ktouch` for Photocentric Pro printers (touchscreen hardware)
 ```
-sudo chmod 777 start.sh
-sudo ./start.sh
+sudo chmod 777 rpi-setup.sh
+sudo ./rpi-setup.sh
 ```
 
 Photonic3D will be installed into `/opt/cwh` and an init script will be added to `/etc/init.d` to launch the server on boot.
