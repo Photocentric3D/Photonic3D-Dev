@@ -60,7 +60,7 @@ function printredirect(){
 				window.location.href="printdialogue.html";
 			}
 		}
-        }				
+    }				
 }
 
 function urlParam (name){
