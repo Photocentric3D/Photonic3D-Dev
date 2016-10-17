@@ -63,29 +63,23 @@ Feature List
 27. Supports dynamic direct slice-on-the-fly 3d printing of (.mazecube, .stl, .jpg/.png/.gif, .cws/.zip) files.
 28. Automatic uploading of files from removable drives. (USB sticks)
 
-Linux Installation Quickstart
+Raspberry Pi Quickstart
 -------------------------------------------------------------------------------
-If you are experienced with Linux, you can quickly install Photonic3D with the following commands:
+If you are experienced with Linux, you can quickly install Photonic3D for Photocentric with the following commands:
 
-Latest stable:
+Latest:
 ```
-sudo wget https://github.com/area515/Creation-Workshop-Host/raw/master/host/bin/start.sh
+sudo wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/bin/rpi-setup.sh
+sudo pico rpi-setup.sh
+```
+Using pico, edit Line 4: export newhost=LCHR to match your printer:
+`export newhost=LCHR` for Liquid Crystal HR printers
+`export newhost=standalone` for Photocentric 10 printers
+`export newhost=4kscreen` for Photocentric Pro printers (display hardware)
+`export newhost=4ktouch` for Photocentric Pro printers (touchscreen hardware)
+```
 sudo chmod 777 start.sh
 sudo ./start.sh
-```
-
-Latest development:
-```
-sudo wget https://github.com/WesGilster/Creation-Workshop-Host/raw/master/host/bin/start.sh
-sudo chmod 777 start.sh
-sudo ./start.sh WesGilster
-```
-
-Latest Kudo3D Fork (or other forks named Photonic3D):
-```
-sudo wget https://github.com/Kudo3D/Photonic3D/raw/master/host/bin/start.sh
-sudo chmod 777 start.sh
-sudo ./start.sh Kudo3D/Photonic3D
 ```
 
 Photonic3D will be installed into `/opt/cwh` and an init script will be added to `/etc/init.d` to launch the server on boot.
