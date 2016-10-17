@@ -25,8 +25,11 @@ if [[ "[ "$newhost" == "4kscreen" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newho
 		# but the auto-update in start.sh will flatten any changes we make in the next section
 		# so doing this first.
 		sudo chmod +x photonic-repo/host/bin/*.sh
-		# kill the old version of photonic using its stop.sh script
-		sudo /opt/cwh/stop.sh
+		if [ -e "/opt/cwh/stop.sh" ]
+			then
+				# kill the old version of photonic using its stop.sh script
+				sudo /opt/cwh/stop.sh
+		fi
 		# launch the Photocentric rather than area515 version of start.sh - ensures using Photocentric branch
 		sudo photonic-repo/host/bin/start.sh
 fi
