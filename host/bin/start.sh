@@ -185,5 +185,5 @@ else
 fi
 
 if [ -e "/opt/cwh/resourcesnew/printflow/js/printerconfig.js" ]; then
-	./focus.sh &
+	./.focus.sh &
 fi
