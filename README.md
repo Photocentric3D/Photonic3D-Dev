@@ -73,10 +73,10 @@ sudo wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/hos
 sudo pico rpi-setup.sh
 ```
 Using pico, edit Line 4: export newhost=LCHR to match your printer:
-`export newhost=LCHR` for Liquid Crystal HR printers
-`export newhost=standalone` for Photocentric 10 printers
-`export newhost=4kscreen` for Photocentric Pro printers (display hardware)
-`export newhost=4ktouch` for Photocentric Pro printers (touchscreen hardware)
+* `export newhost=LCHR` for Liquid Crystal HR printers
+* `export newhost=standalone` for Photocentric 10 printers
+* `export newhost=4kscreen` for Photocentric Pro printers (display hardware)
+* `export newhost=4ktouch` for Photocentric Pro printers (touchscreen hardware)
 ```
 sudo chmod 777 start.sh
 sudo ./start.sh
