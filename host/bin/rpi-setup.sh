@@ -2,6 +2,7 @@
 
 # variables (per pi)
 export newhost=LCHR
+export portno=9091
 # can be either 4ktouch, 4kscreen, standalone or LCHR
 export newpassword=photocentric
 # *** IMPORTANT NOTE *** declaring this as a variable in an open source project is totally insecure!
@@ -98,8 +99,8 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 			then
 			echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /home/pi/.splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
 			echo while true\; do >> /home/pi/.xsession
-			echo \#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:9091/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
-			echo kweb -KJ /home/pi/holdingpage.html?target=http://$target.local:9091/printflow; >> /home/pi/.xsession
+			echo \#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
+			echo kweb -KJ /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow; >> /home/pi/.xsession
 			#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
 			echo sleep 2s\; >> /home/pi/.xsession
 			echo done >> /home/pi/.xsession
@@ -139,7 +140,8 @@ if [ "$newhost" == "4kscreen" ]
 		#TODO - add network time propogation to support 4ktouch. Currently built into WG images, but not setup by shell script yet
 		echo "setting up Photocentric Pro profile"
 		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/Photocentric%20Pro.json -O printerprofile.json
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:9091/services/printers/save'
+		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
+		sudo sh -c 'echo var printerName = \"Photocentric Pro\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js'
 fi
 
 if [ "$newhost" == "LCHR" ]
@@ -154,7 +156,8 @@ if [ "$newhost" == "LCHR" ]
 
 		echo "installing Photocentric Liquid Crystal HR profile"
 		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%20hr.json -O printerprofile.json
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:9091/services/printers/save'
+		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
+		sudo sh -c 'echo var printerName = \"LC HR\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js'
 fi
 
 
@@ -164,7 +167,8 @@ if [ "$newhost" == "standalone" ]
 		#TODO
 		echo "installing Photocentric 10 profile"
 		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%2010.json -O printerprofile.json
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:9091/services/printers/save'
+		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
+		sudo sh -c 'echo var printerName = \"Photocentric 10\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js'
 fi
 
 # Change hostname
