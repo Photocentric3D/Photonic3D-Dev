@@ -154,7 +154,7 @@ xset -dpms         # disable DPMS (Energy Star) features
 xset s noblank     # don't blank the video device
 
 if [ ! -f "/etc/init.d/cwhservice" ]; then
-	echo Installing CWH as a service
+	echo Installing Photonic3D as a service
 	cp ${installDirectory}/cwhservice /etc/init.d/
 	chmod 777 /etc/init.d/cwhservice
 	update-rc.d cwhservice defaults
