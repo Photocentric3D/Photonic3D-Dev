@@ -4,7 +4,7 @@
 # !!! Not needed on 4kscreen !!!
 
 while true; do
-  if  ps -A | grep kweb
+  if [ "ps -A | grep kweb" ]
     then
       if [ $(env DISPLAY=:0 xprop -root _NET_ACTIVE_WINDOW | cut -d " " -f5) != $(env DISPLAY=:0 XAUTHORITY=/home/pi/.Xauthority wmctrl -l | grep kweb | cut -d " " -f1) ]
         then
