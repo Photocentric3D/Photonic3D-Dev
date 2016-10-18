@@ -111,14 +111,12 @@
 
         <script src="js/moment.min.js"></script>
 		
+		<script src="js/printflow.js"></script>
+		<script src="js/printerconfig.js"></script>
+		
 		<link href="css/printflow.css" rel="stylesheet">
     </head>
-    <body style="background-color: black;">
-		<script>
-			setInterval(function() {
-				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-			}, 1000);
-		</script>
+    <body style="background-color: black;" onload="startpage();">
         <div class="screen">
             <div class="main">
 				<img src="images/mainmenu.png" usemap="mainmenu" class="uilayer">
@@ -129,7 +127,7 @@
 					<area alt="" title="" href="settings.html" shape="poly" coords="598,247,575,252,556,265,543,284,538,307,543,330,556,349,575,362,598,367,621,362,640,349,653,330,658,307,653,284,640,265,621,252" style="outline:none;" target="_self" onClick="location.href='settings.html';"    />
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
-				<img name="wifi" id="wifi" class="wifi" src="images/wifi.png">
+				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
 				
 				<img name="print" id="print" class="print" src="images/menumainbuttonANIM.png" onClick="location.href='printables.html';">
 				<img name="resin" id="resin" class="resin" src="images/menusubbuttonANIM.png" onClick="location.href='resin.html';">
