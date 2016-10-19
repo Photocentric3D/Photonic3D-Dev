@@ -43,13 +43,13 @@
 
         <script src="js/moment.min.js"></script>
 		
+		<script src="js/printflow.js"></script>
+		<script src="js/printerconfig.js"></script>
+		
 		<link href="css/printflow.css" rel="stylesheet">
     </head>
-    <body style="background-color: black;">
+    <body style="background-color: black;" onload="startpage();">
 		<script>
-			setInterval(function() {
-				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-			}, 1000);
 			firmwarerevision=0;
 			$.getJSON('../services/settings/releaseTagName').done(function (data){
 						firmwarerevision=data;
@@ -72,7 +72,7 @@
 				<div name="fwrev" id="fwrev" class="fwrev"></div>
 				<div name="printtimeelapsed" id="printtimeelapsed" class="printtimeelapsed">Total Time Printing:<br><script>document.write(moment().format("h:mm:ss"));</script></div>
 				<div name="serialno" id="serialno" class="serialno">Serial Number:<br>Alpha</div>
-				<img name="wifi" id="wifi" class="wifi" src="images/wifi.png">
+				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
 				
 				<img name="homehighlight" id="homehighlight" class="homehighlight" src="images/homehighlightANIM.png" onClick="location.href='index.html';">
 				<img name="bigbuttonhighlight" id="bigbuttonhighlight" class="bigbuttonhighlight" src="images/bigbuttonANIM.png" onClick="location.href='settings.html';">

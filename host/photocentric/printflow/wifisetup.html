@@ -99,6 +99,9 @@
         <script src="../angular/js/angular.min.js"></script>
 
         <script src="js/moment.min.js"></script>
+
+		<script src="js/printflow.js"></script>
+		<script src="js/printerconfig.js"></script>
 		
 		<link href="css/printflow.css" rel="stylesheet">
 		
@@ -116,9 +119,7 @@
 
 			ssid= urlParam("SSID");
 			if (ssid=="null") ssid="";
-			setInterval(function() {
-				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-			}, 1000);
+			startpage();
 			
 			function urlParam (name){
 				var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -198,7 +199,7 @@
 
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
-				<img name="wifi" id="wifi" class="wifi" src="images/wifi.png">
+				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
 				<img name="wifisettings" id="wifisettings" class="wifisettings" src="images/wifi.png" onClick="location.href='wifisettings.html';">
 				<div name="SSIDlabel" class="SSIDlabel" id="SSIDlabel">SSID:</div>
 				<input name="SSID" class="SSID" id="SSID" value=""></input>
