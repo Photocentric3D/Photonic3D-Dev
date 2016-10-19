@@ -116,7 +116,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 		echo done >> /home/pi/.xsession
 		
 		echo \#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
-		echo kweb -KJ http://$target.local:$portno/printflow; >> /home/pi/.xsession
+		echo kweb -KJ http://$target.local:$portno/printflow\; >> /home/pi/.xsession
 		#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
 		echo sleep 2s\; >> /home/pi/.xsession
 		echo done >> /home/pi/.xsession
