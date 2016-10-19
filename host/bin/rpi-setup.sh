@@ -48,6 +48,10 @@ sudo sed -i "s/tty1/tty/g" /boot/cmdline.txt
 echo "installing common files"
 sudo rsync -avr photonic-repo/host/common/ /
 sudo rsync -avr photonic-repo/host/resourcesnew/printflow /opt/cwh/resourcesnew/ #keep printflow without the trailing / 
+if [ -e /opt/cwh/photonic/ ]; then
+	sudo mkdir /opt/cwh/photonic
+fi
+sudo rsync -avr photonic-repo/host/photonic/printflow /opt/cwh/photonic/
 sudo cp photonic-repo/host/os/Linux/armv61/pdp /opt/cwh/os/Linux/armv61/pdp #copy display manager for screen + curing screen printers
 sudo cp photonic-repo/host/resourcesnew/printflow/holdingpage.html /home/pi/holdingpage.html #copy holdingpage for fallback
 #install splash screen
@@ -105,7 +109,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 		fi
 		
 		
-		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh --bg /home/pi/.splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
+		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh -NY --bg /etc/splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
 		echo while true\; do >> /home/pi/.xsession
 		
 		echo while true\; do >> /home/pi/.xsession
