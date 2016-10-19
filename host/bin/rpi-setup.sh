@@ -179,7 +179,7 @@ if [ "$newhost" == "standalone" ]
 		#TODO
 		echo "installing Photocentric 10 profile"
 		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%2010.json -O printerprofile.json
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
+		curl -X POST --local-port $portno --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
 		sudo sh -c 'echo var printerName = \"Photocentric 10\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js'
 fi
 
