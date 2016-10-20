@@ -109,13 +109,13 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 		sudo sh -c "yes Y | apt-get install -y kweb"
 	fi
 	
-	
+	touch /home/pi/.xsession
 	echo "Setting up kiosk-only mode"
 	if grep -Fxq "kweb" /home/pi/.xsession
 	then
 		echo "already done!"
 	else
-		touch /home/pi/.xsession
+		
 		echo \#\!/bin/bash > /home/pi/.xsession
 		echo xset s off >> /home/pi/.xsession
 		echo xset -dpms >> /home/pi/.xsession
