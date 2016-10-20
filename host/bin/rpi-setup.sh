@@ -100,7 +100,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 	###cd kweb-1.7.4
 	###./debinstall
 	###rm -rf kweb-1.7.4
-	if grep -Fxq "chromium-rpi" /etc/apt/sources.list
+	if grep -Fxq "chromium" /etc/apt/sources.list
 	then
 		echo "already done!"
 	else
@@ -132,17 +132,17 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh -NY --bg /etc/splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
 		echo while true\; do >> /home/pi/.xsession
 	
-		echo -e "\twhile true\; do" >> /home/pi/.xsession
+		echo -e "\twhile true; do" >> /home/pi/.xsession
 		echo -e "\t\tif curl -fI http://$target.local:$portno/printflow/images/wifi-0.png" >> /home/pi/.xsession			
-		echo -e"\t\t\tthen" >> /home/pi/.xsession
+		echo -e "\t\t\tthen" >> /home/pi/.xsession
 		echo -e "\t\t\t\tbreak" >> /home/pi/.xsession
 		echo -e "\t\tfi" >> /home/pi/.xsession
-		echo "\tdone" >> /home/pi/.xsession
+		echo -e "\tdone" >> /home/pi/.xsession
 	
-		echo -e "\t\#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow -c /home/pi/uzbl.conf \&\;" >> /home/pi/.xsession
-		echo -e "\tkweb -KJ http://$target.local:$portno/printflow\;" >> /home/pi/.xsession
+		echo -e "\t#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow -c /home/pi/uzbl.conf &;" >> /home/pi/.xsession
+		echo -e "\tkweb -KJ http://$target.local:$portno/printflow ;" >> /home/pi/.xsession
 		#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
-		echo -e "\tsleep 2s\;" >> /home/pi/.xsession
+		echo -e "\tsleep 2s;" >> /home/pi/.xsession
 		echo done >> /home/pi/.xsession
 		fi
 	
