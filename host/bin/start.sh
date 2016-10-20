@@ -36,6 +36,8 @@ else
 	installDirectory=/opt/cwh
 fi;
 
+
+
 #Its pretty hard to keep these updated, let me know when they get too old
 if [ "${cpu}" = "armv6l" -o "${cpu}" = "armv7l" ]; then
 	javaURL="http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-arm32-vfp-hflt.tar.gz"
@@ -142,6 +144,8 @@ elif [ "${NETWORK_TAG}" != "${LOCAL_TAG}" -o "$2" == "force" ]; then
 
 	unzip ${DL_FILE}
 	chmod 777 *.sh
+	command -v dos2unix >/dev/null 2>&1 || { apt-get install --yes --force-yes dos2unix >&2; }
+	dos2unix *.sh
 	rm ${DL_FILE}
 else
 	echo No install required
