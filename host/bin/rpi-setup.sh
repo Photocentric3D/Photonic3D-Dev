@@ -152,7 +152,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 			echo set show_status=0 >> /home/pi/uzbl.conf
 			echo set geometry=maximized >> /home/pi/uzbl.conf
 		fi
-	fi		
+			
 fi
 
 if [ "$newhost" == "4ktouch" ]
