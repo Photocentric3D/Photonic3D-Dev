@@ -17,6 +17,10 @@ echo "Getting updates and installing utilities"
 sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get -y install dos2unix curl fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl
+
+if [ -e photonic-repo ]; then
+	sudo rm -rf photonic-repo
+fi
 sudo git clone https://github.com/Photocentric3D/Photonic3D.git photonic-repo
 sudo rpi-update
 
@@ -27,6 +31,7 @@ if [[ "[ "$newhost" == "4kscreen" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newho
 		# but the auto-update in start.sh will flatten any changes we make in the next section
 		# so doing this first.
 		sudo chmod +x photonic-repo/host/bin/*.sh
+		sudo dos2unix photonic-repo/host/bin/*.sh
 		if [ -e "/opt/cwh/stop.sh" ]
 			then
 				# kill the old version of photonic using its stop.sh script
@@ -40,10 +45,14 @@ fi
 # redirect boot terminal output not to screen
 echo "removing pi branding"
 # we can't remove everything as some is baked into the pi's firmware, but this gives a realistic amount.
-sudo mv /boot/cmdline.txt /boot/cmdline.old 
-sudo sh -c 'echo -n "loglevel=3 logo.nologo " > /boot/cmdline.txt'
-sudo sh -c 'cat /boot/cmdline.old >> /boot/cmdline.txt' 
-sudo sed -i "s/tty1/tty/g" /boot/cmdline.txt
+if [ ! -e "/boot/cmdline.old" ]; then
+	sudo mv /boot/cmdline.txt /boot/cmdline.old 
+	sudo sh -c 'echo -n "loglevel=3 logo.nologo " > /boot/cmdline.txt'
+	sudo sh -c 'cat /boot/cmdline.old >> /boot/cmdline.txt' 
+	sudo sed -i "s/tty1/tty/g" /boot/cmdline.txt
+else
+	echo "already complete!"
+fi
 
 echo "installing common files"
 sudo rsync -avr photonic-repo/host/common/ /
@@ -73,62 +82,77 @@ fi
 echo "Working on per printer settings..."
 sudo sh -c 'echo \#Photocentric mods >> /boot/config.txt'
 
-if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhost" == "standalone" ]" ]]
+if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhost" == "standalone" ]" ]]; then
+	# Touchscreen pis only
+	echo "Modifying config files for touchscreen"
+	if grep -Fxq "disable_splash" /boot/config.txt
 	then
-		# Touchscreen pis only
-		echo "Modifying config files for touchscreen"
+		echo "already done!"
+	else
 		sudo sh -c 'echo disable_splash=1 >> /boot/config.txt'
 		sudo sh -c 'echo lcd_rotate=2 >> /boot/config.txt'
 		sudo sh -c 'echo avoid_warnings=1 >> /boot/config.txt'
-		echo "installing kiosk browser"
-		# since this isn't on standard apt-get sources, i'm keeping this as an alternative way to source kweb
-		###wget http://steinerdatenbank.de/software/kweb-1.7.4.tar.gz
-		###tar -xzf kweb-1.7.4.tar.gz
-		###cd kweb-1.7.4
-		###./debinstall
-		###rm -rf kweb-1.7.4
+	fi
+	echo "installing kiosk browser"
+	# since this isn't on standard apt-get sources, i'm keeping this as an alternative way to source kweb
+	###wget http://steinerdatenbank.de/software/kweb-1.7.4.tar.gz
+	###tar -xzf kweb-1.7.4.tar.gz
+	###cd kweb-1.7.4
+	###./debinstall
+	###rm -rf kweb-1.7.4
+	if grep -Fxq "chromium-rpi" /etc/apt/sources.list
+	then
+		echo "already done!"
+	else
 		sudo wget -qO - http://bintray.com/user/downloadSubjectPublicKey?username=bintray | sudo apt-key add -
 		sudo sh -c 'echo "deb http://dl.bintray.com/kusti8/chromium-rpi jessie main" | sudo tee -a /etc/apt/sources.list'
 		sudo sh -c "yes Y | apt-get install -y kweb"
-		
-		
-		echo "Setting up kiosk-only mode"
+	fi
+	
+	
+	echo "Setting up kiosk-only mode"
+	if grep -Fxq "kweb" /home/pi/.xsession
+	then
+		echo "already done!"
+	else
 		touch /home/pi/.xsession
 		echo \#\!/bin/bash > /home/pi/.xsession
 		echo xset s off >> /home/pi/.xsession
 		echo xset -dpms >> /home/pi/.xsession
 		echo xset s noblank >> /home/pi/.xsession
-		
-		
-		if [ $newhost == "4ktouch" ]; 
-			then
-				export target=4kscreen
-			else
-				export target=$newhost
+	
+	
+		if [ $newhost == "4ktouch" ]; then
+			export target=4kscreen
+		else
+			export target=$newhost
 		fi
-		
-		
+
+
 		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh -NY --bg /etc/splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
 		echo while true\; do >> /home/pi/.xsession
-		
-		echo while true\; do >> /home/pi/.xsession
-		echo if curl -fI http://$target.local:$portno/printflow/images/wifi-0.png >> /home/pi/.xsession			
-		echo then >> /home/pi/.xsession
-		echo break >> /home/pi/.xsession
-		echo fi >> /home/pi/.xsession
-		echo done >> /home/pi/.xsession
-		
-		echo \#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow -c /home/pi/uzbl.conf \&\; >> /home/pi/.xsession
-		echo kweb -KJ http://$target.local:$portno/printflow\; >> /home/pi/.xsession
+	
+		echo -e "\twhile true\; do" >> /home/pi/.xsession
+		echo -e "\t\tif curl -fI http://$target.local:$portno/printflow/images/wifi-0.png" >> /home/pi/.xsession			
+		echo -e"\t\t\tthen" >> /home/pi/.xsession
+		echo -e "\t\t\t\tbreak" >> /home/pi/.xsession
+		echo -e "\t\tfi" >> /home/pi/.xsession
+		echo "\tdone" >> /home/pi/.xsession
+	
+		echo -e "\t\#uzbl -u /home/pi/holdingpage.html?target=http://$target.local:$portno/printflow -c /home/pi/uzbl.conf \&\;" >> /home/pi/.xsession
+		echo -e "\tkweb -KJ http://$target.local:$portno/printflow\;" >> /home/pi/.xsession
 		#echo exec matchbox-window-manager -use_titlebar no\; >> /home/pi/.xsession
-		echo sleep 2s\; >> /home/pi/.xsession
+		echo -e "\tsleep 2s\;" >> /home/pi/.xsession
 		echo done >> /home/pi/.xsession
-		
-		#keeping this as a fallback for kweb as sometimes kweb servers can be offline
-		touch /home/pi/uzbl.conf
-		echo set show_status=0 >> /home/pi/uzbl.conf
-		echo set geometry=maximized >> /home/pi/uzbl.conf
-		
+		fi
+	
+		if [ ! -e "/home/pi/uzbl.conf" ]; then
+			#keeping this as a fallback for kweb as sometimes kweb servers can be offline
+			touch /home/pi/uzbl.conf
+			echo set show_status=0 >> /home/pi/uzbl.conf
+			echo set geometry=maximized >> /home/pi/uzbl.conf
+		fi
+	fi		
 fi
 
 if [ "$newhost" == "4ktouch" ]
@@ -145,12 +169,17 @@ fi
 if [ "$newhost" == "4kscreen" ]
 	then
 		echo "Installing 4k support"
-		sudo sh -c 'echo hdmi_group=2 >> /boot/config.txt'
-		sudo sh -c 'echo hdmi_mode=87 >> /boot/config.txt'
-		sudo sh -c 'echo hdmi_cvt 3840 2160 24 >> /boot/config.txt'
-		sudo sh -c 'echo max_framebuffer_width=3840 >> /boot/config.txt'
-		sudo sh -c 'echo max_framebuffer_height=2160 >> /boot/config.txt'
-		sudo sh -c 'echo hdmi_pixel_freq_limit=400000000 >> /boot/config.txt'
+		if grep -Fxq "hdmi_pixel_freq_limit" /boot/config.txt
+			then
+				echo "already done!"
+			else
+				sudo sh -c 'echo hdmi_group=2 >> /boot/config.txt'
+				sudo sh -c 'echo hdmi_mode=87 >> /boot/config.txt'
+				sudo sh -c 'echo hdmi_cvt 3840 2160 24 >> /boot/config.txt'
+				sudo sh -c 'echo max_framebuffer_width=3840 >> /boot/config.txt'
+				sudo sh -c 'echo max_framebuffer_height=2160 >> /boot/config.txt'
+				sudo sh -c 'echo hdmi_pixel_freq_limit=400000000 >> /boot/config.txt'
+		fi
 		
 		#TODO - add network time propogation to support 4ktouch. Currently built into WG images, but not setup by shell script yet
 		echo "setting up Photocentric Pro profile"
@@ -162,12 +191,18 @@ fi
 if [ "$newhost" == "LCHR" ]
 	then
 		echo "setting up high resolution screen"
-		sudo sh -c 'echo hdmi_group=2 >> /boot/config.txt'
-		sudo sh -c 'echo hdmi_mode=87 >> /boot/config.txt'
-		sudo sh -c 'echo hdmi_cvt 2048 1536 30 >> /boot/config.txt'
-		sudo sh -c 'echo max_framebuffer_width=2048 >> /boot/config.txt'
-		sudo sh -c 'echo max_framebuffer_height=1536 >> /boot/config.txt'
-		sudo sh -c 'echo hdmi_pixel_freq_limit=400000000 >> /boot/config.txt'
+		if grep -Fxq "hdmi_pixel_freq_limit" /boot/config.txt
+			then
+				echo "already done!"
+			else
+				sudo sh -c 'echo hdmi_group=2 >> /boot/config.txt'
+				sudo sh -c 'echo hdmi_mode=87 >> /boot/config.txt'
+				sudo sh -c 'echo hdmi_cvt 2048 1536 30 >> /boot/config.txt'
+				sudo sh -c 'echo max_framebuffer_width=2048 >> /boot/config.txt'
+				sudo sh -c 'echo max_framebuffer_height=1536 >> /boot/config.txt'
+				sudo sh -c 'echo hdmi_pixel_freq_limit=400000000 >> /boot/config.txt'
+		fi
+
 
 		echo "installing Photocentric Liquid Crystal HR profile"
 		sudo wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%20hr.json -O printerprofile.json
