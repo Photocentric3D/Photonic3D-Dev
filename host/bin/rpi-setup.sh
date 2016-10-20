@@ -16,7 +16,7 @@ export newpassword=photocentric
 echo "Getting updates and installing utilities"
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt-get -y install rpi-chromium-mods dos2unix curl fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl
+sudo apt-get -y install rpi-chromium-mods dos2unix curl librxtx-java fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl
 
 if [ -e photonic-repo ]; then
 	sudo rm -rf photonic-repo
