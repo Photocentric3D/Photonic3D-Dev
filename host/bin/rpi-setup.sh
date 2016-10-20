@@ -132,7 +132,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 		fi
 
 
-		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh -NY --bg /etc/splash.png \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
+		echo unclutter -jitter 1 -idle 0.2 -noevents -root \& feh -NY --bg /etc/splash.png /etc/ \& exec matchbox-window-manager -use_titlebar no \& >> /home/pi/.xsession
 		echo while true\; do >> /home/pi/.xsession
 	
 		echo -e "\twhile true; do" >> /home/pi/.xsession
