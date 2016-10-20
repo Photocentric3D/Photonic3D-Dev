@@ -40,7 +40,7 @@ if [[ "[ "$newhost" == "4kscreen" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newho
 		# launch the Photocentric rather than area515 version of start.sh - ensures using Photocentric branch
 		sudo photonic-repo/host/bin/start.sh
 fi
-
+sudo dos2unix /opt/cwh/*.sh
 
 # redirect boot terminal output not to screen
 echo "removing pi branding"
@@ -82,7 +82,7 @@ fi
 # this already happens once due to our rsync of an X11 config, but why not just make sure, eh?
 
 echo "Working on per printer settings..."
-sudo sh -c 'echo \#Photocentric mods >> /boot/config.txt'
+sudo sh -c 'echo \# Photocentric mods >> /boot/config.txt'
 
 if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhost" == "standalone" ]" ]]; then
 	# Touchscreen pis only
