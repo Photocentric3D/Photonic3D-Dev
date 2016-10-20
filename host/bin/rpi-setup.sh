@@ -44,6 +44,8 @@ fi
 
 # redirect boot terminal output not to screen
 echo "removing pi branding"
+# ensure the pi always boots to console
+sudo raspi-config nonint do_boot_behaviour B2
 # we can't remove everything as some is baked into the pi's firmware, but this gives a realistic amount.
 if [ ! -e "/boot/cmdline.old" ]; then
 	sudo mv /boot/cmdline.txt /boot/cmdline.old 
