@@ -48,10 +48,10 @@ sudo sed -i "s/tty1/tty/g" /boot/cmdline.txt
 echo "installing common files"
 sudo rsync -avr photonic-repo/host/common/ /
 sudo rsync -avr photonic-repo/host/resourcesnew/printflow /opt/cwh/resourcesnew/ #keep printflow without the trailing / 
-if [ -e /opt/cwh/photonic/ ]; then
-	sudo mkdir /opt/cwh/photonic
+if [ -e /opt/cwh/photocentric/ ]; then
+	sudo mkdir /opt/cwh/photocentric
 fi
-sudo rsync -avr photonic-repo/host/photonic/printflow /opt/cwh/photonic/
+sudo rsync -avr photonic-repo/host/photocentric/printflow /opt/cwh/photocentric/
 sudo cp photonic-repo/host/os/Linux/armv61/pdp /opt/cwh/os/Linux/armv61/pdp #copy display manager for screen + curing screen printers
 sudo cp photonic-repo/host/resourcesnew/printflow/holdingpage.html /home/pi/holdingpage.html #copy holdingpage for fallback
 #install splash screen
