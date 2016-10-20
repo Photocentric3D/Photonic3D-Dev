@@ -17,7 +17,7 @@ echo "Getting updates and installing utilities"
 sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get -y install dos2unix curl fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl
-git clone https://github.com/Photocentric3D/Photonic3D.git photonic-repo
+sudo git clone https://github.com/Photocentric3D/Photonic3D.git photonic-repo
 sudo rpi-update
 
 if [[ "[ "$newhost" == "4kscreen" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhost" == "standalone" ]" ]]
@@ -55,7 +55,6 @@ sudo rsync -avr photonic-repo/host/photonic/printflow /opt/cwh/photonic/
 sudo cp photonic-repo/host/os/Linux/armv61/pdp /opt/cwh/os/Linux/armv61/pdp #copy display manager for screen + curing screen printers
 sudo cp photonic-repo/host/resourcesnew/printflow/holdingpage.html /home/pi/holdingpage.html #copy holdingpage for fallback
 #install splash screen
-cp /etc/splash.png ~/.splash.png
 sudo chown root /etc/splash.png
 sudo chmod 777 /etc/splash.png
 sudo chmod a+x /etc/init.d/aasplashscreen
@@ -88,7 +87,7 @@ if [[ "[ "$newhost" == "4ktouch" ]" || "[ "$newhost" == "LCHR" ]" || "[ "$newhos
 		###cd kweb-1.7.4
 		###./debinstall
 		###rm -rf kweb-1.7.4
-		wget -qO - http://bintray.com/user/downloadSubjectPublicKey?username=bintray | sudo apt-key add -
+		sudo wget -qO - http://bintray.com/user/downloadSubjectPublicKey?username=bintray | sudo apt-key add -
 		sudo sh -c 'echo "deb http://dl.bintray.com/kusti8/chromium-rpi jessie main" | sudo tee -a /etc/apt/sources.list'
 		sudo sh -c "yes Y | apt-get install -y kweb"
 		
@@ -155,8 +154,8 @@ if [ "$newhost" == "4kscreen" ]
 		
 		#TODO - add network time propogation to support 4ktouch. Currently built into WG images, but not setup by shell script yet
 		echo "setting up Photocentric Pro profile"
-		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/Photocentric%20Pro.json -O printerprofile.json
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
+		sudo wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/Photocentric%20Pro.json -O printerprofile.json
+		sudo curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
 		sudo sh -c 'echo var printerName = \"Photocentric Pro\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js'
 fi
 
@@ -171,8 +170,8 @@ if [ "$newhost" == "LCHR" ]
 		sudo sh -c 'echo hdmi_pixel_freq_limit=400000000 >> /boot/config.txt'
 
 		echo "installing Photocentric Liquid Crystal HR profile"
-		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%20hr.json -O printerprofile.json
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
+		sudo wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%20hr.json -O printerprofile.json
+		sudo curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
 		sudo sh -c 'echo var printerName = \"LC HR\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js'
 fi
 
@@ -182,14 +181,14 @@ if [ "$newhost" == "standalone" ]
 		echo "creating standalone image..."
 		#TODO
 		echo "installing Photocentric 10 profile"
-		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%2010.json -O printerprofile.json
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json "http://localhost:$portno/services/printers/save"
+		sudo wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%2010.json -O printerprofile.json
+		sudo curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json "http://localhost:$portno/services/printers/save"
 		sudo sh -c 'echo var printerName = \"Photocentric 10\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js'
 fi
 
 # Change hostname
 # left this 'til last for good reasons. Keep it last now.
-hostn=$(cat /etc/hostname)
+export hostn=$(cat /etc/hostname)
 echo "Existing hostname is $hostn, changing to $newhost"
 sudo sed -i "s/$hostn/$newhost/g" /etc/hosts
 sudo sed -i "s/$hostn/$newhost/g" /etc/hostname
@@ -200,9 +199,8 @@ sudo sh -c "echo 'pi:$newpassword' | chpasswd"
 echo "password updated!"
 #if you haven't already, re-read the big important note at the top!
 
-rm -rf photonic-repo
-rm printerprofile.json
+sudo rm -rf photonic-repo
+sudo rm printerprofile.json
 
 sudo apt-get clean
 sudo reboot
-
