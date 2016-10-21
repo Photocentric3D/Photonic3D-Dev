@@ -51,12 +51,13 @@ function printredirect(){
 		});
              
 		if (printStatus=="Failed"){
-			if (String(window.location.href).indexOf("printdialogue") >= 0){
-				window.location.href=("error.html?errorname=Print Failed&errordetails=The print has unexpectedly failed.\nPlease retry the print, and if the issue persists, contact Technical Support via <b>www.photocentric3d.com</b>");
-			}
+		//	DO NOT USE, needs persistant variable storage.
+		//	if (String(window.location.href).indexOf("printdialogue") >= 0){
+		//		window.location.href=("error.html?errorname=Print Failed&errordetails=The print has unexpectedly failed.\nPlease retry the print, and if the issue persists, contact Technical Support via <b>www.photocentric3d.com</b>");
+		//	}
 		}
 		if (printStatus=="Cancelled"){
-			if (String(window.location.href).indexOf("printdialogue") !== -1){
+			if (String(window.location.href).indexOf("printdialogue") < 0){
 				window.location.href="printdialogue.html";
 			}
 		}
