@@ -16,7 +16,7 @@ This version is branded for Photocentric3D's range of Liquid Crystal printers, a
 
 Raspberry Pi Usage
 -------------------------------------------------------------------------------  
-If you have a brand new dedicated Raspberry Pi, there is a flashable Jessie Lite based image that you can use to quickly get started. Download the [Kudo3D fork's image](http://d359hvxwrop0le.cloudfront.net/kudo3d-image.zip) and then take a look at the [image install docs at photonic3d.com](https://wiki.photonic3d.com/doku.php?id=raspberry_pi) for the installation instructions.
+If you have a brand new dedicated Raspberry Pi, there is a flashable Jessie Lite based image that you can use to quickly get started. Download the [Raspberry Pi system image](http://d359hvxwrop0le.cloudfront.net/photonic-image.zip) and then take a look at the [image install docs at photonic3d.com](https://wiki.photonic3d.com/doku.php?id=raspberry_pi) for the installation instructions.
 
 If you have an existing Raspberry Pi, follow the Linux install instructions below.
 
