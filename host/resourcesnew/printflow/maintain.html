@@ -3,13 +3,13 @@
         <title>Maintain</title>
         <style>
 
-		.zheight { 
+		.layerheight { 
 			position: absolute; 
 			top: 140px; 
 			left: 630px; 
 			color: white;
 		}
-		.layerheight { 
+		.zheight { 
 			position: absolute; 
 			top: 185px; 
 			left: 630px; 
@@ -31,19 +31,22 @@
 
         <script src="js/moment.min.js"></script>
 		
+		<script src="js/printflow.js"></script>
+		<script src="js/printerconfig.js"></script>
+		
+		<script src="js/js.cookie.js"></script>
+		
 		<link href="css/printflow.css" rel="stylesheet">
     </head>
     <body style="background-color: black;" onload="init()">
 		<script>
 			function init(){
+				startpage();
 				getLayerData();
 			}
-			setInterval(function() {
-				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-			}, 1000);
 			function changez(height) {
 				if (((parseInt(document.getElementById("zdata").innerHTML)+parseInt(height))>=0)&&((parseInt(document.getElementById("zdata").innerHTML)+parseInt(height))<200)) {
-					$.getJSON('../services/printers/moveZ/Photocentric%2010/'+height);
+					$.getJSON('../services/printers/moveZ/'+printerName+'/'+height);
 					document.getElementById("zdata").innerHTML= parseInt(document.getElementById("zdata").innerHTML)+parseInt(height);
 				}
 				else{
@@ -58,12 +61,13 @@
 				}
 			}
 			function homez() {
-				$.getJSON('../services/printers/homeZ/Photocentric%2010');
+				$.getJSON('../services/printers/homeZ/'+printerName);
 				document.getElementById("zdata").innerHTML= 0;
+				$('#zheight').show();
 			}
 			function getLayerData(){
 				layerdata = 0;
-				$.getJSON("../services/printers/get/Photocentric%2010").done( function (data) {
+				$.getJSON("../services/printers/get/"+printerName).done( function (data) {
                         layerdata = parseInt(data.SliceHeight)*1000;
                         });
 				document.getElementById("ldata").innerHTML = layerdata;
@@ -81,11 +85,11 @@
 					<area  alt="" title="plus10"  shape="rect" coords="448,110,522,167" style="outline:none;" target="_self" onclick="changez(10);"    />
 					<area  alt="" title="plus50" shape="rect" coords="525,110,599,167" style="outline:none;" target="_self" onclick="changez(50);"    />
 					<area  alt="" title="homeZ" shape="rect" coords="252,172,608,236" style="outline:none;" target="_self" onclick="homez();"    />
-					<area  alt="" title="testDisplay" shape="rect" coords="252,238,608,302" style="outline:none;" target="_self" onclick="$.getJSON('../services/printers/showGridScreen/Photocentric%2010/50');"     />
+					<area  alt="" title="testDisplay" shape="rect" coords="252,238,608,302" style="outline:none;" target="_self" onclick="$.getJSON('../services/printers/showGridScreen/'+printerName+'/50');"     />
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
 				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
-				<div name="zheight" id="zheight" class="zheight">Current Z Height:<br><span name="zdata" id="zdata">0</span> mm</div>
+				<div name="zheight" id="zheight" class="zheight collapse">Current Z Height:<br><span name="zdata" id="zdata">0</span> mm</div>
 				<div name="layerheight" id="layerheight" class="layerheight">Print Layer Height:<br><span name="ldata" id="ldata">__</span> microns</div>
 				<div name="warn" id="warn" class="warn"><div id="warning" role="alert" class="alert alert-danger collapse" ><strong>Error</strong><br>Cannot move past Z axis limits!</div></div>
 				

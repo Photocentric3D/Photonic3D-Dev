@@ -40,6 +40,62 @@
 			border-radius: 10px;
 		}
 
+		.deletecontainer { 
+			position: absolute; 
+			top: 132px; 
+			left: 580px;
+			width:76px;
+			height:76px;
+			color: white;
+			text-align: center;
+			font-size: 30px;
+			z-index: 2;
+		}
+		
+		.delete {
+			position: absolute;
+			z-index: 5;
+			user-drag: none; 
+			user-select: none;
+			-moz-user-select: none;
+			-webkit-user-drag: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+
+		}
+		
+		.deletecheck {
+			position: absolute; 
+			top: 130px; 
+			left: 560px;
+			width:200px;
+			height: 210px;
+		}
+		
+		.deletequery{
+			white-space: pre-wrap;      /* CSS3 */   
+			white-space: -moz-pre-wrap; /* Firefox */   
+			white-space: -o-pre-wrap;   /* Opera 7 */    
+			word-wrap: break-word;      /* IE */
+		}
+		
+		.deleteglyph {
+			position: absolute;
+			padding-top: 30%;
+			top: 33%; 
+			left: 30%;
+			height: 33%;
+			width: 33%;
+			margin: 0 auto;
+			user-drag: none; 
+			user-select: none;
+			-moz-user-select: none;
+			-webkit-user-drag: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+
+		}
+
         </style>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
@@ -55,29 +111,23 @@
 
         <script src="js/moment.min.js"></script>
 		
+		<script src="js/printflow.js"></script>
+		<script src="js/printerconfig.js"></script>
+		
+		<script src="js/js.cookie.js"></script>
+		
 		<link href="css/printflow.css" rel="stylesheet">
     </head>
     <body style="background-color: black;" onload="fillList();">
 		<script>
 			test="";
-			printStatus="";
-			$.getJSON("../services/printJobs/getByPrinterName/Photocentric%2010").done(function (data){
-					printStatus= (data.status);
-				});
-			setInterval(function() {
-				if (printStatus=="Printing"){
-					window.location.href="printdialogue.html";
-				}
-				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-				
-				$.getJSON("../services/printJobs/getByPrinterName/Photocentric%2010").done(function (data){
-					printStatus= (data.status);
-				});
-				
-			}, 1000);
+
+			startpage();
+
 			function startPrint(){
 				if (document.getElementById("printables").selectedIndex <0){
 					//do nothing
+					$('#warning').html("<strong>Error</strong><br>Please select an item to print!");
 					$('#warning').show();
 					setTimeout(function() {
 						$('#warning').hide();
@@ -85,8 +135,15 @@
 				}
 				else{
 					$.post("../services/printables/print/"+$("#printables").val())
-					.done(function(data){
-					window.location.href="printdialogue.html";
+					.done(function(){
+						window.location.href="printdialogue.html";
+					})
+					.fail(function(){
+						$('#warning').html("<strong>Error</strong><br>Could not print item "+$("#printables").val());
+						$('#warning').show();
+						setTimeout(function() {
+						$('#warning').hide();
+					}, 5000);
 				});
 				}
 			}
@@ -111,7 +168,48 @@
 					
 				});
 			}
-			
+				
+			function dodeletecheck(){
+				if ($("#printables").val()!==null){
+					var maxlength=20; //sorry, magic number. best fit for the font size and screen element size
+					var smallfname=$("#printables").val();
+					var extension = smallfname.split(".")[smallfname.split(".").length-1];
+					if ($("#printables").val().length > maxlength){
+						smallfname= smallfname.substring(0,smallfname.length-1-extension.length).match(/[A-Z,a-z]+\w{0,12}/g).join('&#8203;')+"&#8203;."+extension+"";
+						
+					}
+					
+					document.getElementById("deletequery").innerHTML ="Are you sure you want to delete "+smallfname+"?<br><br><br>";
+					$('#deletewarn').show();
+					$('#deletewarn').css('z-index',50);
+					$('#deletecontainer').hide();
+				}
+			}
+				
+			function deletefile(){
+				$.getJSON("../services/printables/delete/"+$("#printables").val())
+					.done(function(){
+						document.getElementById("deletequery").innerHTML = "";
+						$('#deletewarn').css('z-index',-50);
+						$('#deletewarn').hide();
+						$('#deletecontainer').hide();
+
+						var options = $("#printables option");                    // Collect options         
+						options.detach();
+						fillList();
+				})
+				.fail(function(){
+					$('#warning').html("<strong>Error</strong><br>Could not delete item "+$("#printables").val());
+					$('#warning').show();
+					setTimeout(function() {
+					$('#warning').hide();
+					}, 5000);
+				});
+			}
+			function showcontrol(){
+				$('#deletecontainer').show();
+				$('#deletewarn').hide();
+			}
 		</script>
         <div class="screen">
             <div class="main">
@@ -123,13 +221,23 @@
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
 				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
+				<div class="deletecontainer collapse" id="deletecontainer"><img name="delete" id="delete" class="delete" src="images/smallbuttonANIM-red.png" onclick="dodeletecheck();"><span class="glyphicon glyphicon-remove-circle deleteglyph"></span></div>
 				<img name="homehighlight" id="homehighlight" class="homehighlight" src="images/homehighlightANIM.png" onClick="location.href='index.html';">
 				<img name="bigbuttonhighlight" id="bigbuttonhighlight" class="bigbuttonhighlight" src="images/bigbuttonANIM.png" onClick="startPrint();">
 				<div name="printlabel" class="printlabel" id="printlabel" onClick="startPrint();">Print</div>
 				<div name="printbutton" class="printbutton" id="printbutton" onClick="startPrint();">Print!</div>
-				<select size="6" class="printables" id="printables">
+				<select size="6" class="printables" id="printables" onClick="showcontrol();" onChange="showcontrol();">
 				</select>
-				<div name="warn" id="warn" class="warn"><div id="warning" role="alert" class="alert alert-danger collapse" ><strong>Error</strong><br>Please select an item to print!</div>
+				<div name="printwarn" id="warn" class="warn"><div id="warning" role="alert" class="alert alert-danger collapse" ></div></div>
+				<div name="deletecheck" id="deletecheck" class="deletecheck">
+					<div id="deletewarn" role="alert" class="alert alert-warning collapse" >
+						<div id="deletequery"></div>
+						
+							<button type="button" class="btn btn-danger btn-block btn-lg" onclick="deletefile();">Yes</button>
+							<button type="button" class="btn btn-default btn-block btn-lg" onclick="$('#deletewarn').hide();">No</button>
+
+					</div>
+				</div>
             </div>
         </div>
 

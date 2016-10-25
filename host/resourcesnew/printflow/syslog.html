@@ -33,9 +33,37 @@
 		<script src="js/printflow.js"></script>
 		<script src="js/printerconfig.js"></script>
 		
+		<script src="js/js.cookie.js"></script>
+		
 		<link href="css/printflow.css" rel="stylesheet">
     </head>
     <body style="background-color: black;" onload="startpage();">
+		
+		<script>
+			function sortBy(jsonArray, key){
+				if(jsonArray){
+					var sortedArray = jsonArray.sort(function(left, right) { 
+                         //array.sort is buit-in function
+						var a = left[key];
+						var b = right[key];
+						if (a !== b) {
+							if (a > b || a === void 0) return -1;
+							if (a < b || b === void 0) return 1;
+						}
+					return 0;
+				});
+				return sortedArray;
+				}
+			}
+			$.getJSON('../services/printJobs/list')
+				.done(function(data){
+					console.log(data);
+					data=sortBy(data,"startTime");
+					$.each(data, function (key, val) {
+						document.getElementById("log").innerHTML+="["+moment(val.startTime).format("HH:mm:ss[ ]DD-MMM-YY")+"] Started printing: "+val.jobName+"\n&nbsp;&nbsp;&nbsp;&nbsp;Status: "+val.status+"\n";
+					});
+			});
+		</script>
         <div class="screen">
             <div class="main">
 				<img src="images/syslog.png" usemap="syslog" class="uilayer">
@@ -47,9 +75,7 @@
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
 				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
 				<textarea class="log" id="log"></textarea>
-				<script>
-					document.getElementById("log").innerHTML=moment().format("DD/MM/YY[ ]HH:mm")+" Viewed the log file\n"+moment().subtract("1","m").format("DD/MM/YY[ ]HH:mm")+" Checked Settings";
-				</script>
+				
 				<div name="warn" id="warn" class="warn"></div>
 				
 				<img name="homehighlight" id="homehighlight" class="homehighlight" src="images/homehighlightANIM.png" onClick="location.href='index.html';">

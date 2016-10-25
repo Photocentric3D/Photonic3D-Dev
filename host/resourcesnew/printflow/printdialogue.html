@@ -68,6 +68,7 @@
 		.layerslice {
 			width:100%;
 			height:100%;
+			object-fit: cover;
 			user-drag: none; 
 			user-select: none;
 			-moz-user-select: none;
@@ -78,9 +79,9 @@
 		.filename { 
 			position: absolute; 
 			top: 120px; 
-			left: 630px; 
+			left: 600px; 
 			color: white;
-			font-weight: 200;
+			font-weight: bolder;
 			font-size: 15px;
 			max-width: 140px;
 			white-space: pre-wrap;      /* CSS3 */   
@@ -102,22 +103,28 @@
 			-ms-user-select: none;
 		}
 
-		.timeelapsed { 
+		.completion { 
 			position: absolute; 
 			top: 185px; 
-			left: 630px; 
+			left: 600px; 
+			color: white;
+		}
+		.timeelapsed { 
+			position: absolute; 
+			top: 230px; 
+			left: 600px; 
 			color: white;
 		}
 		.timeremaining { 
 			position: absolute; 
-			top: 230px; 
-			left: 630px; 
+			top: 275px; 
+			left: 600px; 
 			color: white;
 		}
 		.totaltime { 
 			position: absolute; 
-			top: 275px; 
-			left: 630px; 
+			top: 320px; 
+			left: 600px; 
 			color: white;
 		}
 		.jobid { 
@@ -181,6 +188,11 @@
 
         <script src="js/moment.min.js"></script>
 		
+		<script src="js/printflow.js"></script>
+		<script src="js/printerconfig.js"></script>
+		
+		<script src="js/js.cookie.js"></script>
+		
 		<link href="css/printflow.css" rel="stylesheet">
     </head>
     <body style="background-color: black;" onload="init();">
@@ -192,10 +204,10 @@
 			jobname="";
 			ready=false;
 			temp="";
-			currentslice =700;
+			currentslice =0;
 			
 			function init(){
-				$.getJSON('../services/printJobs/getByPrinterName/Photocentric%2010')
+				$.getJSON('../services/printJobs/getByPrinterName/'+printerName)
 				.done(function(data){
 					temp=data;
 					starttime=parseInt(data.startTime);
@@ -231,7 +243,7 @@
 					document.getElementById("totaltimes").innerHTML=moment.duration(endtime-starttime).humanize();
 					ready=true;
 				});
-				
+				startpage();
 			}
 			
 			
@@ -246,7 +258,7 @@
 				if (moment().second()%10===0){
 					document.getElementById("layerslice").src=document.getElementById("layerslice").src+"?"+moment().second();
 					//check for updated information about the print
-					$.getJSON('../services/printJobs/getByPrinterName/Photocentric%2010')
+					$.getJSON('../services/printJobs/getByPrinterName/'+printerName)
 					.done(function(data){
 						endtime=starttime+data.elapsedTime+(parseInt(data.averageSliceTime)*(parseInt(data.totalSlices)-parseInt(data.currentSlice)));
 					});
@@ -257,6 +269,7 @@
 				}
 				progresspc = ((moment().valueOf()-starttime)/(endtime-starttime))*100;
 				document.getElementById("progress").style = "width:"+parseInt(progresspc)+"%";
+				document.getElementById("varcompletion").innerHTML = "Layer "+currentslice+" of "+totalslices+" ("+parseFloat((currentslice/totalslices)*100).toFixed(2)+"%)";
 				document.getElementById("totaltimes").innerHTML=moment.duration(endtime-starttime).humanize();
 				if (ready){
 					if (endtime-moment().valueOf()>=0){
@@ -287,10 +300,14 @@
 			
 			function cancel(){
 				$.getJSON("../services/printJobs/stopJob/"+printid)
-				.done(function(data){
+				.done(function(){
 				location.href="index.html";
 				});
 			}
+			
+			
+			
+			
 		</script>
         <div class="screen">
             <div class="main">
@@ -305,6 +322,8 @@
 				<div name="cancellabel" class="cancellabel" id="cancellabel" onClick="cancel();">Cancel</div>
 				<div name="pause" class="pause" id="pause" onClick="pause();">Pause</div>
 				<div name="filename" id="filename" class="filename"><script>document.write(jobname);</script></div>
+				
+				<div name="completion" id="completion" class="completion">Completion:<br><span id ="varcompletion" style="align-items: flex-end">Calculating...</span></div>
 				<div name="timeelapsed" id="timeelapsed" class="timeelapsed">Time Elapsed:<br><span id ="vartimeelapsed" style="align-items: flex-end">Calculating...</span></div>
 				<div name="timeremaining" id="timeremaining" class="timeremaining">Time Remaining:<br><span id ="vartimeremaining" style="align-items: flex-end">Calculating...</span></div>
 				<div name="jobid" id="jobid" class="jobid"><script>document.write(printid);</script></div>

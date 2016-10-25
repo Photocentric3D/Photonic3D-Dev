@@ -67,29 +67,30 @@
 
         <script src="js/moment.min.js"></script>
 		
+		<script src="js/printflow.js"></script>
+		<script src="js/printerconfig.js"></script>
+		
+		<script src="js/js.cookie.js"></script>
+		
 		<link href="css/printflow.css" rel="stylesheet" class="uilayer">
     </head>
-    <body style="background-color: black;">
+    <body style="background-color: black;" onload="startpage();">
 		<script>
-			setInterval(function() {
-				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-			}, 1000);
-			
-			
-			$.getJSON('../services/printers/get/Photocentric%2010').done(function(data){
+	
+			$.getJSON('../services/printers/get/'+printerName).done(function(data){
 				document.getElementById("layerheight").innerHTML=parseFloat(data.configuration.slicingProfile.InkConfig[0].SliceHeight)*1000;
 				document.getElementById("curingtime").innerHTML=parseFloat(data.configuration.slicingProfile.InkConfig[0].LayerTime)/1000;
 				recommendCureTime();
 			});
 			
 			function updatePhotonic(){
-				$.getJSON('../services/printers/get/Photocentric%2010').done(function(data){
+				$.getJSON('../services/printers/get/'+printerName).done(function(data){
 					data.configuration.slicingProfile.InkConfig[0].SliceHeight=parseInt(document.getElementById("layerheight").innerHTML)/1000;
 					data.configuration.slicingProfile.InkConfig[0].LayerTime=parseInt(document.getElementById("curingtime").innerHTML)*1000;
 					data.configuration.SlicingProfileName="Daylight Resin "+$("#resin").find('option:selected').text()+" "+document.getElementById("layerheight").innerHTML+" micron";
 					data.configuration.slicingProfile.InkConfig[0].Name="Default";
 
-					$.getJSON('../services/printers/stop/Photocentric%2010');
+					$.getJSON('../services/printers/stop/'+printerName);
 					console.log(data);
 					$.ajax({
 						method: 'POST',
@@ -104,7 +105,7 @@
 							console.log(status + ":" + error);
 						}
 					});
-					$.getJSON('../services/printers/start/Photocentric%2010');
+					$.getJSON('../services/printers/start/'+printerName);
 
 				});
 			}
