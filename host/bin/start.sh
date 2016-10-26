@@ -147,6 +147,9 @@ elif [ "${NETWORK_TAG}" != "${LOCAL_TAG}" -o "$2" == "force" ]; then
 	command -v dos2unix >/dev/null 2>&1 || { apt-get install --yes --force-yes dos2unix >&2; }
 	dos2unix *.sh
 	chmod +x /opt/cwh/os/Linux/armv61 pdp
+	#ensure the cwhservice always is linux format and executable
+	dos2unix /etc/init.d/cwhservice
+	chmod +x /etc/init.d/cwhservice
 	rm ${DL_FILE}
 else
 	echo No install required
