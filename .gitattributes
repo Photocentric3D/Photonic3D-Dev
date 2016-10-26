@@ -3,3 +3,4 @@
 
 # Make sure linux shell scripts maintain their line endings
 *.sh text eol=lf
+host/bin/cwhservice text eol=lf
