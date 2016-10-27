@@ -211,6 +211,7 @@
 				.done(function(data){
 					temp=data;
 					starttime=parseInt(data.startTime);
+					currentslice=parseInt(data.currentSlice);
 					totalslices=parseInt(data.totalSlices);
 					firstlayertime=parseInt(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].FirstLayerTime);
 					bottomlayers=parseInt(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].NumberofBottomLayers);
@@ -248,9 +249,7 @@
 			
 			
 			
-			setInterval(function() {
-				document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-				
+			setInterval(function() {				
 				if (document.getElementById("pause").innerHTML=="Resume"){
 					endtime+=1000;
 					starttime+=1000;
@@ -260,6 +259,7 @@
 					//check for updated information about the print
 					$.getJSON('../services/printJobs/getByPrinterName/'+printerName)
 					.done(function(data){
+						currentslice = parseInt(data.currentSlice);
 						endtime=starttime+data.elapsedTime+(parseInt(data.averageSliceTime)*(parseInt(data.totalSlices)-parseInt(data.currentSlice)));
 					});
 					
@@ -269,7 +269,9 @@
 				}
 				progresspc = ((moment().valueOf()-starttime)/(endtime-starttime))*100;
 				document.getElementById("progress").style = "width:"+parseInt(progresspc)+"%";
-				document.getElementById("varcompletion").innerHTML = "Layer "+currentslice+" of "+totalslices+" ("+parseFloat((currentslice/totalslices)*100).toFixed(2)+"%)";
+				if (parseFloat((currentslice/totalslices)*100).toFixed(2) != "NaN"){
+					document.getElementById("varcompletion").innerHTML = "Layer "+currentslice+" of "+totalslices+" ("+parseFloat((currentslice/totalslices)*100).toFixed(2)+"%)";
+				}
 				document.getElementById("totaltimes").innerHTML=moment.duration(endtime-starttime).humanize();
 				if (ready){
 					if (endtime-moment().valueOf()>=0){
