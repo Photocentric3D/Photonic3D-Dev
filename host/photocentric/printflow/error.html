@@ -61,7 +61,12 @@
 			function init(){
 				startpage();
 				document.getElementById("errorname").innerHTML='<span class="glyphicon glyphicon-exclamation-sign"></span> '+decodeURIComponent(urlParam("errorname"));
+				if (decodeURIComponent(urlParam("errordetails2")) !== null){
 				document.getElementById("errordetails").innerHTML=decodeURIComponent(urlParam("errordetails"))+"\n"+decodeURIComponent(urlParam("errordetails2"));
+				}
+				else {
+					document.getElementById("errordetails").innerHTML=decodeURIComponent(urlParam("errordetails"));
+				}
 				type=decodeURIComponent(urlParam("type"));
 				// to allow most flexibility, this page supports other panel types from bootstrap.js. Defaults to 'panel-danger'/red
 				if ((type !== "null") && (type in {success:"",info:"",warning:"",danger:""})){
