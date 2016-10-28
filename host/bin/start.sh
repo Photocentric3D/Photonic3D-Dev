@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [[ $UID != 0 ]]; then
+    echo "Please run this script with sudo:"
+    echo "sudo $0 $*"
+    exit 1
+fi
+
 cpu=`uname -m`
 
 if [ -z "$HOME" ] || [ "$HOME" == "/" ]; then
@@ -144,11 +150,12 @@ elif [ "${NETWORK_TAG}" != "${LOCAL_TAG}" -o "$2" == "force" ]; then
 
 	unzip ${DL_FILE}
 	chmod 777 *.sh
+	#grab dos2unix from the package manager if not installed
 	command -v dos2unix >/dev/null 2>&1 || { apt-get install --yes --force-yes dos2unix >&2; }
-	dos2unix *.sh
-	chmod +x /opt/cwh/os/Linux/armv61 pdp
+	grep -lU $'\x0D' *.sh | xargs dos2unix
 	#ensure the cwhservice always is linux format and executable
-	dos2unix /etc/init.d/cwhservice
+	grep -lU $'\x0D' /etc/init.d/cwhservice | xargs dos2unix
+	chmod +x /opt/cwh/os/Linux/armv61/pdp
 	chmod +x /etc/init.d/cwhservice
 	rm ${DL_FILE}
 else
