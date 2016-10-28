@@ -205,6 +205,7 @@
 			ready=false;
 			temp="";
 			currentslice =0;
+			initialsliceurl="";
 			
 			function init(){
 				$.getJSON('../services/printJobs/getByPrinterName/'+printerName)
@@ -226,7 +227,7 @@
 					
 					printid=data.id;
 					jobname=data.jobName;
-					document.getElementById("layerslice").src="../services/printJobs/currentSliceImage/"+printid;
+					document.getElementById("layerslice").src=initialsliceurl="../services/printJobs/currentSliceImage/"+printid;
 					document.getElementById("jobid").innerHTML=printid;
 					document.getElementById("filename").innerHTML=jobname;
 					document.getElementById("totaltimes").innerHTML=moment.duration(endtime-starttime).humanize();
@@ -255,7 +256,6 @@
 					starttime+=1000;
 				}
 				if (moment().second()%10===0){
-					document.getElementById("layerslice").src=document.getElementById("layerslice").src+"?"+moment().second();
 					//check for updated information about the print
 					$.getJSON('../services/printJobs/getByPrinterName/'+printerName)
 					.done(function(data){
@@ -264,9 +264,7 @@
 					});
 					
 				}
-				else{
-					document.getElementById("layerslice").src=document.getElementById("layerslice").src;
-				}
+				document.getElementById("layerslice").src=initialsliceurl+"?q="+currentslice;
 				progresspc = ((moment().valueOf()-starttime)/(endtime-starttime))*100;
 				document.getElementById("progress").style = "width:"+parseInt(progresspc)+"%";
 				if (parseFloat((currentslice/totalslices)*100).toFixed(2) != "NaN"){
