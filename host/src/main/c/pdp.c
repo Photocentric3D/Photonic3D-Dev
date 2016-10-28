@@ -23,9 +23,14 @@ uint16_t* loadBitmap( char* filename, uint32_t width, uint32_t height, int* pitc
 	FILE* f = fopen( filename, "rb" );
 	int fail = 1;
 	int x, y;
+	char line[256];
 	if ( f != NULL )
 	{
 		fail = 0;
+		fgets( line, sizeof(line), f ); 	// header
+		fgets( line, sizeof(line), f );		// dimensions
+		fgets( line, sizeof(line), f );		// height
+
 		for ( y = 0; y < height; y++ )
 		{
 			for ( x = 0; x < width; x++ )
@@ -48,10 +53,7 @@ uint16_t* loadBitmap( char* filename, uint32_t width, uint32_t height, int* pitc
 		{
 			for ( y = 0; y < height; y++ )
 			{
-				uint16_t r = x%width < width/2 ? 0x1f : 0x0f;
-				uint16_t g = y%height < height/2 ? 0x3f : 0x1f;
-				uint16_t b = (x+y)%(width+height) < (width+height)/2 ? 0x1f : 0x0f;
-				bitmap[y*(*pitch>>1) + x] = ((r&0x1f)<<11) | ((g&0x3f)<<5) | (b&0x1f);
+				bitmap[y*(*pitch>>1) + x] = 0x0000;
 			}
 		}
 	}
@@ -82,14 +84,31 @@ void usage( char* name )
 	exit( 1 );
 }
 
+void info( int screen )
+{
+	uint32_t width, height;
+	int res = graphics_get_display_size( screen, &width, &height );
+	if (res >= 0)
+	{
+		printf( "%d, %d\n", width, height );
+	}
+	exit( 0 );
+}
+
 int main( int argc, char** argv )
 {
 	bcm_host_init();
-	if ( argc < 4 )
+	if ( argc < 2 )
 	{
 		usage( argv[0] );
 	}
+
 	int screen = atoi( argv[1] );
+	if ( argc == 2 )
+	{
+		info(screen);		
+	}
+
 	int time = atoi( argv[2] );
 	int pitch;
 	int i;
