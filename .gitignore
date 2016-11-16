@@ -1,2 +1,4 @@
 host/resourcesnew/printflow/js/printerconfig.js
 host/photocentric/printflow/js/printerconfig.js
+/host/bin/log.out
+/host/bin/log.err
