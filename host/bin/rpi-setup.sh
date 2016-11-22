@@ -232,5 +232,8 @@ echo "password updated!"
 sudo rm -rf photonic-repo
 sudo rm printerprofile.json
 
+# Make automatic usb mounting work
+sudo udevadm control --reload-rules
+
 sudo apt-get clean
 sudo reboot
