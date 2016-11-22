@@ -288,7 +288,7 @@ public class HostProperties {
 		forceCalibrationOnFirstUse = new Boolean(configurationProperties.getProperty("forceCalibrationOnFirstUse", "false"));
 		limitLiveStreamToOneCPU = new Boolean(configurationProperties.getProperty("limitLiveStreamToOneCPU", "false"));
 		scriptEngineLanguage = configurationProperties.getProperty("scriptEngineLanguage", "js");
-		printerProfileRepo = configurationProperties.getProperty("printerProfileRepo", "Photocentric3D/Photonic3D");
+		printerProfileRepo = configurationProperties.getProperty("printerProfileRepo", "WesGilster/Creation-Workshop-Host");
 		
 		streamingCommand = getJSonStringArray(configurationProperties, "streamingCommand");
 		imagingCommand = getJSonStringArray(configurationProperties, "imagingCommand");
@@ -568,8 +568,8 @@ public class HostProperties {
 	public HostInformation loadHostInformation() {
 		Properties configurationProperties = getMergedProperties();
 		HostInformation settings = new HostInformation(
-				configurationProperties.getProperty("deviceName", "LC printer"),
-				configurationProperties.getProperty("manufacturer", "Photocentric"));
+				configurationProperties.getProperty("deviceName", "Photonic 3D Multiprint Host"),
+				configurationProperties.getProperty("manufacturer", "Wes Gilster"));
 		return settings;
 	}
 	
