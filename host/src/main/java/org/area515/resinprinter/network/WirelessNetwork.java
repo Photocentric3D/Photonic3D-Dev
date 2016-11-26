@@ -8,6 +8,7 @@ public class WirelessNetwork {
 	private List<WirelessEncryption> supportedWirelessEncryption = new ArrayList<WirelessEncryption>();
 	private String parentInterfaceName;
 	private String password;
+	private String signalStrength; 
 	
 	public WirelessNetwork() {}
 	
@@ -37,5 +38,13 @@ public class WirelessNetwork {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+		
+	public String getSignalStrength(){
+		return signalStrength;
+	}
+	
+	public void setSignalStrength(String signalStrength){
+		this.signalStrength = signalStrength;
 	}
 }

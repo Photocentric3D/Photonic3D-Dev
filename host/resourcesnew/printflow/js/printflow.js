@@ -1,6 +1,12 @@
 var printStatus = "";
 var jobId="";
 var runningjobName="";
+var totalslices=0;
+var currentslice=0;
+var elapsedtime=0;
+var starttime=0;
+var averageslicetime=0;
+var signalstrength;
             
 function startpage(){
         //handles page setup and the common things across all pages:
@@ -16,23 +22,42 @@ function startpage(){
 }
 
 function wifiupdate(){
-	wifiurl="";
 	//TODO: JSON to query the server's wifi status and display it
-	//in the meantime for testing purposes, choose a random number.
-	wifi = Math.floor(Math.random() * 5)-1;
-		
-	switch (wifi){
-		case 0: wifiurl="images/wifi-0.png";
-			break;
-		case 1: wifiurl="images/wifi-1.png";
-			break;
-		case 2: wifiurl="images/wifi-2.png";
-			break;
-		case 3: wifiurl="images/wifi-3.png";
-			break;
-		case -1: wifiurl="images/wifi-nc.png";
-			break;
-	}
+        
+        
+        $.getJSON("../services/machine/wirelessNetworks/getWirelessStrength")
+        .done(function (data){
+		if ((typeof data !== 'undefined')&&(data !== null)){
+			console.log(data);
+			signalstrength = parseInt(data);
+		}
+		else{
+			signalstrength = -100;
+		}
+		})
+        .fail(function(){
+                // there's been a problem - give signal strength the lowest value
+                signalstrength = -100;
+        });
+        
+	// in the meantime for testing purposes, choose a random number.
+	// signalstrength = Math.floor(Math.random() * -60)-30; //signal strength in dBm
+        
+        //using this as a guide for decent signal strengths in dBm: https://support.metageek.com/hc/en-us/articles/201955754-Understanding-WiFi-Signal-Strength
+        if (signalstrength > -45) {
+		wifiurl="images/wifi-3.png";
+        }
+        else if (signalstrength > -67) {
+                wifiurl="images/wifi-2.png";
+        }
+        else if (signalstrength > -72) {
+                wifiurl="images/wifi-1.png";
+        }
+        else if (signalstrength > -80) {
+                wifiurl="images/wifi-0.png";
+        }
+        else wifiurl="images/wifi-nc.png";
+
 	document.getElementById("wifi").src = wifiurl;
 }
             
@@ -48,11 +73,32 @@ function printredirect(){
 				printStatus= (data.status);
                                 jobId = (data.id);
                                 runningjobName = (data.jobName);
+                                totalslices = (data.totalSlices);
+                                currentslice = (data.currentSlice);
+                                elapsedtime = (data.elapsedTime);
+                                averageslicetime = (data.averageSliceTime);
+                                starttime = (data.startTime);
 			}
 			else{
 				//not printing
+                                totalslices = 0;
+                                currentslice = 0;
+                                runningjobName = "";
+                                jobID = "";
+                                elapsedtime = 0;
+                                averageslicetime = 0;
+                                starttime = 0;
 			}
-		});
+		})
+                .fail(function(){
+                        totalslices = 0;
+                        currentslice = 0;
+                        runningjobName = "";
+                        jobID = "";
+                        elapsedtime = 0;
+                        averageslicetime = 0;
+                        starttime = 0;
+                });
              
 		if (printStatus=="Failed"){
                         //use cookies to check that this error has not been reported already for the unique job id. Otherwise you'll be stuck in a constant loop of being forced back to the error screen.

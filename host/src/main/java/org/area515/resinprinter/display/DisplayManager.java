@@ -21,6 +21,7 @@ public class DisplayManager {
     private static DisplayManager INSTANCE = null;
 	public static final String LAST_AVAILABLE_DISPLAY = "Last available display";
 	public static final String SIMULATED_DISPLAY = "Simulated display";
+	public static final String CUSTOM_PHOTOCENTRIC_DISPLAY = "Photocentric Custom Display";
 	
 	private GraphicsEnvironment ge = null;
 	private ConcurrentHashMap<Printer, GraphicsDevice> graphicsDevicesByPrinter = new ConcurrentHashMap<Printer, GraphicsDevice>();
@@ -82,6 +83,9 @@ public class DisplayManager {
 			devices.add(new CustomNamedDisplayDevice(SIMULATED_DISPLAY));
 		}
 		
+		if (HostProperties.Instance().getCustomPhotocentricDisplay()) {
+			devices.add(new CustomPhotocentricDisplayDevice(CUSTOM_PHOTOCENTRIC_DISPLAY));
+		}
 		return devices;
 	}
 

@@ -1,100 +1,346 @@
-{  
-   "configuration":{  
-      "name":"Photocentric 10",
-      "machineConfig":{  
-         "FileVersion":0,
-         "PlatformXSize":222.72,
-         "PlatformYSize":125.28,
-         "PlatformZSize":200.0,
-         "MaxXFeedRate":0,
-         "MaxYFeedRate":0,
-         "MaxZFeedRate":0,
-         "XRenderSize":1400,
-         "YRenderSize":600,
-         "MotorsDriverConfig":{  
-            "DriverType":"Photocentric",
-            "ComPortSettings":{  
-               "PortName":"Autodetect 3d printer firmware",
-               "Speed":115200,
-               "Databits":8,
-               "Parity":"None",
-               "Stopbits":"One",
-               "Handshake":"None"
-            }
-         },
-         "MonitorDriverConfig":{  
-            "DLP_X_Res":1400,
-            "DLP_Y_Res":600,
-            "OSMonitorID":":0.0",
-            "DisplayCommEnabled":false,
-            "ComPortSettings":{  
-               "PortName":null,
-               "Handshake":"None"
-            },
-            "MonitorTop":12.65,
-            "MonitorLeft":11.36,
-            "MonitorRight":11.36,
-            "MonitorBottom":12.64,
-            "UseMask":false
-         },
-         "PauseOnPrinterResponseRegEx": ".*door.*open.*"
+  {
+    "configuration": {
+      "name": "Photocentric 10",
+      "machineConfig": {
+        "name": "Photocentric 10",
+        "FileVersion": 0,
+        "PlatformXSize": 222.72,
+        "PlatformYSize": 125.28,
+        "PlatformZSize": 200,
+        "MaxXFeedRate": 0,
+        "MaxYFeedRate": 0,
+        "MaxZFeedRate": 0,
+        "XRenderSize": 1400,
+        "YRenderSize": 600,
+        "MotorsDriverConfig": {
+          "DriverType": "Photocentric",
+          "ComPortSettings": {
+            "PortName": "Autodetect 3d printer firmware",
+            "Speed": 115200,
+            "Databits": 8,
+            "Parity": "None",
+            "Stopbits": "One",
+            "Handshake": "None"
+          }
+        },
+        "MonitorDriverConfig": {
+          "DLP_X_Res": 1400,
+          "DLP_Y_Res": 600,
+          "MonitorID": "DISPLAY1",
+          "OSMonitorID": "Photocentric Custom Display",
+          "DisplayCommEnabled": false,
+          "ComPortSettings": {
+            "Handshake": "None"
+          },
+          "MonitorTop": 12,
+          "MonitorLeft": 11,
+          "MonitorRight": 11,
+          "MonitorBottom": 12,
+          "UseMask": false
+        },
+        "PauseOnPrinterResponseRegEx": ".*door.*open.*"
       },
-      "slicingProfile":{  
-         "gCodeHeader":"G91;\nM17;",
-         "gCodeFooter":"M18",
-         "gCodePreslice":null,
-         "gCodeLift":"G1 Z${ZLiftDist} F${ZLiftRate};\nG1 Z-${(ZLiftDist - LayerThickness)} F180;\nM17;\n;<delay> 1500;",
-         "gCodeShutter":null,
-         "zliftDistanceGCode":null,
-         "zliftSpeedGCode":null,
-         "selectedInkConfigIndex":0,
-         "DotsPermmX":6.133261494252874,
-         "DotsPermmY":6.130268199233716,
-         "XResolution":1400,
-         "YResolution":600,
-         "BlankTime":0,
-         "PlatformTemp":0,
-         "ExportSVG":0,
-         "Export":false,
-         "ExportPNG":false,
-         "Direction":"Bottom_Up",
-         "LiftDistance":5.0,
-         "SlideTiltValue":0,
-         "AntiAliasing":true,
-         "UseMainLiftGCode":false,
-         "AntiAliasingValue":10.0,
-         "LiftFeedRate":50.0,
-         "LiftRetractRate":0.0,
-         "FlipX":false,
-         "FlipY":true,
-         "ZLiftDistanceCalculator":"var minLift = 4.5;\nvar value = 8.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = minLift  +  0.0015*Math.pow($buildAreaMM,1);\n}\nvalue",
-         "ZLiftSpeedCalculator":"var value = 50.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = 100.0 - 0.02 * Math.pow($buildAreaMM,1);\n}\nvalue",
-         "ProjectorGradientCalculator":null,
-         "ExposureTimeCalculator":"var value = $FirstLayerTime;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = $LayerTime\n}\nvalue",
-         "SelectedInk":"Default",
-         "MinTestExposure":0,
-         "TestExposureStep":0,
-         "InkConfig":[  
-            {  
-               "PercentageOfPrintMaterialConsideredEmpty":10.0,
-               "Name":"Default",
-               "SliceHeight":0.1,
-               "LayerTime":26000,
-               "FirstLayerTime":140000,
-               "NumberofBottomLayers":4,
-               "ResinPriceL":65.0
-            }
-         ]
+      "slicingProfile": {
+        "gCodeHeader": "G91;\nM17;",
+        "gCodeFooter": "M18",
+        "gCodePreslice": null,
+        "gCodeLift": "G1 Z${ZLiftDist} F${ZLiftRate};\nG1 Z-${(ZLiftDist - LayerThickness)} F180;\nM17;\n;<delay> 1500;",
+        "gCodeShutter": null,
+        "name": "Daylight Resin Hard - Red 25 micron",
+        "zliftDistanceGCode": null,
+        "zliftSpeedGCode": null,
+        "selectedInkConfigIndex": 0,
+        "DotsPermmX": 6.133261494252874,
+        "DotsPermmY": 6.130268199233716,
+        "XResolution": 1400,
+        "YResolution": 600,
+        "BlankTime": 0,
+        "PlatformTemp": 0,
+        "ExportSVG": 0,
+        "Export": false,
+        "ExportPNG": false,
+        "Direction": "Bottom_Up",
+        "LiftDistance": 5,
+        "SlideTiltValue": 0,
+        "AntiAliasing": true,
+        "UseMainLiftGCode": false,
+        "AntiAliasingValue": 10,
+        "LiftFeedRate": 50,
+        "LiftRetractRate": 0,
+        "FlipX": false,
+        "FlipY": true,
+        "ZLiftDistanceCalculator": "var minLift = 4.5;\nvar value = 8.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = minLift  +  0.0015*Math.pow($buildAreaMM,1);\n}\nvalue",
+        "ZLiftSpeedCalculator": "var value = 50.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = 100.0 - 0.02 * Math.pow($buildAreaMM,1);\n}\nvalue",
+        "ExposureTimeCalculator": "var value = $FirstLayerTime;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = $LayerTime\n}\nvalue",
+        "SelectedInk": "Firm Amber 100 Micron",
+        "MinTestExposure": 0,
+        "TestExposureStep": 0,
+        "InkConfig": [
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Firm Amber 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 28000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Firm Black 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Firm Blue 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Firm Cream 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Firm Green 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Firm Grey 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Firm Red 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Flexible Amber 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 38000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Flexible Black 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 45000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Flexible Blue 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 45000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Flexible Cream 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 45000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Flexible Green 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 45000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Flexible Grey 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 45000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Flexible Red 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 42000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Hard Amber 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 22000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Hard Black 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 32000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Hard Blue 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 30000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Hard Cream 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 32000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Hard Green 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 30000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Hard Grey 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 30000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Hard Red 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 30000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Low Shrinkage Amber 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 28000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Low Shrinkage Black 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 40000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Low Shrinkage Blue 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Low Shrinkage Cream 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Low Shrinkage Green 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Low Shrinkage Grey 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+          {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "Low Shrinkage Red 100 Micron",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          }
+          ]
       },
-      "MachineConfigurationName":"Photocentric 10",
-      "SlicingProfileName":"Hard daylight red 0.1",
-      "AutoStart":true
-   },
-   "started":true,
-   "shutterOpen":false,
-   "displayDeviceID":":0.0",
-   "currentSlicePauseTime":0,
-   "status":"Ready",
-   "printInProgress":false,
-   "printPaused":false
-}
+      "MachineConfigurationName": "Photocentric 10",
+      "SlicingProfileName": "Daylight Resin Hard - Red 25 micron",
+      "AutoStart": true,
+      "Calibrated": false
+    },
+    "started": true,
+    "shutterOpen": false,
+    "displayDeviceID": "Photocentric Custom Display",
+    "currentSlicePauseTime": 0,
+    "status": "Ready",
+    "printPaused": false,
+    "cachedBulbHours": null,
+    "printInProgress": false
+  }

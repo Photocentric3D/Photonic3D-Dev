@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Packaging Generator" default="BuildCWH">
 	<property environment="env"/>
+	
+  	<condition property="isUnix">
+    		<os family="unix" />
+  	</condition>
 
 	<target name="BuildCWH" description="build server and client">
 		<!-- Don't update build number anymore -->
@@ -15,6 +19,8 @@
 		<property name="deployedTestZipFile" value="photonicTestKit-${repo.version}.zip" />
 
 		<property name="deployedClientZipFile" value="photonicClient-${repo.version}.zip"/>
+		
+		<antcall target="BuildPDP"/>
 
 		<copy file="build.number" tofile="build/build.number" overwrite="yes">
 			<filterchain>
@@ -60,4 +66,12 @@
 		</zip>
 		-->
 	</target>
+	
+        <target name="BuildPDP" description="build pdp program" if="isUnix">
+                <chmod file="src/main/c/build.sh" perm="+x"/>
+                <exec executable="./src/main/c/build.sh" failonerror="true" osfamily="unix"/>
+                <chmod file="src/main/c/pdp" perm="+x"/>
+                <copy file="src/main/c/pdp" tofile="os/Linux/armv61/pdp" overwrite="yes"/>
+                <chmod file="os/Linux/armv61/pdp" perm="+x"/>
+        </target>
 </project>

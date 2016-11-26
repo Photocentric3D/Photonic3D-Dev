@@ -1,3 +1,5 @@
+<br>
+<div class="container bootcards-container">
 <div class="row">
 	<div class="col-sm-6 bootcards-list">
 		<div class="panel panel-default">
@@ -8,14 +10,13 @@
 					<i class="fa fa-stack-3x fa-2x fa-ban text-danger cwh-text-opacity_50" ng-hide="printerControlsController.currentPrinter.started"></i>
 				</span>
 				<h4 class="pull-left">Printer Controls: {{printerControlsController.currentPrinter.configuration.name}} </h4>
-				<div class="btn-group pull-right">
-					<button class="btn btn-primary" ng-click="printerControlsController.returnToPrinterList()">
-						<i class="fa fa-undo"></i> 
-						<span>Return to Printer List</span>
-					</button>
-				</div>
 			</div>
 			<div class="list-group">
+				<div class="list-group-item">
+					<i class="fa fa-2x fa-expand pull-left"></i>
+					<h4>Home Z Axis</h4>
+					<span class="btn btn-sm btn-primary fa fa-home" ng-click="printerControlsController.home('Z')"></span> 
+				</div>
 				<div class="list-group-item">
 					<i class="fa fa-2x fa-arrows-v pull-left"></i>
 					<h4>Z Axis</h4>
@@ -24,19 +25,10 @@
 						<span class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printerControlsController.move('Z', -10)"> 10</span> 
 						<span class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printerControlsController.move('Z', -1)"> 1</span>
 						<span class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printerControlsController.move('Z', -.025)"> .025</span>
-						<span class="btn btn-sm btn-primary fa fa-home" ng-click="printerControlsController.home('Z')"></span> 
 						<span class="btn btn-sm btn-success fa fa-angle-up" ng-click="printerControlsController.move('Z', .025)"> .025</span>
 						<span class="btn btn-sm btn-success fa fa-angle-up" ng-click="printerControlsController.move('Z', 1)"> 1</span>
 						<span class="btn btn-sm btn-success fa fa-angle-up" ng-click="printerControlsController.move('Z', 10)"> 10</span>
 						<span class="btn btn-sm btn-success fa fa-angle-double-up" ng-click="printerControlsController.move('Z', 50)"> 50</span>
-					</span>
-				</div>
-				
-				<div class="list-group-item">
-					<i class="fa fa-2x fa-arrows-v pull-left"></i>
-					<h4>Home</h4>
-					<span class="btn-group clearfix" >
-						<span class="btn btn-sm btn-primary fa fa-home" ng-click="printerControlsController.home('Z')"></span> 
 					</span>
 				</div>
 				<div class="list-group-item">
@@ -79,7 +71,7 @@
 					<i class="fa fa-stack-2x fa-2x fa-play text-danger cwh-text-opacity_50" ng-show="printerControlsController.currentPrinter.printInProgress"></i>
 					<i class="fa fa-stack-3x fa-2x fa-ban text-danger cwh-text-opacity_50" ng-hide="printerControlsController.currentPrinter.started"></i>
 				</span>
-				<h4 class="pull-left">LCD Controls: {{printerControlsController.currentPrinter.configuration.name}} </h4>
+				<h4 class="pull-left">Display Controls: {{printerControlsController.currentPrinter.configuration.name}} </h4>
 			</div>
 			<div class="list-group">
 				<div class="list-group-item" ng-show="printerControlsController.currentPrinter.printInProgress">
@@ -157,4 +149,5 @@
 			</div>
 		</div>
 	</div>
+</div>
 </div>

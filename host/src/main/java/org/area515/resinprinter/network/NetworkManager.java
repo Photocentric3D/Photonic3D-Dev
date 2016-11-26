@@ -5,4 +5,5 @@ import java.util.List;
 public interface NetworkManager {
 	public List<NetInterface> getNetworkInterfaces();
 	public void connectToWirelessNetwork(WirelessNetwork net);
+	public String getCurrentSSID();
 }

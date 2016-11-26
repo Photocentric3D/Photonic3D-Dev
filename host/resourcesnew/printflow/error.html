@@ -61,8 +61,8 @@
 			function init(){
 				startpage();
 				document.getElementById("errorname").innerHTML='<span class="glyphicon glyphicon-exclamation-sign"></span> '+decodeURIComponent(urlParam("errorname"));
-				if (decodeURIComponent(urlParam("errordetails2")) !== null){
-				document.getElementById("errordetails").innerHTML=decodeURIComponent(urlParam("errordetails"))+"\n"+decodeURIComponent(urlParam("errordetails2"));
+				if ((urlParam("errordetails2") !== null)&&(decodeURIComponent(urlParam("errordetails2")) !== "null")){
+				document.getElementById("errordetails").innerHTML=decodeURIComponent(urlParam("errordetails"))+"<br/>"+decodeURIComponent(urlParam("errordetails2"));
 				}
 				else {
 					document.getElementById("errordetails").innerHTML=decodeURIComponent(urlParam("errordetails"));

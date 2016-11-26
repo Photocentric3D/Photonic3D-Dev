@@ -45,7 +45,7 @@
 				getLayerData();
 			}
 			function changez(height) {
-				if (((parseInt(document.getElementById("zdata").innerHTML)+parseInt(height))>=0)&&((parseInt(document.getElementById("zdata").innerHTML)+parseInt(height))<200)) {
+				if ((parseInt(document.getElementById("zdata").innerHTML)+parseInt(height))<200) {
 					$.getJSON('../services/printers/moveZ/'+printerName+'/'+height);
 					document.getElementById("zdata").innerHTML= parseInt(document.getElementById("zdata").innerHTML)+parseInt(height);
 				}

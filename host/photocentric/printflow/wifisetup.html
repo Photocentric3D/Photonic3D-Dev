@@ -118,76 +118,78 @@
     </head>
     <body style="background-color: black;" onload="document.getElementById('SSID').value=ssid;">
 		<script>
-
-			ssid= urlParam("SSID");
+			ssid = decodeURIComponent(urlParam("SSID"));
 			if (ssid=="null") ssid="";
 			startpage();
-			
-			function urlParam (name){
-				var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-				return results[1] || 0;
-			}
-			
+	
 			function saveWifi(){
-					data={
-						"ssid": document.getElementById("SSID").value,
-						"supportedWirelessEncryption": [
-							{
-								"encryptionClass": "WPA",
-								"groupCipher": [
-									"CCMP"
-								],
-								"pairwiseCipher": [
-									"CCMP"
-								]
-							}
-						],
-						"parentInterfaceName": "wlan0",
-						"password": document.getElementById("pass").value,
-						};
 
-					console.log(data);
-					$.ajax({
-						method: 'PUT',
-						url: "../services/machine/wirelessConnect",
-						headers: {"Content-Type": "application/json" },
-						data: JSON.stringify(data),
-						dataType: 'json',
-						success: function(resp) {
-							document.getElementById("warn").setAttribute("color","green");
-							document.getElementById("warn").innerHTML="Settings saved!";
-							console.log(resp);
-							setTimeout(function() {
-							location.href="wifisettings.html";
-							}, 2000);
-						},
-						error: function(xhr, status, error) {
-							console.log(status + ":" + error);
-							$('#warning').show();
-							document.getElementById("bigbuttonhighlight").style.setProperty("filter","hue-rotate(180deg)");
-							document.getElementById("bigbuttonhighlight").style.setProperty("-webkit-filter","hue-rotate(180deg)");
-							setTimeout(function() {
-							$('#warning').hide();
-							document.getElementById("bigbuttonhighlight").style.setProperty("filter","hue-rotate(0deg)");
-							document.getElementById("bigbuttonhighlight").style.setProperty("-webkit-filter","hue-rotate(0deg)");
-							}, 5000);
+				supportedcrypt = null;
+				parentinterface = null;
+				found = false;
+
+				$.getJSON('../services/machine/wirelessNetworks/list')
+				.done(function(data){
+					$.each(data, function (key, val) {
+						if (val.ssid==document.getElementById("SSID").value){
+							supportedcrypt= val.supportedWirelessEncryption;
+							parentinterface = val.parentInterfaceName;
+							found = true;
 						}
 					});
-					
-
-			}
-			
-			
-		//	$.getJSON( "test.js", { name: "John", time: "2pm" } )
-		//		.done(function( json ) {
-		//		console.log( "JSON Data: " + json.users[ 3 ].name );
-		//		})
-		//		.fail(function( jqxhr, textStatus, error ) {
-		//			//fallback
-		//			
-		//		});
-	
+					if (found){
+						data={
+							"ssid": document.getElementById("SSID").value,
+							"supportedWirelessEncryption": supportedcrypt,
+							"parentInterfaceName": parentinterface,
+							"password": document.getElementById("pass").value,
+						};
 		
+						console.log(data);
+						$.ajax({
+							method: 'PUT',
+							url: "../services/machine/wirelessConnect",
+							headers: {"Content-Type": "application/json" },
+							data: JSON.stringify(data),
+							dataType: 'json',
+							success: function(resp) {
+								document.getElementById("warn").setAttribute("color","green");
+								document.getElementById("warn").innerHTML="Settings saved!";
+								console.log(resp);
+								setTimeout(function() {
+									location.href="wifisettings.html";
+								}, 2000);
+							},	
+							error: function(xhr, status, error) {
+								console.log(status + ":" + error);
+								$('#warning').show();
+								document.getElementById("bigbuttonhighlight").style.setProperty("filter","hue-rotate(180deg)");
+								document.getElementById("bigbuttonhighlight").style.setProperty("-webkit-filter","hue-rotate(180deg)");
+								setTimeout(function() {
+									$('#warning').hide();
+									document.getElementById("bigbuttonhighlight").style.setProperty("filter","hue-rotate(0deg)");
+									document.getElementById("bigbuttonhighlight").style.setProperty("-webkit-filter","hue-rotate(0deg)");
+								}, 5000);
+							}
+						});
+					}
+					else{
+						window.location.href=("error.html?errorname=Saving WiFi connection failed&errordetails=Saving wifi connection "+document.getElementById("SSID").value+" failed.&errordetails2=The printer was unable to find the wireless access point "+document.getElementById("SSID").value+". Your settings have not been changed.");
+					}
+				})
+				.fail(function(){
+					console.log(status + ":" + error);
+					$('#warning').show();
+					document.getElementById("bigbuttonhighlight").style.setProperty("filter","hue-rotate(180deg)");
+					document.getElementById("bigbuttonhighlight").style.setProperty("-webkit-filter","hue-rotate(180deg)");
+					setTimeout(function() {
+						$('#warning').hide();
+						document.getElementById("bigbuttonhighlight").style.setProperty("filter","hue-rotate(0deg)");
+						document.getElementById("bigbuttonhighlight").style.setProperty("-webkit-filter","hue-rotate(0deg)");
+					}, 5000);
+
+				});
+			}
 		</script>
         <div class="screen">
             <div class="main">
@@ -202,7 +204,7 @@
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
 				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
-				<img name="wifisettings" id="wifisettings" class="wifisettings" src="images/wifi.png" onClick="location.href='wifisettings.html';">
+				<img name="wifisettings" id="wifisettings" class="wifisettings" src="images/wifi-3.png" onClick="location.href='wifisettings.html';">
 				<div name="SSIDlabel" class="SSIDlabel" id="SSIDlabel">SSID:</div>
 				<input name="SSID" class="SSID" id="SSID" value=""></input>
 				<div name="passlabel" class="passlabel" id="passlabel">Password:</div>

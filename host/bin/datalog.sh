@@ -4,6 +4,9 @@
 # $2 - temperature warning
 # $3 - memory error
 # $4 - temperature error
+# $5 - free space warning
+# $6 - free space error
+
 
 if [[ $UID != 0 ]]; then
     echo "Please run this script with sudo:"
@@ -20,9 +23,10 @@ changes=0
 sleeptime=$defaultsleeptime
 while true; do
 	process=$(ps -A | grep java |awk '{$2=$2};1'|cut -d " " -f1)
-	mem=$(cat /proc/$process/status|grep VmSize)
-	max=$(cat /proc/$process/status|grep VmPeak)
-
+	mem=$(expr $(cat /proc/$process/status|grep VmSize|sed "s/VmSize.[[:space:]]*//g"|sed "s/ kB//g") / 1024)
+	max=$(expr $(cat /proc/$process/status|grep VmPeak|sed "s/VmPeak.[[:space:]]*//g"|sed "s/ kB//g") / 1024)
+	free=$(free -m | grep Mem: | tr -s " " | cut -d " " -f4)
+	
 	timestamp=$(date "+%d/%m/%y %H:%M:%S")
 
 	cpuTemp0=$(cat /sys/class/thermal/thermal_zone0/temp)
@@ -34,7 +38,7 @@ while true; do
 	gpuTemp0=${gpuTemp0//\'/º}
 	gpuTemp0=${gpuTemp0//temp=/}
 	timestamp=$(date "+%d/%m/%y %H:%M:%S")
-	echo "["$timestamp"] Curr mem: "$mem", Max Mem: "$max". CPU Temp: "$cpuTemp1"."$cpuTempM"ºC GPU Temp: "$gpuTemp0 >> /opt/cwh/$filename
+	echo "["$timestamp"] Curr mem: "$mem" MB, Max Mem: "$max" MB, Free: "$free" MB. CPU Temp: "$cpuTemp1"."$cpuTempM"ºC GPU Temp: "$gpuTemp0 >> /opt/cwh/$filename
 	
 	#do error checking
 
@@ -59,6 +63,14 @@ while true; do
 			let changes=changes+1
 		fi
 	fi
+	
+#	if [ ! -z "$5" ]; then
+#		#changes=$changes + 1
+#	fi
+
+#	if [ ! -z "$6" ]; then
+#		#changes=$changes + 1
+#	fi
 
 	if [ "$changes" -gt "0" ]; then
 		echo "["$timestamp"] "$warnstring

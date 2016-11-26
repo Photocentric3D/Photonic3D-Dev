@@ -30,7 +30,7 @@
 <meta name="theme-color" content="#ffffff">
 
 
-  	<title>Photonic3D</title>
+  	<title>Photocentric3D - PrintFlow</title>
   	
 	<!-- Load the required CSS libraries -->
 		<link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -42,7 +42,9 @@
 	<!-- CSS for your skin goes here 
 		<link href="./creative/css/creative.css" rel="stylesheet">-->
 	
-	<script>var isDesktop = true;</script>
+	<script>
+	var isDesktop = true;
+</script>
 	
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -50,7 +52,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
       <![endif]-->
 
-    <script src="./jquery/jquery.min.js"></script>
+    <script src="/slacer/vendor/jquery-2.1.4.min.js" type="text/javascript"></script>
 	<script src="./bootstrap/js/bootstrap.min.js"></script>
 	<script src="./jquery/jquery-ui.min.js"></script>
 	<script src="./bootcards/js/bootcards.min.js"></script>
@@ -106,7 +108,7 @@
         </button>
 
         <!-- CWH title goes here -->        
-        <a class="navbar-brand no-break-out" title="Photonic3D" href="./index.html">Photonic3D</a> 
+        <a class="navbar-brand no-break-out" title="Printflow3D" href="./index.html"><IMG src="/images/logo.png"> </IMG> </a> 
 
 
       </div>
@@ -123,35 +125,35 @@
 
 	  <!-- Navigator Bar -->
       <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav" >
           <li ng-class="{active:index.currentPage == 'dashboardPage'}">
-            <a href="dashboardPage" ng-click="index.currentPage = 'dashboardPage'" class="fa fa-dashboard">
-              Dashboard
+            <a href="dashboardPage" ng-click="index.currentPage = 'dashboardPage'"  style="padding-bottom: 8px; padding-top: 8px;">
+              <img src="/images/iconDASHBOARD_for_menu.png" alt="Home" height="35" width="35"> Home
             </a>
           </li>
           <li ng-class="{active:index.currentPage == 'printersPage'}">
-            <a href="printersPage" ng-click="index.currentPage = 'printersPage'" class="fa fa-print" ng-show='visibleCards.indexOf("printers") > -1'>
-              Printers
+            <a href="printerControlsPage" ng-click="index.currentPage = 'printersPage'" ng-show='visibleCards.indexOf("printers") > -1'  style="padding-bottom: 8px; padding-top: 8px;">
+              <img src="/images/iconPRINTER_for_menu.png" alt="Controls" height="35" width="20"> Controls
             </a>          
           </li>
           <li ng-class="{active:index.currentPage == 'printJobsPage'}">
-            <a href="./printJobsPage" ng-click="index.currentPage = 'printJobsPage'" class="fa fa-database" ng-show='visibleCards.indexOf("printJobs") > -1'>
-              Print Jobs
+            <a href="./printJobsPage" ng-click="index.currentPage = 'printJobsPage'" ng-show='visibleCards.indexOf("printJobs") > -1'  style="padding-bottom: 8px; padding-top: 8px;">
+              <img src="/images/iconSCREW_for_printflow_menu.png" alt="Print Jobs" height="35" width="35"> Print Jobs
             </a>          
           </li>
           <li ng-class="{active:index.currentPage == 'printablesPage'}">
-            <a href="./printablesPage" ng-click="index.currentPage = 'printablesPage'" class="fa fa-files-o" ng-show='visibleCards.indexOf("printables") > -1'>
-              Printables
+            <a href="./printablesPage" ng-click="index.currentPage = 'printablesPage'" ng-show='visibleCards.indexOf("printables") > -1'  style="padding-bottom: 8px; padding-top: 8px;">
+              <img src="/images/iconPRINTABLES_for_printflow_menu.png" alt="Printables" height="35" width="35"> Printables
             </a>          
           </li>
           <li ng-class="{active:index.currentPage == 'usersPage'}">
-            <a href="./usersPage" ng-click="index.currentPage = 'usersPage'" class="fa fa-users" ng-show='visibleCards.indexOf("users") > -1'>
-              Users
+            <a href="./usersPage" ng-click="index.currentPage = 'usersPage'" ng-show='visibleCards.indexOf("users") > -1'  style="padding-bottom: 8px; padding-top: 8px;">
+              <img src="/images/iconDASHBOARD_for_menu.png" alt="Users" height="35" width="35"> Users
             </a>          
           </li>
           <li ng-class="{active:index.currentPage == 'settingsPage'}">
-            <a href="./settingsPage" ng-click="index.currentPage = 'settingsPage'" class="fa fa-gears" ng-show='visibleCards.indexOf("settings") > -1'>
-              Settings
+            <a href="./settingsPage" ng-click="index.currentPage = 'settingsPage'" ng-show='visibleCards.indexOf("settings") > -1'  style="padding-bottom: 8px; padding-top: 8px;">
+              <img src="/images/iconSETTINGS_for_printflow_menu.png" alt="Settings" height="35" width="35"> Settings
             </a>          
           </li>
         </ul>
@@ -166,19 +168,19 @@
       <li ng-class="{active:index.currentPage == 'dashboardPage'}">
         <a href="./dashboardPage" ng-click="index.currentPage = 'dashboardPage'">
           <i class="fa fa-lg fa-dashboard"></i>
-          Dashboard
+          Home
         </a>          
       </li>
       <li ng-class="{active:index.currentPage == 'printersPage'}">
-        <a href="./printersPage" ng-click="index.currentPage = 'printersPage'" ng-show='visibleCards.indexOf("printers") > -1'>
+        <a href="./printerControlsPage" ng-click="index.currentPage = 'printersPage'" >
           <i class="fa fa-lg fa-print"></i>
-          Printers
+          Controls
         </a>          
       </li>
       <li ng-class="{active:index.currentPage == 'printJobsPage'}">
         <a href="./printJobsPage" ng-click="index.currentPage = 'printJobsPage'" ng-show='visibleCards.indexOf("printJobs") > -1'>
           <i class="fa fa-lg fa-database"></i>
-          PrintJobs
+          Print Jobs
         </a>          
       </li>
       <li ng-class="{active:index.currentPage == 'printablesPage'}">
@@ -203,10 +205,14 @@
 
     <div style="margin-top:20px; padding-left: 20px; font-size: 12px; color: #777">v0.114</div>
   </nav>
-
+<!--
   <div ng-view class="container bootcards-container" id="main">
   </div>
+-->
 
+ <div ng-view id="main">
+  </div>
+  
 	<!-- fixed tabbed footer -->
 	<div class="navbar navbar-default navbar-fixed-bottom">
 		<div class="container">
@@ -216,15 +222,15 @@
 			<div class="btn-group">
 				<a href="./index.html" class="btn btn-default" data-title="CWH">
 					<i class="fa fa-2x fa-dashboard"></i>
-					Photonic3D
+					Home
 				</a>
 				<a href="./printersPage" class="btn btn-default" ng-click="index.currentPage = 'printersPage'" ng-class="{active:index.currentPage == 'printers'}" ng-show='visibleCards.indexOf("printers") > -1'>
 					<i class="fa fa-2x fa-print"></i>
-					Printers
+					Controls
 				</a>
 				<a href="./printJobsPage" class="btn btn-default" ng-click="index.currentPage = 'printJobsPage'" ng-class="{active:index.currentPage == 'printJobs'}" ng-show='visibleCards.indexOf("printJobs") > -1'>
 					<i class="fa fa-2x fa-database"></i>
-					PrintJobs
+					Print Jobs
 				</a>
 				<a href="./printablesPage" class="btn btn-default" ng-click="index.currentPage = 'printablesPage'" ng-class="{active:index.currentPage == 'printables'}" ng-show='visibleCards.indexOf("printables") > -1'>
 					<i class="fa fa-2x fa-files-o"></i>

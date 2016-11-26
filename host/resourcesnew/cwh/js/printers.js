@@ -1,6 +1,6 @@
 (function() {
 	var cwhApp = angular.module('cwhApp');
-	cwhApp.controller("PrintersController", ['$scope', '$http', '$location', '$anchorScroll', '$uibModal', 'photonicUtils', function ($scope, $http, $location, $anchorScroll, $uibModal, photonicUtils) {
+	cwhApp.controller("PrintersController", ['$scope', '$http', '$location', '$anchorScroll', '$uibModal', 'cacheControl', function ($scope, $http, $location, $anchorScroll, $uibModal, cacheControl) {
 		controller = this;
 		var PRINTERS_DIRECTORY = "printers";
 		var BRANCH = "master";
@@ -13,7 +13,7 @@
 		function refreshSelectedPrinter(printerList) {
         	var foundPrinter = false;
         	if (printerList.length == 1 && printerList[0].started && controller.autodirect != 'disabled') {
-        		controller.currentPrinter = printerList[0];
+        		controller.currentPrinter = printer;
         		controller.gotoPrinterControls();
         		foundPrinter = true;
         	} else {
@@ -94,7 +94,7 @@
 			executeActionAndRefreshPrinters("Save Printer", "No printer selected to save.", '/services/printers/save', printer, true);
 	        controller.editPrinter = null;
 	        controller.openType = null;
-	        photonicUtils.clearPreviewExternalState();
+			cacheControl.clearPreviewExternalState();
 		}
 		
 		function openSavePrinterDialog(editTitle, isNewPrinter) {
@@ -184,6 +184,25 @@
         this.gotoPrinterControls = function gotoPrinterControls() {
         	$location.path('/printerControlsPage').search({printerName: controller.currentPrinter.configuration.name})
         };
+        
+		this.testScript = function testScript(scriptName, returnType, script) {
+			var printerNameEn = encodeURIComponent(controller.currentPrinter.configuration.name);
+			var scriptNameEn = encodeURIComponent(scriptName);
+			var returnTypeEn = encodeURIComponent(returnType);
+			
+			$http.post('/services/printers/testScript/' + printerNameEn + "/" + scriptNameEn + "/" + returnTypeEn, script).success(function (data) {
+				controller.graph = data.result;
+				if (data.error) {
+	     			$scope.$emit("MachineResponse", {machineResponse: {command:scriptName, message:data.errorDescription}, successFunction:null, afterErrorFunction:null});
+	     		} else if (returnType.indexOf("[") > -1){
+					$('#graphScript').modal();
+				} else {
+	     			$scope.$emit("MachineResponse", {machineResponse: {command:scriptName, message:"Successful execution. Script returned:" + JSON.stringify(data.result), response:true}, successFunction:null, afterErrorFunction:null});
+				}
+			}).error(function (data, status, headers, config, statusText) {
+     			$scope.$emit("HTTPError", {status:status, statusText:data});
+    		})
+		}
 		
 		this.testTemplate = function testTemplate(scriptName, script) {
 			var printerNameEn = encodeURIComponent(controller.currentPrinter.configuration.name);
@@ -231,16 +250,12 @@
 					controller.machineConfigurations = data;
 					controller.loadingMachineConfigMessage = "Select a machine configuration...";
 				});
-		
+		//https://raw.githubusercontent.com/WesGilster/Creation-Workshop-Host/master/host/printers/mUVe%201.json
 		$http.get("https://api.github.com/repos/" + $scope.repo + "/contents/host/" + PRINTERS_DIRECTORY + "?ref=" + BRANCH).success(
 			function (data) {
 				$scope.communityPrinters = data;
 			}
 		);
-		
-		this.testScript = function testScript(scriptName, returnType, script) {
-			photonicUtils.testScript(controller, scriptName, returnType, script);
-		};
 		
 		controller.inkDetectors = [{name:"Visual Ink Detector", className:"org.area515.resinprinter.inkdetection.visual.VisualPrintMaterialDetector"}];
 		refreshPrinters();

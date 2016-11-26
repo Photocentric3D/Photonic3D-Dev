@@ -12,6 +12,32 @@ import org.area515.util.IOUtilities.SearchStyle;
 
 public class LinuxNetworkManager implements NetworkManager {
 	public static final String WIFI_REGEX = "\\s*([A-Fa-f0-9:]+)\\s+(-?\\d+)\\s+(-?\\d+)\\s+([\\[\\]\\+\\-\\w]+)\\t(.+)";
+	public static String currentSSID = null;
+	
+	public String getCurrentSSID(){
+		if (this.currentSSID == null){
+			//need to populate. Can use iwgetid -r to get a basic SSID
+			String[] output = IOUtilities.executeNativeCommand(new String[]{"iwgetid", "-r"}, null, (String) null);
+			currentSSID = output[0];
+		}
+		return currentSSID;
+	}
+	
+	public String getWirelessMAC(){
+		//need to populate. Can use iwgetid -r to get a basic SSID
+		String[] output = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"ifconfig | grep wlan | awk '/HWaddr/{print substr(\\$5,1)}'\""}, null, (String) null);
+		String MAC = output[0];
+		
+		return MAC;
+	}
+
+	public String getWirelessIP(){
+		String[] output = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"ifconfig | grep -A1 wlan | awk '/inet addr/{print substr(\\$2,6)}'\""}, null, (String) null);
+		String IP = output[0];
+		
+		return IP;
+
+	}
 	
 	private void buildWirelessInfo(String nicName, NetInterface netFace) {
 		Pattern networkEncryptionClass = Pattern.compile("\\[([\\+\\-\\w]+)\\]");
@@ -33,6 +59,7 @@ public class LinuxNetworkManager implements NetworkManager {
 			netFace.getWirelessNetworks().add(currentWireless);
 			currentWireless.setSsid(lines[4]);
 			currentWireless.setParentInterfaceName(netFace.getName());
+			currentWireless.setSignalStrength(lines[2]);
 			Matcher matcher = networkEncryptionClass.matcher(lines[3]);
 			while (matcher.find()) {
 				StringTokenizer tokenizer = new StringTokenizer(matcher.group(1), "+-");
@@ -156,5 +183,6 @@ public class LinuxNetworkManager implements NetworkManager {
 				throw new IllegalArgumentException("Unable to set password on wifi network.");
 			}
 		}
+		this.currentSSID=wireless.getSsid();
 	}
 }

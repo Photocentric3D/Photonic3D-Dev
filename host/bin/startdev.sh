@@ -1,3 +1,5 @@
 #!/bin/bash
 
-./start.sh "Photocentric3D/Photonic3D-Dev"
+source repoconfig.sh
+
+./start.sh "$DEV_REPO"

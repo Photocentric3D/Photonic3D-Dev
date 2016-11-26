@@ -10,7 +10,7 @@ if [ -z "$HOME" ] || [ "$HOME" == "/" ]; then
   HOME=~root
 fi
 
-DEFAULT_REPO="Photocentric3D/Photonic3D"
+DEFAULT_REPO="Photocentric3D/Photonic3D-Dev"
 DEV_REPO="Photocentric3D/Photonic3D-Dev"
 TESTKIT_REPO="Photocentric3D/Photonic3D-Dev"
 TESTKITDEV_REPO="Photocentric3D/Photonic3D-Dev"

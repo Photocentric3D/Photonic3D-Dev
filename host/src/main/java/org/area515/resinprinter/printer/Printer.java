@@ -14,6 +14,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.awt.DisplayMode;
 import java.io.IOException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -25,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.area515.resinprinter.display.DisplayManager;
 import org.area515.resinprinter.display.InappropriateDeviceException;
+import org.area515.resinprinter.display.CustomDisplayFrame;
 import org.area515.resinprinter.gcode.GCodeControl;
 import org.area515.resinprinter.job.JobStatus;
 import org.area515.resinprinter.projector.ProjectorModel;
@@ -194,65 +196,101 @@ public class Printer {
 		}
 	}
 	
+	public void doPaint(Graphics2D g2, Rectangle screenSize, boolean isDisplaySimulated) {
+		switch (displayState) {
+			case Blank :
+				g2.setBackground(Color.black);
+				g2.clearRect(0, 0, screenSize.width, screenSize.height);
+				return;
+			case Grid :
+				g2.setBackground(Color.black);
+				g2.clearRect(0, 0, screenSize.width, screenSize.height);
+				g2.setColor(Color.RED);
+				for (int x = 0; x < screenSize.width; x += gridSquareSize) {
+					g2.drawLine(x, 0, x, screenSize.height);
+				}
+				
+				for (int y = 0; y < screenSize.height; y += gridSquareSize) {
+					g2.drawLine(0, y, screenSize.width, y);
+				}
+				return;
+			case Calibration :
+				g2.setBackground(Color.black);
+				g2.clearRect(0, 0, screenSize.width, screenSize.height);
+				g2.setColor(Color.RED);
+				int startingX = screenSize.width / 2 - calibrationXY.x / 2;
+				int startingY = screenSize.height / 2 - calibrationXY.y / 2;
+				int halfLengthOfDimLines = 50;
+				
+				//X Dimension lines
+				g2.drawLine(startingX                  , screenSize.height / 2 - halfLengthOfDimLines, startingX                  , screenSize.height / 2 + halfLengthOfDimLines);
+				g2.drawLine(startingX + calibrationXY.x, screenSize.height / 2 - halfLengthOfDimLines, startingX + calibrationXY.x, screenSize.height / 2 + halfLengthOfDimLines);
+				
+				//Y Dimension lines
+				g2.drawLine(screenSize.width / 2 - halfLengthOfDimLines, startingY                  , screenSize.width / 2 + halfLengthOfDimLines, startingY);
+				g2.drawLine(screenSize.width / 2 - halfLengthOfDimLines, startingY + calibrationXY.y, screenSize.width / 2 + halfLengthOfDimLines, startingY + calibrationXY.y);
+									
+				//Vertical line of cross
+				g2.drawLine(screenSize.width / 2, startingY, screenSize.width / 2, startingY + calibrationXY.y);
+
+				//Horizontal line of cross
+				g2.setStroke(new BasicStroke(5, 0, 0, 1.0f, new float[]{10, 10}, 2.0f));
+				g2.drawLine(startingX, screenSize.height / 2, startingX + calibrationXY.x, screenSize.height / 2);
+				return;
+			case CurrentSlice :
+				g2.drawImage(displayImage, null, screenSize.width / 2 - displayImage.getWidth() / 2, screenSize.height / 2 - displayImage.getHeight() / 2);
+				if (isDisplaySimulated) {
+					g2.setColor(Color.RED);
+					g2.setFont(defaultFont);
+					g2.drawString("Slice:" + sliceNumber, frameInsets.left, frameInsets.top + g2.getFontMetrics().getHeight());
+				}
+				return;
+		}
+	}
+
+	public void setGraphicsDataForCustomDisplayDevice(final GraphicsDevice device) {
+
+		refreshFrame = new CustomDisplayFrame() {
+			private static final long serialVersionUID = 5024551291098098753L;
+
+			@Override
+			public void paint(Graphics g) {
+				Graphics2D g2 = (Graphics2D)g;
+				Rectangle screenSize = getBounds();
+				doPaint(g2, screenSize, false);
+			}
+		};
+
+		//DisplayMode dm = new DisplayMode( getConfiguration().getMachineConfig().getxRenderSize(), getConfiguration().getMachineConfig().getyRenderSize(), 32, 60 );
+		device.setFullScreenWindow(refreshFrame);
+		//device.setDisplayMode(dm);
+		refreshFrame.setVisible(false);
+
+		//This can only be done with a real graphics device since it would reassign the printer Simulation
+		//OLD getConfiguration().getMachineConfig().setOSMonitorID(device.getDefaultConfiguration().getDevice().getIDstring());
+		getConfiguration().getMachineConfig().setOSMonitorID(device.getIDstring());
+		this.displayDeviceID = device.getIDstring();
+		DisplayMode dm = device.getDisplayMode();
+		getConfiguration().getMachineConfig().getMonitorDriverConfig().setDLP_X_Res(dm.getWidth());
+		getConfiguration().getMachineConfig().getMonitorDriverConfig().setDLP_Y_Res(dm.getHeight());
+	}
+
 	public void setGraphicsData(final GraphicsDevice device) {
+		if (device.getIDstring().equalsIgnoreCase(DisplayManager.CUSTOM_PHOTOCENTRIC_DISPLAY)) {
+			setGraphicsDataForCustomDisplayDevice(device);
+			return;
+		} 
+
 		refreshFrame = new JFrame() {
 			private static final long serialVersionUID = 5024551291098098753L;
 
 			@Override
 			public void paint(Graphics g) {
 				//super.paint(g);
-				
-				Rectangle screenSize = refreshFrame.getGraphicsConfiguration().getBounds();
 				Graphics2D g2 = (Graphics2D)g;
-				switch (displayState) {
-				case Blank :
-					g2.setBackground(Color.black);
-					g2.clearRect(0, 0, screenSize.width, screenSize.height);
-					return;
-				case Grid :
-					g2.setBackground(Color.black);
-					g2.clearRect(0, 0, screenSize.width, screenSize.height);
-					g2.setColor(Color.RED);
-					for (int x = 0; x < screenSize.width; x += gridSquareSize) {
-						g2.drawLine(x, 0, x, screenSize.height);
-					}
-					
-					for (int y = 0; y < screenSize.height; y += gridSquareSize) {
-						g2.drawLine(0, y, screenSize.width, y);
-					}
-					return;
-				case Calibration :
-					g2.setBackground(Color.black);
-					g2.clearRect(0, 0, screenSize.width, screenSize.height);
-					g2.setColor(Color.RED);
-					int startingX = screenSize.width / 2 - calibrationXY.x / 2;
-					int startingY = screenSize.height / 2 - calibrationXY.y / 2;
-					int halfLengthOfDimLines = 50;
-					
-					//X Dimension lines
-					g2.drawLine(startingX                  , screenSize.height / 2 - halfLengthOfDimLines, startingX                  , screenSize.height / 2 + halfLengthOfDimLines);
-					g2.drawLine(startingX + calibrationXY.x, screenSize.height / 2 - halfLengthOfDimLines, startingX + calibrationXY.x, screenSize.height / 2 + halfLengthOfDimLines);
-					
-					//Y Dimension lines
-					g2.drawLine(screenSize.width / 2 - halfLengthOfDimLines, startingY                  , screenSize.width / 2 + halfLengthOfDimLines, startingY);
-					g2.drawLine(screenSize.width / 2 - halfLengthOfDimLines, startingY + calibrationXY.y, screenSize.width / 2 + halfLengthOfDimLines, startingY + calibrationXY.y);
-										
-					//Vertical line of cross
-					g2.drawLine(screenSize.width / 2, startingY, screenSize.width / 2, startingY + calibrationXY.y);
-
-					//Horizontal line of cross
-					g2.setStroke(new BasicStroke(5, 0, 0, 1.0f, new float[]{10, 10}, 2.0f));
-					g2.drawLine(startingX, screenSize.height / 2, startingX + calibrationXY.x, screenSize.height / 2);
-					return;
-				case CurrentSlice :
-					g2.drawImage(displayImage, null, screenSize.width / 2 - displayImage.getWidth() / 2, screenSize.height / 2 - displayImage.getHeight() / 2);
-					if (device.getIDstring().equalsIgnoreCase(DisplayManager.SIMULATED_DISPLAY)) {
-						g2.setColor(Color.RED);
-						g2.setFont(defaultFont);
-						g2.drawString("Slice:" + sliceNumber, frameInsets.left, frameInsets.top + g2.getFontMetrics().getHeight());
-					}
-					return;
-				}
+				Rectangle screenSize = refreshFrame.getGraphicsConfiguration().getBounds();
+				boolean isSimulated = device.getIDstring().equalsIgnoreCase(DisplayManager.SIMULATED_DISPLAY);
+				doPaint(g2, screenSize, isSimulated);
 			}
 		};
 

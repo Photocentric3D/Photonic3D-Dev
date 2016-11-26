@@ -28,7 +28,7 @@
 		    //$httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
 
     	    $routeProvider.when('/dashboardPage', {
-    	        templateUrl: '/dashboard.html',
+    	        templateUrl: '/iframeforward.html',
     	        controller: 'Dashboard',
     	        controllerAs: 'dashboard'
     	    })

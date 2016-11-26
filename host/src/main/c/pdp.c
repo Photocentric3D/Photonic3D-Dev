@@ -73,7 +73,7 @@ void displayInfo( int id, char* name )
 
 void usage( char* name )
 {
-        printf( "Photocentric Display Process RELEASE (Built on %s at %s)\n", __DATE__, __TIME__ );
+        printf( "Photocentric Display Process (Built on %s at %s)\n", __DATE__, __TIME__ );
         printf( "usage: %s <display> <duration in seconds> <file>\n", name );
         displayInfo( DISPMANX_ID_MAIN_LCD, "Main LCD" );
         displayInfo( DISPMANX_ID_AUX_LCD, "AUX LCD" );

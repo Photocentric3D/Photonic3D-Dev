@@ -76,18 +76,27 @@
 			-webkit-user-select: none;
 			-ms-user-select: none;
 		}
-		.filename { 
-			position: absolute; 
-			top: 120px; 
-			left: 600px; 
-			color: white;
+		
+		.filename {
 			font-weight: bolder;
 			font-size: 15px;
-			max-width: 140px;
-			white-space: pre-wrap;      /* CSS3 */   
-			white-space: -moz-pre-wrap; /* Firefox */   
-			white-space: -o-pre-wrap;   /* Opera 7 */    
-			word-wrap: break-word;      /* IE */
+			padding-bottom: 5px;
+		}
+		.completion {
+			font-size: 13px;
+			padding-bottom: 4px;
+		}
+		.timeelapsed {
+			font-size: 13px;
+			padding-bottom: 4px;
+		}
+		.timeremaining {
+			font-size: 13px;
+			padding-bottom: 4px;
+		}
+		.totaltime {
+			font-size: 13px;
+			padding-bottom: 4px;
 		}
 		
 		.windowframe{
@@ -103,30 +112,6 @@
 			-ms-user-select: none;
 		}
 
-		.completion { 
-			position: absolute; 
-			top: 185px; 
-			left: 600px; 
-			color: white;
-		}
-		.timeelapsed { 
-			position: absolute; 
-			top: 230px; 
-			left: 600px; 
-			color: white;
-		}
-		.timeremaining { 
-			position: absolute; 
-			top: 275px; 
-			left: 600px; 
-			color: white;
-		}
-		.totaltime { 
-			position: absolute; 
-			top: 320px; 
-			left: 600px; 
-			color: white;
-		}
 		.jobid { 
 			position: absolute; 
 			top: 465px; 
@@ -197,15 +182,11 @@
     </head>
     <body style="background-color: black;" onload="init();">
 		<script>
-			starttime=moment().valueOf();
 			endtime=0;
-			totalslices=0;
-			printid="";
-			jobname="";
-			ready=false;
 			temp="";
-			currentslice =0;
 			initialsliceurl="";
+			sliceHeight = 0; // set this as 0 to be safe!
+			maxHeight = 0; // set this as 0 too to be safe!
 			
 			function init(){
 				$.getJSON('../services/printJobs/getByPrinterName/'+printerName)
@@ -214,6 +195,12 @@
 					starttime=parseInt(data.startTime);
 					currentslice=parseInt(data.currentSlice);
 					totalslices=parseInt(data.totalSlices);
+                    jobId = (data.id);
+                    runningjobName = (data.jobName);
+                    totalslices = (data.totalSlices);
+					currentslice = (data.currentSlice);
+					sliceHeight = parseFloat(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].SliceHeight);
+					maxHeight = parseFloat(data.printer.configuration.machineConfig.PlatformZSize);
 					firstlayertime=parseInt(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].FirstLayerTime);
 					bottomlayers=parseInt(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].NumberofBottomLayers);
 					layertime=parseInt(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].LayerTime);
@@ -225,66 +212,60 @@
 						endtime=starttime+(firstlayertime*bottomlayers)+(layertime*(totalslices-bottomlayers));
 					}
 					
-					printid=data.id;
-					jobname=data.jobName;
-					document.getElementById("layerslice").src=initialsliceurl="../services/printJobs/currentSliceImage/"+printid;
-					document.getElementById("jobid").innerHTML=printid;
-					document.getElementById("filename").innerHTML=jobname;
-					document.getElementById("totaltimes").innerHTML=moment.duration(endtime-starttime).humanize();
-					ready=true;
+					document.getElementById("layerslice").src=initialsliceurl="../services/printJobs/currentSliceImage/"+jobId;
+					document.getElementById("jobid").innerHTML=jobId;
+					document.getElementById("filename").innerHTML=runningjobName;
 				})
 				.fail(function(){
-					printid="FAKEe43a-f84f-446c-ade8-70182988d92c";
+					jobId="FAKEe43a-f84f-446c-ade8-70182988d92c";
 					jobname="Dummy Test";
 					totalslices=720;
-					averageslice=1000;
-					endtime=starttime+(totalslices*averageslice);
+					averageslicetime=1000;
+					endtime=starttime+(totalslices*averageslicetime);
 					document.getElementById("layerslice").src="http://www.kudo3d.com/wp-content/uploads/2015/07/Pranav_Pancha_model-of-the-Eiffel-Tower.gif";
-					document.getElementById("jobid").innerHTML=printid;
-					document.getElementById("filename").innerHTML=jobname;
-					document.getElementById("totaltimes").innerHTML=moment.duration(endtime-starttime).humanize();
-					ready=true;
+					document.getElementById("jobid").innerHTML=jobId;
+					document.getElementById("filename").innerHTML=runningjobName;
+					document.getElementById("vartimeelapsed").innerHTML = moment.duration(endtime-starttime).humanize();
 				});
 				startpage();
+				document.getElementById("filename").innerHTML=runningjobName;
+				document.getElementById("jobid").innerHTML=jobId;
+				
+				setInterval(function() {
+					endtime=starttime+elapsedtime+(averageslicetime*(totalslices-currentslice));
+					document.getElementById("vartimeelapsed").innerHTML = moment.duration(endtime-starttime).humanize();
+					if (currentslice > 0) {
+						if (currentslice<totalslices){
+							document.getElementById("vartimeremaining").innerHTML = moment.duration(endtime-moment().valueOf()).humanize();
+							document.getElementById("totaltimes").innerHTML=moment.duration(endtime-starttime).humanize();
+							initialsliceurl="../services/printJobs/currentSliceImage/"+jobId;
+							document.getElementById("layerslice").src=initialsliceurl+"?q="+currentslice;
+							document.getElementById("progress").style = "width:"+parseInt((currentslice/totalslices)*100)+"%";
+						}
+						else{
+							// double check sliceHeight. If it's a crazy value, do not do the thing with raising the bed. We don't want a Z collision.
+							if (sliceHeight <= 0.2) {
+								var zMoveDist = maxHeight - (sliceHeight*totalslices) -20 ;// magic number of 20mm for safety's sake. 
+								if (zMoveDist > 0){
+									$.getJSON('../services/printers/moveZ/'+printerName+'/'+zMoveDist);
+								}
+							}
+							window.location.href=("error.html?type=success&errorname=Print Complete!&errordetails=The print of <b>"+runningjobName+"</b> [Job ID: "+jobId+"] has completed, taking "+moment.duration(endtime-starttime).humanize()+" altogether.&errordetails2=Please remove the print from the platform and store any uncured resin for your next print.");
+						}
+					}
+	
+					if ((parseFloat((currentslice/totalslices)*100).toFixed(2) != "NaN")&&(parseFloat((currentslice/totalslices)*100).toFixed(2) != "Infinity")){
+						document.getElementById("varcompletion").innerHTML = "Layer "+currentslice+" of "+totalslices+" ("+parseFloat((currentslice/totalslices)*100).toFixed(2)+"%)";
+					}
+				}, 2500);
 			}
 			
 			
 			
-			setInterval(function() {				
-				if (document.getElementById("pause").innerHTML=="Resume"){
-					endtime+=1000;
-					starttime+=1000;
-				}
-				if (moment().second()%10===0){
-					//check for updated information about the print
-					$.getJSON('../services/printJobs/getByPrinterName/'+printerName)
-					.done(function(data){
-						currentslice = parseInt(data.currentSlice);
-						endtime=starttime+data.elapsedTime+(parseInt(data.averageSliceTime)*(parseInt(data.totalSlices)-parseInt(data.currentSlice)));
-					});
-					
-				}
-				document.getElementById("layerslice").src=initialsliceurl+"?q="+currentslice;
-				progresspc = ((moment().valueOf()-starttime)/(endtime-starttime))*100;
-				document.getElementById("progress").style = "width:"+parseInt(progresspc)+"%";
-				if (parseFloat((currentslice/totalslices)*100).toFixed(2) != "NaN"){
-					document.getElementById("varcompletion").innerHTML = "Layer "+currentslice+" of "+totalslices+" ("+parseFloat((currentslice/totalslices)*100).toFixed(2)+"%)";
-				}
-				document.getElementById("totaltimes").innerHTML=moment.duration(endtime-starttime).humanize();
-				if (ready){
-					if (endtime-moment().valueOf()>=0){
-						document.getElementById("vartimeelapsed").innerHTML = moment.duration(moment().valueOf()-starttime).humanize();
-						document.getElementById("vartimeremaining").innerHTML = moment.duration(endtime-moment().valueOf()).humanize();
-					}
-					else{
-						document.getElementById("vartimeelapsed").innerHTML = moment.duration(endtime-starttime).humanize();
-						document.getElementById("vartimeremaining").innerHTML = "COMPLETE";
-					}
-				}
-			}, 1000);
+
 			
 			function pause(){
-				$.getJSON("../services/printJobs/togglePause/"+printid);
+				$.getJSON("../services/printJobs/togglePause/"+jobId);
 				if (document.getElementById("pause").innerHTML=="Pause"){
 					document.getElementById("pause").innerHTML="Resume";
 					document.getElementById("pauseglyph").innerHTML='<span class="glyphicon glyphicon-pause"></span>';
@@ -299,14 +280,11 @@
 			}
 			
 			function cancel(){
-				$.getJSON("../services/printJobs/stopJob/"+printid)
-				.done(function(){
+				$.getJSON("../services/printJobs/stopJob/"+jobId)
+				.always(function(){
 				location.href="index.html";
 				});
 			}
-			
-			
-			
 			
 		</script>
         <div class="screen">
@@ -321,14 +299,17 @@
 				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
 				<div name="cancellabel" class="cancellabel" id="cancellabel" onClick="cancel();">Cancel</div>
 				<div name="pause" class="pause" id="pause" onClick="pause();">Pause</div>
-				<div name="filename" id="filename" class="filename"><script>document.write(jobname);</script></div>
 				
-				<div name="completion" id="completion" class="completion">Completion:<br><span id ="varcompletion" style="align-items: flex-end">Calculating...</span></div>
-				<div name="timeelapsed" id="timeelapsed" class="timeelapsed">Time Elapsed:<br><span id ="vartimeelapsed" style="align-items: flex-end">Calculating...</span></div>
-				<div name="timeremaining" id="timeremaining" class="timeremaining">Time Remaining:<br><span id ="vartimeremaining" style="align-items: flex-end">Calculating...</span></div>
+				<div name="info" id="info" class="info">
+					<div name="filename" id="filename" class="filename"><script>document.write(runningJobName);</script></div>
+					<div name="completion" id="completion" class="completion">Completion:<br><span id ="varcompletion" style="align-items: flex-end"><i>Calculating...</i></span></div>
+					<div name="timeelapsed" id="timeelapsed" class="timeelapsed">Time Elapsed:<br><span id ="vartimeelapsed" style="align-items: flex-end"><i>Calculating...</i></span></div>
+					<div name="timeremaining" id="timeremaining" class="timeremaining">Time Remaining:<br><span id ="vartimeremaining" style="align-items: flex-end"><i>Calculating...</i></span></div>
+					<div name="totaltime" id="totaltime" class="totaltime">Total Time:<br><span id ="totaltimes" style="align-items: flex-end"><i>Calculating...</i></span></div>
+				</div>
+				
 				<div name="jobid" id="jobid" class="jobid"><script>document.write(printid);</script></div>
-				<div name="totaltime" id="totaltime" class="totaltime">Total Time:<br><span id ="totaltimes" style="align-items: flex-end">Calculating...</span></div>
-				
+								
 				<img name="homehighlight" id="homehighlight" class="homehighlight" src="images/homehighlightANIM.png" onClick="location.href='index.html';">
 				<img name="bigbuttonhighlight" id="bigbuttonhighlight" class="bigbuttonhighlight" src="images/bigbuttonANIM.png" onClick="cancel();">
 				

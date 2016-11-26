@@ -2,6 +2,8 @@ html, body {
 	overflow:hidden;
 }
 
+
+
 .screen{
 	width: 800px;
 	height: 480px;
@@ -192,6 +194,23 @@ html, body {
 	left: 740px;
 	user-drag: none; 
 	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+.info { 
+	position: absolute; 
+	top: 120px; 
+	left: 600px; 
+	color: white;
+	font-size: 0;
+
+	max-width: 140px;
+	white-space: pre-wrap;      /* CSS3 */   
+	white-space: -moz-pre-wrap; /* Firefox */   
+	white-space: -o-pre-wrap;   /* Opera 7 */    
+	word-wrap: break-word;      /* IE */
 	-moz-user-select: none;
 	-webkit-user-drag: none;
 	-webkit-user-select: none;

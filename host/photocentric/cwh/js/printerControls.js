@@ -6,7 +6,7 @@
 		this.gcodeProcessing = "";
 		this.gCodeToSend = "";
 		this.squarePixelSize = 10;
-		var printerName = $location.search().printerName;
+		printerName = null;
 		
 		function refreshPrinter(printer) {
 			controller.currentPrinter = printer;
@@ -35,13 +35,14 @@
 		}
 		
 		var loadPrinter = function loadPrinter() {
-			$http.get("/services/printers/get/" + printerName).success(
+			$http.get("services/printers/getFirstAvailablePrinter").success(
 	        		function (data) {
+						printerName = data.configuration.name;
 	        			refreshPrinter(data);
 	        		})
 		}
 		var loadPrintJob = function loadPrintJob() {
-			$http.get("/services/printJobs/getByPrinterName/" + printerName).success(
+			$http.get("services/printJobs/getByPrinterName/" + printerName).success(
         		function (data) {
         			controller.currentPrintJob = data;
         		})
@@ -60,9 +61,6 @@
 			$scope.$emit("HTTPError", {status:error.status, statusText:error.data});
 		};
 		
-		this.returnToPrinterList = function returnToPrinterList() {
-			$location.path('/printersPage').search({autodirect: 'disabled'});
-		}
 
         this.move = function move(dimension, step) {
 			$http.get("services/printers/move" + dimension + "/" + printerName + "/" + step).then(gCodeSuccess, errorFunction)
@@ -118,7 +116,7 @@
         this.shutter = function shutter(shutterState) {
 			$http.get("services/printers/" + shutterState + "shutter/" + printerName).then(gCodeSuccess, errorFunction)
 		}
-
+				
         loadPrinter();
         loadPrintJob();
 		attachToPrinter(printerName);

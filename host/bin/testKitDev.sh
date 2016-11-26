@@ -1,3 +1,5 @@
 #!/bin/bash
 
-./start.sh "WesGilster/Creation-Workshop-Host" "TestKit"
+source repoconfig.sh
+
+./start.sh "$TESTKITDEV_REPO" "TestKit"

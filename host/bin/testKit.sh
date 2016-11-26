@@ -1,3 +1,5 @@
 #!/bin/bash
 
-./start.sh "Photocentric3D/Photonic3D" "TestKit"
+source repoconfig.sh
+
+./start.sh "$TESTKIT_REPO" "TestKit"

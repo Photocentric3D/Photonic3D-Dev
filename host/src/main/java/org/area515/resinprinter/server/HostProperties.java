@@ -75,6 +75,7 @@ public class HostProperties {
 	private String hostGUI;
 	private boolean fakeSerial = false;
 	private boolean fakedisplay = false;
+	private boolean customPhotocentricDisplay = true;
 	private boolean removeJobOnCompletion = true;
 	private boolean forceCalibrationOnFirstUse = false;
 	private boolean limitLiveStreamToOneCPU = false;
@@ -188,6 +189,7 @@ public class HostProperties {
 		
 		fakeSerial = new Boolean(configurationProperties.getProperty("fakeserial", "false"));
 		fakedisplay = new Boolean(configurationProperties.getProperty("fakedisplay", "false"));
+		customPhotocentricDisplay = new Boolean(configurationProperties.getProperty("customPhotocentricDisplay", "true"));
 		hostGUI = configurationProperties.getProperty("hostGUI", "resources");
 		visibleCards = Arrays.asList(configurationProperties.getProperty("visibleCards", "printers,printJobs,printables,users,settings").split(","));
 				
@@ -464,6 +466,11 @@ public class HostProperties {
 		return fakedisplay;
 	}
 	
+	public boolean getCustomPhotocentricDisplay(){
+		//@ ???? maybe getCustomDisplay("PhotoCentric"); ????
+		return customPhotocentricDisplay;
+	}
+
 	public String getSSLKeypairPassword() {
 		return sslKeypairPassword;
 	}

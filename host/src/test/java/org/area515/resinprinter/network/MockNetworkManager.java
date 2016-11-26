@@ -58,4 +58,11 @@ public class MockNetworkManager implements NetworkManager {
 		//Pretty much do nothing...
 		//throw new IllegalArgumentException("There was a problem connecting to the network");
 	}
+
+	@Override
+	public String getCurrentSSID() {
+		//Pretty much do nothing...
+		//throw new IllegalArgumentException("There was a problem connecting to the network");
+		return "test";
+	}
 }
