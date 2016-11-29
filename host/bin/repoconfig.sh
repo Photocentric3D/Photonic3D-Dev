@@ -10,10 +10,10 @@ if [ -z "$HOME" ] || [ "$HOME" == "/" ]; then
   HOME=~root
 fi
 
-DEFAULT_REPO="Photocentric3D/Photonic3D-Dev"
-DEV_REPO="Photocentric3D/Photonic3D-Dev"
-TESTKIT_REPO="Photocentric3D/Photonic3D-Dev"
-TESTKITDEV_REPO="Photocentric3D/Photonic3D-Dev"
+DEFAULT_REPO="Photocentric3D/Photonic3D"
+DEV_REPO="Photocentric3D/Photonic3D"
+TESTKIT_REPO="Photocentric3D/Photonic3D"
+TESTKITDEV_REPO="Photocentric3D/Photonic3D"
 
 CONFIG_PROPS="${HOME}/3dPrinters/config.properties"
 
