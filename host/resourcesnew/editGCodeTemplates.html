@@ -1,9 +1,9 @@
 		<div class="panel panel-default">
 			<div class="panel-heading clearfix">
 				<i class="fa pull-left fa-2x fa-code"></i>
-				<h4 class="pull-left">non-CWS GCode Templates: {{printersController.currentPrinter.configuration.name}} </h4>
+				<h4 class="pull-left">non-CWS GCode Templates: {{settingsController.currentPrinter.configuration.name}} </h4>
 				<div class="btn-group pull-right" >
-					<button class="btn btn-primary" ng-disabled="printersController.currentPrinter.started" ng-click="savePrinter(printersController.currentPrinter)" >
+					<button class="btn btn-primary" ng-disabled="settingsController.currentPrinter.started" ng-click="savePrinter(settingsController.currentPrinter)" >
 						<i class="fa fa-pencil"></i>
 						<span>Save</span>
 					</button>
@@ -17,8 +17,8 @@
 						cwh-testscript
 						placeholder="use a freemarker template here"
 						helpURL="http://freemarker.incubator.apache.org/docs/dgui.html"
-						testClick="printersController.testTemplate('GCode Header Template' , printersController.currentPrinter.configuration.slicingProfile.gCodeHeader)"
-						ng-model="printersController.currentPrinter.configuration.slicingProfile.gCodeHeader">
+						testClick="settingsController.testTemplate('GCode Header Template' , settingsController.currentPrinter.configuration.slicingProfile.gCodeHeader)"
+						ng-model="settingsController.currentPrinter.configuration.slicingProfile.gCodeHeader">
 					</div>
 				</div>
 				<div class="list-group-item">
@@ -28,8 +28,8 @@
 						cwh-testscript
 						placeholder="use a freemarker template here"
 						helpURL="http://freemarker.incubator.apache.org/docs/dgui.html"
-						testClick="printersController.testTemplate('GCode Header Template' , printersController.currentPrinter.configuration.slicingProfile.gCodePreslice)"
-						ng-model="printersController.currentPrinter.configuration.slicingProfile.gCodePreslice">
+						testClick="settingsController.testTemplate('GCode Header Template' , settingsController.currentPrinter.configuration.slicingProfile.gCodePreslice)"
+						ng-model="settingsController.currentPrinter.configuration.slicingProfile.gCodePreslice">
 					</div>
 				</div>
 				<div class="list-group-item">
@@ -39,8 +39,8 @@
 						cwh-testscript
 						placeholder="use a freemarker template here"
 						helpURL="http://freemarker.incubator.apache.org/docs/dgui.html"
-						testClick="printersController.testTemplate('GCode Header Template' , printersController.currentPrinter.configuration.slicingProfile.gCodeLift)"
-						ng-model="printersController.currentPrinter.configuration.slicingProfile.gCodeLift">
+						testClick="settingsController.testTemplate('GCode Header Template' , settingsController.currentPrinter.configuration.slicingProfile.gCodeLift)"
+						ng-model="settingsController.currentPrinter.configuration.slicingProfile.gCodeLift">
 					</div>
 				</div>
 				<div class="list-group-item">
@@ -50,19 +50,8 @@
 						cwh-testscript
 						placeholder="use a freemarker template here"
 						helpURL="http://freemarker.incubator.apache.org/docs/dgui.html"
-						testClick="printersController.testTemplate('GCode Header Template' , printersController.currentPrinter.configuration.slicingProfile.gCodeFooter)"
-						ng-model="printersController.currentPrinter.configuration.slicingProfile.gCodeFooter">
-					</div>
-				</div>
-				<div class="list-group-item">
-					<i class="fa fa-2x fa-adjust pull-left"></i>
-					<h4>Shutter (Optional)</h4>
-					<div class="input-group"
-						cwh-testscript
-						placeholder="use a freemarker template here"
-						helpURL="http://freemarker.incubator.apache.org/docs/dgui.html"
-						testClick="printersController.testTemplate('GCode Shutter Template' , printersController.currentPrinter.configuration.slicingProfile.gCodeShutter)"
-						ng-model="printersController.currentPrinter.configuration.slicingProfile.gCodeShutter">
+						testClick="settingsController.testTemplate('GCode Header Template' , settingsController.currentPrinter.configuration.slicingProfile.gCodeFooter)"
+						ng-model="settingsController.currentPrinter.configuration.slicingProfile.gCodeFooter">
 					</div>
 				</div>
 				<div class="list-group-item">
@@ -72,8 +61,8 @@
 						cwh-testscript
 						placeholder="use a freemarker template here"
 						helpURL="http://freemarker.incubator.apache.org/docs/dgui.html"
-						testClick="printersController.testTemplate('GCode Header Template' , printersController.currentPrinter.configuration.slicingProfile.zliftSpeedGCode)"
-						ng-model="printersController.currentPrinter.configuration.slicingProfile.zliftSpeedGCode">
+						testClick="settingsController.testTemplate('GCode Header Template' , settingsController.currentPrinter.configuration.slicingProfile.zliftSpeedGCode)"
+						ng-model="settingsController.currentPrinter.configuration.slicingProfile.zliftSpeedGCode">
 					</div>
 				</div>
 				<div class="list-group-item">
@@ -83,8 +72,8 @@
 						cwh-testscript
 						placeholder="use a freemarker template here"
 						helpURL="http://freemarker.incubator.apache.org/docs/dgui.html"
-						testClick="printersController.testTemplate('GCode Header Template' , printersController.currentPrinter.configuration.slicingProfile.zliftDistanceGCode)"
-						ng-model="printersController.currentPrinter.configuration.slicingProfile.zliftDistanceGCode">
+						testClick="settingsController.testTemplate('GCode Header Template' , settingsController.currentPrinter.configuration.slicingProfile.zliftDistanceGCode)"
+						ng-model="settingsController.currentPrinter.configuration.slicingProfile.zliftDistanceGCode">
 					</div>
 				</div>
 			</div>

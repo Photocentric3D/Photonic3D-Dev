@@ -5,6 +5,7 @@
 		var timeoutValue = 500;
 		var maxUnmatchedPings = 3;//Maximum number of pings before we assume that we lost our connection
 		var unmatchedPing = -1;    //Number of pings left until we lose our connection
+		$scope.showAdvanced = false;
 		var thankYouMessage = " Thank you for unplugging the network cable. This configuration process could take a few minutes to complete. You can close your browser now and use the Photonic3D Client to find your printer.";
 		this.loadingNetworksMessage = "--- Loading wifi networks from server ---"
 		
@@ -16,6 +17,15 @@
 		this.loadingProfilesMessage = "--- Loading slicing profiles from server ---"
 		this.loadingMachineConfigMessage = "--- Loading machine configurations from server ---"
 		this.autodirect = $location.search().autodirect;
+		
+		this.toggleAdvanced = function toggleAdvanced(){
+			$scope.showAdvanced = !$scope.showAdvanced;
+			console.log("Advanced is now"+$scope.showAdvanced);
+		}
+		
+		this.getAdvanced = function getAdvanced(){
+			return showAdvanced;
+		}
 		
 		function refreshSelectedPrinter(printerList) {
         	var foundPrinter = false;
