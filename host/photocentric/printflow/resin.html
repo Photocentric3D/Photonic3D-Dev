@@ -74,22 +74,59 @@
 		
 		<link href="css/printflow.css" rel="stylesheet" class="uilayer">
     </head>
-    <body style="background-color: black;" onload="startpage();">
+    <body style="background-color: black;" onload="init();">
 		<script>
-	
-			$.getJSON('../services/printers/get/'+printerName).done(function(data){
-				document.getElementById("layerheight").innerHTML=parseFloat(data.configuration.slicingProfile.InkConfig[0].SliceHeight)*1000;
-				document.getElementById("curingtime").innerHTML=parseFloat(data.configuration.slicingProfile.InkConfig[0].LayerTime)/1000;
+			var resinlist = {};
+			
+			function init(){
+				startpage();
+				var Ink = {};
+				$.getJSON('../services/printers/get/'+printerName).done(function(data){
+				Ink = data.configuration.slicingProfile.InkConfig;
+				
+				Ink.forEach(function(el){
+					//create a java multidimensional array
+					if (!resinlist[el.Name.split(/[0-9]/)[0].trim()]) resinlist[el.Name.split(/[0-9]/)[0].trim()]=[];
+					resinlist[el.Name.split(/[0-9]/)[0].trim()][("000"+(parseFloat(el.SliceHeight)*1000)).slice(-3)]=
+						{"Name":el.Name, "LayerTime":el.LayerTime,
+						"PercentageOfPrintMaterialConsideredEmpty": el.PercentageOfPrintMaterialConsideredEmpty,
+						"FirstLayerTime": el.FirstLayerTime,
+						"NumberofBottomLayers": el.NumberofBottomLayers,
+						"ResinPriceL": el.ResinPriceL};
+				});
+				// populate the select statement with the keys from resinlist
+					Object.keys(resinlist).forEach(function(resinStyle){
+					var option = document.createElement("option");
+					option.text=resinStyle;
+					option.id=resinStyle;
+					//get the current selected one and tell the list that one's selected
+					if (resinStyle == data.configuration.slicingProfile.SelectedInk.split(/[0-9]/)[0].trim()) option.selected = true;
+					document.getElementById("resin").add(option);
+				});
+				var selectedHeight = null;
+				data.configuration.slicingProfile.SelectedInk.split(" ").forEach(function(token){
+					if (!isNaN(parseInt(token))) {
+						selectedHeight = parseInt(token);
+						// should only happen once. If it happens more than once, someone's added a bunch of seperate numbers to the inkconfig (which is nasty)
+					}
+				});
+				document.getElementById("layerheight").innerHTML=("000"+selectedHeight).slice(-3);
 				recommendCureTime();
-			});
+				});
+				
+			}
+			
+			function findNewHeight(){
+				var newHeight = Object.keys(resinlist[$("#resin").find('option:selected').text()]).sort().reverse()[0];
+				document.getElementById("layerheight").innerHTML=("000"+newHeight).slice(-3);
+			}
+	
 			
 			function updatePhotonic(){
 				$.getJSON('../services/printers/get/'+printerName).done(function(data){
-					data.configuration.slicingProfile.InkConfig[0].SliceHeight=parseInt(document.getElementById("layerheight").innerHTML)/1000;
-					data.configuration.slicingProfile.InkConfig[0].LayerTime=parseInt(document.getElementById("curingtime").innerHTML)*1000;
-					data.configuration.SlicingProfileName="Daylight Resin "+$("#resin").find('option:selected').text()+" "+document.getElementById("layerheight").innerHTML+" micron";
-					data.configuration.slicingProfile.InkConfig[0].Name="Default";
-
+					data.configuration.slicingProfile.SelectedInk=$("#resin").find('option:selected').text()+" "+parseInt(document.getElementById("layerheight").innerHTML)+" Microns";
+					var resinprofile = data.configuration.slicingProfile.InkConfig.map(function(ink){ return ink.Name;}).indexOf(data.configuration.slicingProfile.SelectedInk);
+					data.configuration.slicingProfile.InkConfig[resinprofile].LayerTime = parseInt(document.getElementById("curingtime").innerHTML)*1000;
 					$.getJSON('../services/printers/stop/'+printerName);
 					console.log(data);
 					$.ajax({
@@ -106,29 +143,44 @@
 						}
 					});
 					$.getJSON('../services/printers/start/'+printerName);
-
 				});
 			}
+			
 			function changeLayerHeight(changeby){
-				newLayerHeight = 0;
+				var newLayerHeightMicrons = document.getElementById("layerheight").innerHTML;
+				var currentPos = Object.keys(resinlist[$("#resin").find('option:selected').text()]).sort().indexOf(newLayerHeightMicrons);
+				var totalOpts = Object.keys(resinlist[$("#resin").find('option:selected').text()]).length;
+				
+				var i = 0;
+				console.log("currentPos "+currentPos+ ", totalOpts "+totalOpts);
+				console.log("Keys:");
+				console.log(Object.keys(resinlist[$("#resin").find('option:selected').text()]).sort());
 				if (changeby=="-"){
-					switch (parseInt(document.getElementById("layerheight").innerHTML)){
-						case 100: newLayerHeight=50;
-							break;
-						default: newLayerHeight=25;
-							break;
+					if (currentPos > 0){
+						Object.keys(resinlist[$("#resin").find('option:selected').text()]).sort().forEach(function(layerMicron){
+							console.log("- "+layerMicron);
+							if (i == currentPos -1) {
+								newLayerHeightMicrons = layerMicron;
+								i=totalOpts; // skip to the end so no chance of additional matches
+							}
+							i++;
+						});	
 					}
 				}
 				else{
-					switch (parseInt(document.getElementById("layerheight").innerHTML)){
-						case 25: newLayerHeight=50;
-							break;
-						default: newLayerHeight=100;
-							break;
+					if (currentPos < totalOpts-1){
+						Object.keys(resinlist[$("#resin").find('option:selected').text()]).sort().forEach(function(layerMicron){
+							if (i == currentPos+1) {
+								console.log("+ "+layerMicron);
+								newLayerHeightMicrons = layerMicron;
+								i=totalOpts; // skip to the end so no chance of additional matches
+							}
+							i++;
+						});	
 					}
 				}
 				
-				document.getElementById("layerheight").innerHTML=newLayerHeight;
+				document.getElementById("layerheight").innerHTML=newLayerHeightMicrons;
 				recommendCureTime();
 				updatePhotonic();
 
@@ -144,37 +196,11 @@
 					}
 				}
 				document.getElementById("curingtime").innerHTML=newCuringTime;
+				resinlist[$("#resin").val()][parseInt(document.getElementById("layerheight").innerHTML)].LayerTime=newCuringTime*1000;
 				updatePhotonic();
 			}
 			function recommendCureTime(){
-				curetime = {};
-				curetime["LSF-Amber"]= {"25":"12","50":"24","100":"27"};
-				curetime["LSF-Red"]=   {"25":"12","50":"24","100":"32"};
-				curetime["LSF-Green"]= {"25":"12","50":"24","100":"32"};
-				curetime["LSF-Cream"]= {"25":"12","50":"24","100":"32"};
-				curetime["LSF-Grey"]=  {"25":"12","50":"24","100":"32"};
-				curetime["LSH-Amber"]= {"25":"12","50":"24","100":"27"};
-				curetime["LSH-Red"]=   {"25":"12","50":"24","100":"32"};
-				curetime["LSH-Green"]= {"25":"12","50":"24","100":"32"};
-				curetime["LSH-Cream"]= {"25":"12","50":"24","100":"32"};
-				curetime["LSH-Grey"]=  {"25":"12","50":"24","100":"32"};
-				curetime["Frm-Cream"]= {"25":"12","50":"23","100":"33"};
-				curetime["Frm-Grey"]=  {"25":"12","50":"23","100":"34"};
-				curetime["Frm-Red"]=   {"25":"12","50":"21","100":"30"};
-				curetime["Frm-Green"]= {"25":"12","50":"21","100":"30"};
-				curetime["Frm-Black"]= {"25":"12","50":"25","100":"35"};
-				curetime["Hrd-Cream"]= {"25":"12","50":"16","100":"28"};
-				curetime["Hrd-Grey"]=  {"25":"12","50":"18","100":"29"};
-				curetime["Hrd-Red"]=   {"25":"12","50":"14","100":"24"};
-				curetime["Hrd-Green"]= {"25":"12","50":"14","100":"24"};
-				curetime["Hrd-Black"]= {"25":"12","50":"20","100":"30"};
-				curetime["Flx-Red"]=   {"25":"12","50":"24","100":"40"};
-				curetime["Flx-Green"]= {"25":"12","50":"24","100":"42"};
-				curetime["Flx-Cream"]= {"25":"12","50":"24","100":"42"};
-				curetime["Flx-Grey"]=  {"25":"12","50":"24","100":"42"};
-				curetime["Flx-Black"]= {"25":"12","50":"24","100":"43"};
-				curetime["Cas-Amber"]= {"25":"10","50":"16","100":"24"};
-				document.getElementById("curingtime").innerHTML=document.getElementById("rseconds").innerHTML=curetime[$("#resin").val()][document.getElementById("layerheight").innerHTML];
+				document.getElementById("curingtime").innerHTML=document.getElementById("rseconds").innerHTML=resinlist[$("#resin").val()][parseInt(document.getElementById("layerheight").innerHTML)].LayerTime/1000;
 			}
 		</script>
         <div class="screen">
@@ -191,32 +217,16 @@
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
 				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
-				<select id="resin" class="resin" onchange="updatePhotonic(); recommendCureTime();">
-					<option selected value="LSF-Amber">Low Shrinkage Firm - Amber</option>
-                    <option value="LSH-Amber">Low Shrinkage Hard - Amber</option>
-                    <option value="Frm-Cream">Firm - Cream</option>
-                    <option value="Frm-Grey">Firm - Grey</option>
-                    <option value="Frm-Red">Firm - Red</option>
-                    <option value="Frm-Green">Firm - Green</option>
-					<option value="Frm-Black">Firm - Black</option>
-                    <option value="Hrd-Cream">Hard - Cream</option>
-                    <option value="Hrd-Grey">Hard - Grey</option>
-                    <option value="Hrd-Red">Hard - Red</option>
-                    <option value="Hrd-Green">Hard - Green</option>
-					<option value="Hrd-Black">Hard - Black</option>
-                    <option value="Flx-Red">Flexible - Red</option>
-                    <option value="Cas-Amber">Castable - Amber</option>
+				<select id="resin" class="resin" onchange="findNewHeight(); recommendCureTime(); updatePhotonic(); ">
 				</select>
 				<div name="layerheight" id="layerheight" class="layerheight">25</div>
 				<div name="curingtime" id="curingtime" class="curingtime">12</div>
-				<div name="rectime" id="rectime" class="rectime">Recommended curing time: <span id="rseconds"></span> &plusmn;1 seconds</div>
+				<div name="rectime" id="rectime" class="rectime">Recommended curing time per Layer: <span id="rseconds"></span> &plusmn;1 seconds</div>
 				
 				<img name="homehighlight" id="homehighlight" class="homehighlight" src="images/homehighlightANIM.png" onClick="location.href='index.html';">
 				<img name="bigbuttonhighlight" id="bigbuttonhighlight" class="bigbuttonhighlight" src="images/bigbuttonANIM.png" onClick="cancel();">
 				<img name="smallbuttonhighlight" id="smallbuttonhighlight" class="smallbuttonhighlight" src="images/homehighlightANIM.png" onClick="location.href='settings.html';">
             </div>
-        </div>
-
-	
+		</div>
     </body>
 </html>

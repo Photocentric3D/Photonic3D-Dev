@@ -23,20 +23,65 @@ public class LinuxNetworkManager implements NetworkManager {
 		return currentSSID;
 	}
 	
-	public String getWirelessMAC(){
+	public List<String> getMACs(){
 		//need to populate. Can use iwgetid -r to get a basic SSID
-		String[] output = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"ifconfig | grep wlan | awk '/HWaddr/{print substr(\\$5,1)}'\""}, null, (String) null);
-		String MAC = output[0];
+		List<String> MACs = new ArrayList<String>();
+		String[] macResults = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"ifconfig -a | awk '/^[a-z]/ { iface=\\$1; mac=\\$NF; next }/inet addr:/ { print iface, mac }'\""}, null, (String) null);
 		
-		return MAC;
+		// ditch some unnecessary results. Very custom code for Photocentric printers.
+		String wlan0 = null;
+		boolean wlan1found = false;
+		for (String mac: macResults){
+			// this switch can just be MACs.add(mac) for non-Photocentric printers.
+			switch (mac.split("\\s")[0]){
+				case "lo":
+					//do nothing with loopback
+					break;
+				case "wlan0":
+					wlan0 = mac;
+					break;
+				case "wlan1":
+					wlan1found=true;
+					MACs.add(mac);
+					break;
+				default:
+					MACs.add(mac);
+			}
+		}
+		if (!wlan1found) {MACs.add(wlan0);}
+		return MACs;
 	}
 
-	public String getWirelessIP(){
-		String[] output = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"ifconfig | grep -A1 wlan | awk '/inet addr/{print substr(\\$2,6)}'\""}, null, (String) null);
-		String IP = output[0];
-		
-		return IP;
-
+	public List<String> getIPs(){
+		List<String> IPs = new ArrayList<String>();
+		String[] ipResults = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"ip addr | awk '\r\n/^[0-9]+:/ { \r\n  sub(/:/,\"\",$2); iface=$2 } \r\n/^[[:space:]]*inet / { \r\n  split($2, a, \"/\")\r\n  print iface\" \"a[1] \r\n}'\""}, null, (String) null);
+		// ditch some unnecessary results. Very custom code for Photocentric printers.
+		String wlan0 = null;
+		boolean wlan1found = false;
+		for (String ip: ipResults){
+			// this switch can just be IPs.add(ip) for non-Photocentric printers.
+			switch (ip.split("\\s")[0]){
+				case "lo":
+					//do nothing with loopback
+					break;
+				case "wlan0":
+					wlan0 = ip;
+					break;
+				case "wlan1":
+					wlan1found=true;
+					IPs.add(ip);
+					break;
+				default:
+					IPs.add(ip);
+			}
+		}
+		if (!wlan1found) {IPs.add(wlan0);}
+		return IPs;
+	}
+	
+	public String getHostname(){
+		String[] output = IOUtilities.executeNativeCommand(new String[]{"hostname"}, null, (String) null);
+		return output[0];
 	}
 	
 	private void buildWirelessInfo(String nicName, NetInterface netFace) {
@@ -184,5 +229,13 @@ public class LinuxNetworkManager implements NetworkManager {
 			}
 		}
 		this.currentSSID=wireless.getSsid();
+	}
+	
+	public void setHostname(String newHostname){
+		// do the new /etc/hosts hostname first.
+		String[] macResults = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"sed -i \"s/${hostname}/"+newHostname+"/g\" /etc/hosts\""}, null, (String) null);
+		// then the easier one - /etc/hostname
+		macResults = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"echo \\\""+newHostname+"\\\" > /etc/hostname\""}, null, (String) null);
+		// how to handle restarts...? Perhaps hand that off to the user.
 	}
 }

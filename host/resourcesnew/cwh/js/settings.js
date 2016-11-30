@@ -29,7 +29,7 @@
 		
 		function refreshSelectedPrinter(printerList) {
         	var foundPrinter = false;
-        	if (printerList.length == 1 && printerList[0].started && controller.autodirect != 'disabled') {
+        	if (printerList.length == 1 &&  controller.autodirect != 'disabled') {
         		controller.currentPrinter = printerList[0];
         		foundPrinter = true;
         	} else {
@@ -360,6 +360,11 @@
 		$http.get("services/settings/emailSettings").success(
 	    		function (data) {
 	    			controller.emailSettings = data;
+	    		})
+		
+		$http.get("services/settings/hostInformation").success(
+	    		function (data) {
+	    			controller.hostInformation = data;
 	    		})
 	    		
 		$http.get("services/machine/wirelessNetworks/list").success(

@@ -1,3 +1,8 @@
+<script>
+// hide 
+ $('.verbergen').hide(1);
+</script>
+
 <div class="panel panel-default" ng-show="settingsController.currentPrinter">
 	<div class="panel-heading clearfix">
 		<h3 class="panel-title pull-left">Basic Printer Setup</h3>
@@ -33,11 +38,11 @@
 			<label>Display</label>
 			<h4 class="list-group-item-heading">{{settingsController.currentPrinter.configuration.machineConfig.MonitorDriverConfig.OSMonitorID}}</h4>
 		</div>
-		<div class="list-group-item">
+		<div class="list-group-item verbergen">
 			<label>Autostart</label>
 			<h4 class="list-group-item-heading">{{settingsController.currentPrinter.configuration.AutoStart}}</h4>
 		</div>
-		<div class="list-group-item">
+		<div class="list-group-item verbergen">
 			<label>Machine Configuration</label>
 			<h4 class="list-group-item-heading">{{settingsController.currentPrinter.configuration.MachineConfigurationName}}</h4>
 			<select name="type" class="form-control"
@@ -48,7 +53,7 @@
 			  <option value="">{{settingsController.loadingMachineConfigMessage}}</option>
 			</select>		
 		</div>
-		<div class="list-group-item">
+		<div class="list-group-item verbergen">
 			<label>Slicing Profile</label>
 			<h4 class="list-group-item-heading">{{settingsController.currentPrinter.configuration.SlicingProfileName}}</h4>
 			<select name="type" class="form-control"
@@ -61,7 +66,13 @@
 		</div>
 		<div class="list-group-item">
 			<label>Ink Configuration</label>
-			<h4 class="list-group-item-heading">{{settingsController.currentPrinter.configuration.slicingProfile.SelectedInk}}</h4>
+			<h4 class="list-group-item-heading">{{settingsController.currentPrinter.configuration.slicingProfile.SelectedInk}}
+			<div class="btn-group pull-right" style=" padding-bottom: 5px;" >
+				<button class="btn btn-primary" ng-disabled="settingsController.currentPrinter.started" ng-click="savePrinter(settingsController.currentPrinter)" >
+					<i class="fa fa-pencil" style="width: 0px";></i>
+					<span>Save</span>
+				</button>
+			</div></h4>
 			<select name="type" class="form-control"
 				ng-model="settingsController.currentPrinter.configuration.slicingProfile.selectedInkConfigIndex"
 				ng-options="index*1 as item.Name for (index, item) in settingsController.currentPrinter.configuration.slicingProfile.InkConfig track by index"
@@ -72,10 +83,12 @@
 		<div class="list-group-item">
 			<label>Advanced Settings</label><br/>
 			<button class="btn btn-danger" ng-click="settingsController.toggleAdvanced()">
-				<i class="fa fa-wrench"></i> 
+				<i class="fa fa-wrench" style="width: 0px"; ></i> 
 				<span>Show Advanced settings</span>
 			</button>
 		</div>
+		
+		
 	</div>
 			
 	<div class="panel-footer">

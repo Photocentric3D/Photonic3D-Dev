@@ -1,7 +1,7 @@
 		<div class="panel panel-default">
-			<div class="panel-heading clearfix">
+			<div class="panel-heading clearfix" style="background-color: #ffcccc;">
 				<i class="fa pull-left fa-2x fa-code"></i>
-				<h4 class="pull-left">non-CWS GCode Templates: {{settingsController.currentPrinter.configuration.name}} </h4>
+				<h4 class="pull-left">Advanced: GCode Templates: {{settingsController.currentPrinter.configuration.name}} </h4>
 				<div class="btn-group pull-right" >
 					<button class="btn btn-primary" ng-disabled="settingsController.currentPrinter.started" ng-click="savePrinter(settingsController.currentPrinter)" >
 						<i class="fa fa-pencil"></i>
@@ -78,7 +78,7 @@
 				</div>
 			</div>
 			
-			<div class="panel-footer">
+			<div class="panel-footer" style="background-color: #ffcccc;">
 				<span ng-include="'cardFooter.html'"></span>
 			</div>
 		</div>
