@@ -232,6 +232,7 @@ if [ "$build" == "Photocentric 10" ]
 		echo "creating standalone image..."
 		#TODO
 		echo "installing Photocentric 10 profile"
+		sudo sh -c 'echo lcd_rotate=2 >> /boot/config.txt'
 		wget https://raw.githubusercontent.com/${repo}/master/host/printers/photocentric%2010.json -O printerprofile.json
 		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json "http://localhost:$portno/services/printers/save"
 		echo var printerName = \"Photocentric 10\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js
