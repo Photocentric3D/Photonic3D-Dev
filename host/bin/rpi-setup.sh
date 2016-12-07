@@ -24,7 +24,8 @@ fi
 echo "Getting updates and installing utilities"
 apt-get update
 apt-get -y upgrade
-apt-get -y install rpi-chromium-mods dos2unix curl librxtx-java fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl
+apt-get -y install rpi-chromium-mods dos2unix curl librxtx-java fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl lxterminal
+apt-get -fy install
 
 if [ -e photonic-repo ]; then
 	rm -rf photonic-repo
@@ -123,6 +124,7 @@ if [ "$build" != "4kscreen" ]; then
 		echo "deb http://dl.bintray.com/kusti8/chromium-rpi jessie main" | tee -a /etc/apt/sources.list
 		apt-get update
 		yes Y | apt-get install -y kweb
+		apt-get -fy install
 	fi
 	
 	touch /home/pi/.xsession
@@ -231,6 +233,7 @@ if [ "$build" == "Photocentric 10" ]
 		newhost="standalone"
 		echo "creating standalone image..."
 		#TODO
+		sudo sh -c 'echo lcd_rotate=2 >> /boot/config.txt'
 		echo "installing Photocentric 10 profile"
 		wget https://raw.githubusercontent.com/${repo}/master/host/printers/photocentric%2010.json -O printerprofile.json
 		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json "http://localhost:$portno/services/printers/save"
