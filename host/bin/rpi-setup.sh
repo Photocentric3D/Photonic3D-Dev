@@ -19,6 +19,9 @@ if [[ $UID != 0 ]]; then
     exit 1
 fi
 
+function checkInstalled {
+return $(dpkg-query -W -f='${Status}\n' $1 | head -n1 | awk '{print $3;}' | grep -q '^installed$')
+}
 
 # DO FOR ALL
 echo "Getting updates and installing utilities"
@@ -26,6 +29,14 @@ apt-get update
 apt-get -y upgrade
 apt-get -y install rpi-chromium-mods dos2unix curl librxtx-java fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl lxterminal
 apt-get -fy install
+
+# Check if a few of our packages installed. If it hasn't, FAIL OUT and do not progress further into the setup script.
+echo "Verifying installs"
+checkInstalled dos2unix || exit;
+checkInstalled matchbox-window-manager || exit;
+checkInstalled fbi || exit;
+
+# we could potentially test for installation of all the needed applications, but I don't think it's really necessary
 
 if [ -e photonic-repo ]; then
 	rm -rf photonic-repo
