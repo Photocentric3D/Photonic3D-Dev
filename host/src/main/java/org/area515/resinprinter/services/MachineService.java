@@ -28,7 +28,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -455,6 +458,55 @@ public class MachineService {
 			return null;
 		}
 	 }
+    
+ // Early modifications to support fetching of WiFi signal strength. Feel free to discard or replace as necessary.
+    @ApiOperation(value = "Enumerates Printer interfaces' IPs, MACs, and HostName information.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	 @GET
+	 @Path("getNetworkHostConfiguration")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 public Map getNetworkHostConfiguration() {
+		Class<NetworkManager> managerClass = HostProperties.Instance().getNetworkManagerClass();
+		try {
+			NetworkManager networkManager = managerClass.newInstance();
+			Map networkHost = new HashMap();
+			networkHost.put("MACs", networkManager.getMACs());
+			networkHost.put("IPs", networkManager.getIPs());
+			networkHost.put("Hostname",networkManager.getHostname());
+			return networkHost;
+		} catch (InstantiationException | IllegalAccessException e) {
+			logger.error("Error retrieving network host configuration", e);
+			return null;
+		}
+	 }
+    
+    @ApiOperation(value="Changes the hostname of the computer running Photonic.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, response=MachineResponse.class, message = SwaggerMetadata.MACHINE_RESPONSE),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@GET
+	@Path("setNetworkHostname/{hostname}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public MachineResponse startProjector(@PathParam("hostname") String host) {
+    	Pattern p = Pattern.compile("[^a-zA-Z0-9]");
+    	if (!((Boolean)p.matcher(host).find())){
+    		try {
+    	    	Class<NetworkManager> managerClass = HostProperties.Instance().getNetworkManagerClass();
+    			NetworkManager networkManager = managerClass.newInstance();
+    			networkManager.setHostname(host);
+    			return new MachineResponse("setNetworkHostname", true, "Changed hostname to:" + host);
+    		} catch (InstantiationException | IllegalAccessException e) {
+    			logger.error("Error setting new hostname", e);
+    			return new MachineResponse("setNetworkHostname", false, e.getMessage());
+    		}
+    	}
+    	else{
+    		logger.error("Error retrieving network host configuration");
+    		return new MachineResponse("setNetworkHostname", false, "Hostname \""+host+"\" contained invalid characters");
+    	}
+    }
 	
     @ApiOperation(value = "Enumerates the list of serial ports available on the Photonic 3D host.")
     @ApiResponses(value = {

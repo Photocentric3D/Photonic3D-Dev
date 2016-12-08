@@ -3,6 +3,7 @@ package org.area515.resinprinter.network;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class MockNetworkManager implements NetworkManager {
 	@Override
@@ -70,12 +71,16 @@ public class MockNetworkManager implements NetworkManager {
 	}
 	
 	@Override
-	public List<String> getIPs() { 
+	public Map getIPs() { 
 		return null;
 	}
 
 	@Override
-	public List<String> getMACs() { 
+	public Map getMACs() { 
 		return null;
+	}
+	
+	@Override
+	public void setHostname(String hostname){
 	}
 }

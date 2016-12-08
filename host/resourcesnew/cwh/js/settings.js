@@ -1,6 +1,6 @@
 (function() {
 	var cwhApp = angular.module('cwhApp');
-	cwhApp.controller("SettingsController", ['$scope', '$http', '$location', '$routeParams', '$interval', '$uibModal', 'cwhWebSocket', function ($scope, $http, $location, $routeParams, $interval,$uibModal, cwhWebSocket) {
+	cwhApp.controller("SettingsController", ['$scope', '$http', '$location', '$routeParams', '$interval', '$uibModal', 'cwhWebSocket', 'cacheControl', function ($scope, $http, $location, $routeParams, $interval, $uibModal, cwhWebSocket, cacheControl) {
 		controller = this;
 		var timeoutValue = 500;
 		var maxUnmatchedPings = 3;//Maximum number of pings before we assume that we lost our connection
@@ -74,6 +74,7 @@
 			if (postTargetPrinter) {
 			   $http.post(service, targetPrinter).then(
 	       			function(response) {
+	        			$scope.$emit("MachineResponse", {machineResponse: {command:"Settings Saved!"+newHostname, message:"Your new settings have been saved. Please start the printer to make use of these new settings!.", response:true}, successFunction:null, afterErrorFunction:null});
 	       			}, 
 	       			function(response) {
  	        			$scope.$emit("HTTPError", {status:response.status, statusText:response.data});
@@ -190,6 +191,17 @@
 		this.deleteCurrentPrinter = function deleteCurrentPrinter() {
 			executeActionAndRefreshPrinters("Delete Printer", "No printer selected to Delete.", '/services/printers/delete/', controller.currentPrinter, false);
 	        controller.currentPrinter = null;
+		}
+		
+		this.changeHostname = function changeHostname(newHostname) {
+			$http.get("/services/machine/setNetworkHostname/"+newHostname).success(
+	        		function (data) {
+	        			$scope.$emit("MachineResponse", {machineResponse: {command:"Hostname changed to: "+newHostname, message:"Your new hostname ("+newHostname+") will take effect the next time the printer is powered on.", response:true}, successFunction:null, afterErrorFunction:null});
+	        		}).error(
+    				function (data, status, headers, config, statusText) {
+ 	        			$scope.$emit("HTTPError", {status:status, statusText:data});
+	        		})
+	        return;
 		}
 		
 		this.changeCurrentPrinter = function changeCurrentPrinter(newPrinter) {
@@ -362,10 +374,10 @@
 	    			controller.emailSettings = data;
 	    		})
 		
-		$http.get("services/settings/hostInformation").success(
-	    		function (data) {
-	    			controller.hostInformation = data;
-	    		})
+		$http.get('/services/machine/getNetworkHostConfiguration').success(
+				function(data) {
+					controller.hostConfig = data;
+				})
 	    		
 		$http.get("services/machine/wirelessNetworks/list").success(
 	    		function (data) {

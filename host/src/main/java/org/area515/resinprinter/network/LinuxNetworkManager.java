@@ -1,10 +1,20 @@
 package org.area515.resinprinter.network;
 
+import java.lang.StringBuilder;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.StringTokenizer;
 
 import org.area515.util.IOUtilities;
 import org.area515.util.IOUtilities.ParseAction;
@@ -23,59 +33,55 @@ public class LinuxNetworkManager implements NetworkManager {
 		return currentSSID;
 	}
 	
-	public List<String> getMACs(){
-		//need to populate. Can use iwgetid -r to get a basic SSID
-		List<String> MACs = new ArrayList<String>();
-		String[] macResults = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"ifconfig -a | awk '/^[a-z]/ { iface=\\$1; mac=\\$NF; next }/inet addr:/ { print iface, mac }'\""}, null, (String) null);
+	public Map getMACs(){
+		Map MACs = new HashMap();
 		
-		// ditch some unnecessary results. Very custom code for Photocentric printers.
-		String wlan0 = null;
-		boolean wlan1found = false;
-		for (String mac: macResults){
-			// this switch can just be MACs.add(mac) for non-Photocentric printers.
-			switch (mac.split("\\s")[0]){
-				case "lo":
-					//do nothing with loopback
-					break;
-				case "wlan0":
-					wlan0 = mac;
-					break;
-				case "wlan1":
-					wlan1found=true;
-					MACs.add(mac);
-					break;
-				default:
-					MACs.add(mac);
+		try {
+			for (Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces(); networks.hasMoreElements();){
+					NetworkInterface network = networks.nextElement();
+					byte[] mac = network.getHardwareAddress();
+					if (mac != null && mac.length > 0){
+						StringBuilder sb = new StringBuilder(18);
+						for (byte b : mac) {
+							if (sb.length() > 0) sb.append(':');
+							sb.append(String.format("%02x", b));
+						}
+						MACs.put(network.getName().trim(), sb.toString());
+					}
 			}
+		} catch (SocketException e){
+			// can't get the info
 		}
-		if (!wlan1found) {MACs.add(wlan0);}
+		// no-one cares about loopback
+		if (MACs.containsKey("lo")) MACs.remove("lo");
+		// photocentric specific code
+		if (MACs.containsKey("wlan1")) MACs.remove("wlan0");
 		return MACs;
 	}
 
-	public List<String> getIPs(){
-		List<String> IPs = new ArrayList<String>();
-		String[] ipResults = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"ip addr | awk '\r\n/^[0-9]+:/ { \r\n  sub(/:/,\"\",$2); iface=$2 } \r\n/^[[:space:]]*inet / { \r\n  split($2, a, \"/\")\r\n  print iface\" \"a[1] \r\n}'\""}, null, (String) null);
-		// ditch some unnecessary results. Very custom code for Photocentric printers.
-		String wlan0 = null;
-		boolean wlan1found = false;
-		for (String ip: ipResults){
-			// this switch can just be IPs.add(ip) for non-Photocentric printers.
-			switch (ip.split("\\s")[0]){
-				case "lo":
-					//do nothing with loopback
-					break;
-				case "wlan0":
-					wlan0 = ip;
-					break;
-				case "wlan1":
-					wlan1found=true;
-					IPs.add(ip);
-					break;
-				default:
-					IPs.add(ip);
+	public Map getIPs(){
+		Map IPs = new HashMap();
+		
+		try {
+			for (Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces(); networks.hasMoreElements();){
+					NetworkInterface network = networks.nextElement();
+					String IPaddress = null;
+					// find the IPv4 address in the Enumeration
+					for (Enumeration<InetAddress> ips = network.getInetAddresses(); ips.hasMoreElements();){
+						String check = ips.nextElement().getHostAddress();
+						if(check.indexOf(".")>=0 && check.indexOf(".") < 4){
+							IPaddress = check;
+						}
+					}
+					if (IPaddress != null) IPs.put(network.getName().trim(), IPaddress);
 			}
+		} catch (SocketException e){
+			// can't get the info
 		}
-		if (!wlan1found) {IPs.add(wlan0);}
+		// noone cares about loopback
+		if (IPs.containsKey("lo")) IPs.remove("lo");
+		// photocentric specific code
+		if (IPs.containsKey("wlan1")) IPs.remove("wlan0");
 		return IPs;
 	}
 	
@@ -233,9 +239,11 @@ public class LinuxNetworkManager implements NetworkManager {
 	
 	public void setHostname(String newHostname){
 		// do the new /etc/hosts hostname first.
-		String[] macResults = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"sed -i \"s/${hostname}/"+newHostname+"/g\" /etc/hosts\""}, null, (String) null);
+		String[] macResults = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "sed -i \"s/$(hostname)/"+newHostname+"/g\" /etc/hosts"}, null, (String) null);
 		// then the easier one - /etc/hostname
-		macResults = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "\"echo \\\""+newHostname+"\\\" > /etc/hostname\""}, null, (String) null);
+		macResults = IOUtilities.executeNativeCommand(new String[]{"bash", "-c", "echo "+newHostname+" > /etc/hostname"}, null, (String) null);
+		// get hostname to acknowledge the new hostname
+		macResults = IOUtilities.executeNativeCommand(new String[]{"hostname", "-F", "/etc/hostname"}, null, (String) null);
 		// how to handle restarts...? Perhaps hand that off to the user.
 	}
 }

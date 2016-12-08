@@ -120,7 +120,6 @@
 				var newHeight = Object.keys(resinlist[$("#resin").find('option:selected').text()]).sort().reverse()[0];
 				document.getElementById("layerheight").innerHTML=("000"+newHeight).slice(-3);
 			}
-	
 			
 			function updatePhotonic(){
 				$.getJSON('../services/printers/get/'+printerName).done(function(data){
@@ -200,7 +199,7 @@
 				updatePhotonic();
 			}
 			function recommendCureTime(){
-				document.getElementById("curingtime").innerHTML=document.getElementById("rseconds").innerHTML=resinlist[$("#resin").val()][parseInt(document.getElementById("layerheight").innerHTML)].LayerTime/1000;
+				document.getElementById("curingtime").innerHTML=document.getElementById("rseconds").innerHTML=resinlist[$("#resin").val()][document.getElementById("layerheight").innerHTML].LayerTime/1000;
 			}
 		</script>
         <div class="screen">

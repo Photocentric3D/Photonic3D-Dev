@@ -68,12 +68,12 @@
 				<form class="list-group" ng-submit="settingsController.setupNetwork()">
 					<div class="list-group-item">
 						<i class="fa fa-2x fa-compass pull-left"></i>
-						<h4>HostName: {{settingsController.hostInformation.hostname}}.local</h4>
+						<h4>HostName: {{settingsController.hostConfig.Hostname}}.local</h4>
 						<div class="input-group">
-							<input class="form-control" ng-model="settingsController.hostInformation.hostname"</input>
+							<input class="form-control" ng-model="settingsController.hostConfig.Hostname"</input>
 							<span class="input-group-addon" id="basic-addon2">.local</span>
 							<span class="input-group-btn">
-								<button ng-disabled="settingsController.shutdownInProgress" class="btn btn-primary">
+								<button ng-disabled="settingsController.shutdownInProgress" class="btn btn-primary" ng-click="settingsController.changeHostname(settingsController.hostConfig.Hostname)">
 									<b class="fa fa-pencil"></b>
 									<b class="cwh-text-indent">Save</b>
 								</button>

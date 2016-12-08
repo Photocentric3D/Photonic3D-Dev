@@ -7,6 +7,11 @@
 			font-weight: bolder;
 			padding-bottom: 5px;
 		}
+		.hostname { 
+			font-size: 15px;
+			padding-bottom: 2.5px;
+			padding-left: 5px;
+		}
 		.SSID { 
 			font-size: 15px;
 			padding-bottom: 2.5px;
@@ -14,6 +19,11 @@
 		}
 		.IP { 
 			font-size: 15px;
+			padding-bottom: 2.5px;
+			padding-left: 5px;
+		}
+		.details { 
+			font-size: 12px;
 			padding-bottom: 2.5px;
 			padding-left: 5px;
 		}
@@ -77,10 +87,13 @@
 		
 		<link href="css/printflow.css" rel="stylesheet">
     </head>
-    <body style="background-color: black;" onload="WifiAPs();">
+    <body style="background-color: black;" onload="init();">
 		<script>
-			startpage();
-			setInterval(WifiAPs(), 10000);
+			function init(){
+				startpage();
+				updateNetworkInfo();
+				setInterval(updateNetworkInfo(), 10000);
+			}
 		//	$.getJSON( "test.js", { name: "John", time: "2pm" } )
 		//		.done(function( json ) {
 		//		console.log( "JSON Data: " + json.users[ 3 ].name );
@@ -89,13 +102,33 @@
 		//			//fallback
 		//			
 		//		});
-			function WifiAPs(){
-				select = document.getElementById("wifiselect");
+			function updateNetworkInfo(){
+				$.getJSON('/services/machine/getNetworkHostConfiguration')
+				.done(function(data){
+					 document.getElementById("hostvar").innerHTML=data.Hostname;
+					 var MACs = "";
+					 $.each(data.MACs, function(key,value){
+						console.log(key+", "+value);
+						MACs += key + ": "+value+"<BR/>";
+					 });
+					 document.getElementById("MACaddress").innerHTML  = MACs;
+					 
+					 var IPs = "";
+					 $.each(data.IPs, function(key,value){
+						IPs += key + ": "+value+"<BR/>";
+					 });
+					 document.getElementById("IPaddress").innerHTML  = IPs;
+				})
+				.fail(function(){
+					
+				});
+				
+				var select = document.getElementById("wifiselect");
 				var length = select.options.length;
 				for (i = 0; i < length; i++) {
 					select.options[i] = null;
 				}
-				$.getJSON('../services/machine/wirelessNetworks/list')
+				$.getJSON('/services/machine/wirelessNetworks/list')
 				.done(function(data){
 					$.each(data, function (key, val) {
 						option = document.createElement('option');
@@ -135,10 +168,10 @@
 				<div name="visiblelabel" class="visiblelabel" id="visiblelabel" >Visible Networks</div>
 				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
 				<div name="info" id="info" class="info">
-					<div name="nettitle" id="nettitle" class="nettitle">Current Network:</div>
-					<div name="SSID" id="SSID" class="SSID">Connected to:<br/><span id="netname" class="SSID"></span></div>
-					<div name="IP" id="IP" class="IP">IP:<br/><span id="IPaddress" class="IP"></span></div>
-					<div name="MAC" id="MAC" class="MAC">MAC:<br/><span id="MACaddress" class="MAC"></span></div>
+					<div name="nettitle" id="nettitle" class="nettitle">Current Network :</div>
+					<div name="hostname" id="hostname" class="hostname">Hostname:<br/><span id="hostvar" class="hostname"></span>.local</div>
+					<div name="IP" id="IP" class="IP">IP:<br/><span id="IPaddress" class="details"></span></div>
+					<div name="MAC" id="MAC" class="MAC">MAC:<br/><span id="MACaddress" class="details"></span></div>
 				</div>
 				<div name="savebutton" class="savebutton" id="savebutton" onClick="setupWifi();">Setup Network</div>
 				<select name="wifiselect" class="wifiselect" id="wifiselect" size="5">
