@@ -120,7 +120,10 @@
 		<script>
 			ssid = decodeURIComponent(urlParam("SSID"));
 			if (ssid=="null") ssid="";
-			startpage();
+			
+			function init(){
+				startpage();
+			}
 	
 			function saveWifi(){
 
@@ -203,7 +206,7 @@
 
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
-				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
+				<img name="wifi" id="wifi" class="wifi" src="images/pixel.png">
 				<img name="wifisettings" id="wifisettings" class="wifisettings" src="images/wifi-3.png" onClick="location.href='wifisettings.html';">
 				<div name="SSIDlabel" class="SSIDlabel" id="SSIDlabel">SSID:</div>
 				<input name="SSID" class="SSID" id="SSID" value=""></input>

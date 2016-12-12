@@ -91,20 +91,14 @@
 		<script>
 			function init(){
 				startpage();
-				updateNetworkInfo();
 				setInterval(updateNetworkInfo(), 10000);
 			}
-		//	$.getJSON( "test.js", { name: "John", time: "2pm" } )
-		//		.done(function( json ) {
-		//		console.log( "JSON Data: " + json.users[ 3 ].name );
-		//		})
-		//		.fail(function( jqxhr, textStatus, error ) {
-		//			//fallback
-		//			
-		//		});
+
 			function updateNetworkInfo(){
+
 				$.getJSON('/services/machine/getNetworkHostConfiguration')
 				.done(function(data){
+					
 					 document.getElementById("hostvar").innerHTML=data.Hostname;
 					 var MACs = "";
 					 $.each(data.MACs, function(key,value){
@@ -124,28 +118,27 @@
 				});
 				
 				var select = document.getElementById("wifiselect");
-				var length = select.options.length;
-				for (i = 0; i < length; i++) {
-					select.options[i] = null;
+				// length should be 0 but for some really odd reason some elements can be left. If so, we do it again.
+				while (select.options.length > 0){
+					for (var i = 0; i < select.options.length; i++) {
+						select.options[i] = null;
+					}
 				}
 				$.getJSON('/services/machine/wirelessNetworks/list')
 				.done(function(data){
+					console.log(data);
+					var i = 0;
 					$.each(data, function (key, val) {
+						console.log(i + ": "+key+" "+val);
 						option = document.createElement('option');
-						option.text = option.value = val.ssid;
+						option.id = option.text = option.value = val.ssid;
 						option.style = "background: url(images/wifi-tiny.png) no-repeat; padding-top: 2px; padding-right: 10px;";
 						select.add( option );
+						i = i+1;
 					});
-					var options = $("#wifiselect option");                    // Collect options         
-					options.detach().sort(function(a,b) {               // Detach from select, then Sort
-						var at = $(a).text().toLowerCase();
-						var bt = $(b).text().toLowerCase();         
-						return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
-					});
-					options.appendTo("#wifiselect");        
-				})
-				.fail(function(){
-					
+					$("#wifiselect").html($("#wifiselect option").sort(function (a, b) {
+					return a.text == b.text ? 0 : a.text.toLowerCase() < b.text.toLowerCase() ? -1 : 1
+					})) 
 				});
 			}
 			
@@ -166,7 +159,7 @@
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
 				<div name="visiblelabel" class="visiblelabel" id="visiblelabel" >Visible Networks</div>
-				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
+				<img name="wifi" id="wifi" class="wifi" src="images/pixel.png">
 				<div name="info" id="info" class="info">
 					<div name="nettitle" id="nettitle" class="nettitle">Current Network :</div>
 					<div name="hostname" id="hostname" class="hostname">Hostname:<br/><span id="hostvar" class="hostname"></span>.local</div>
@@ -184,7 +177,5 @@
 				<img name="smallbuttonhighlight" id="smallbuttonhighlight" class="smallbuttonhighlight" src="images/homehighlightANIM.png" onClick="location.href='settings.html';">
             </div>
         </div>
-
-	
     </body>
 </html>

@@ -118,11 +118,16 @@
 		
 		<link href="css/printflow.css" rel="stylesheet">
     </head>
-    <body style="background-color: black;" onload="fillList();">
+    <body style="background-color: black;">
 		<script>
 			test="";
-
+			
+			window.onload = init;
+			
+			function init(){
 			startpage();
+			fillList();
+			}
 
 			function startPrint(){
 				if (document.getElementById("printables").selectedIndex <0){
@@ -223,7 +228,7 @@
 					<area  alt="" title="WPS Setup" shape="rect" coords="252,268,548,324" style="outline:none;" target="_self" onClick="startPrint();"    />
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
-				<img name="wifi" id="wifi" class="wifi" src="images/wifi-0.png">
+				<img name="wifi" id="wifi" class="wifi" src="images/pixel.png">
 				<div class="deletecontainer collapse" id="deletecontainer"><img name="delete" id="delete" class="delete" src="images/smallbuttonANIM-red.png" onclick="dodeletecheck();"><span class="glyphicon glyphicon-remove-circle deleteglyph"></span></div>
 				<img name="homehighlight" id="homehighlight" class="homehighlight" src="images/homehighlightANIM.png" onClick="location.href='index.html';">
 				<img name="bigbuttonhighlight" id="bigbuttonhighlight" class="bigbuttonhighlight" src="images/bigbuttonANIM.png" onClick="startPrint();">
@@ -235,10 +240,8 @@
 				<div name="deletecheck" id="deletecheck" class="deletecheck">
 					<div id="deletewarn" role="alert" class="alert alert-warning collapse" >
 						<div id="deletequery"></div>
-						
 							<button type="button" class="btn btn-danger btn-block btn-lg" onclick="deletefile();">Yes</button>
 							<button type="button" class="btn btn-default btn-block btn-lg" onclick="$('#deletewarn').hide();">No</button>
-
 					</div>
 				</div>
             </div>

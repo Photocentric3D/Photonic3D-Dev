@@ -22,15 +22,16 @@ import org.area515.util.IOUtilities.SearchStyle;
 
 public class LinuxNetworkManager implements NetworkManager {
 	public static final String WIFI_REGEX = "\\s*([A-Fa-f0-9:]+)\\s+(-?\\d+)\\s+(-?\\d+)\\s+([\\[\\]\\+\\-\\w]+)\\t(.+)";
-	public static String currentSSID = null;
 	
 	public String getCurrentSSID(){
-		if (this.currentSSID == null){
-			//need to populate. Can use iwgetid -r to get a basic SSID
-			String[] output = IOUtilities.executeNativeCommand(new String[]{"iwgetid", "-r"}, null, (String) null);
-			currentSSID = output[0];
+		// Can use iwgetid -r to get a basic SSID
+		String[] output = IOUtilities.executeNativeCommand(new String[]{"iwgetid", "-r"}, null, (String) null);
+		if (output.length > 0) {
+			return output[0];
 		}
-		return currentSSID;
+		else {
+			return null;
+		}
 	}
 	
 	public Map getMACs(){
@@ -234,7 +235,6 @@ public class LinuxNetworkManager implements NetworkManager {
 				throw new IllegalArgumentException("Unable to set password on wifi network.");
 			}
 		}
-		this.currentSSID=wireless.getSsid();
 	}
 	
 	public void setHostname(String newHostname){

@@ -75,7 +75,7 @@
 			if (postTargetPrinter) {
 			   $http.post(service, targetPrinter).then(
 	       			function(response) {
-	        			$scope.$emit("MachineResponse", {machineResponse: {command:"Settings Saved!"+newHostname, message:"Your new settings have been saved. Please start the printer to make use of these new settings!.", response:true}, successFunction:null, afterErrorFunction:null});
+	        			$scope.$emit("MachineResponse", {machineResponse: {command:"Settings Saved!", message:"Your new settings have been saved. Please start the printer to make use of these new settings!.", response:true}, successFunction:null, afterErrorFunction:null});
 	       			}, 
 	       			function(response) {
  	        			$scope.$emit("HTTPError", {status:response.status, statusText:response.data});
