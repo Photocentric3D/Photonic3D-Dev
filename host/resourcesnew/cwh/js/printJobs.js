@@ -16,9 +16,10 @@
 		function refreshSelectedPrintJob(printJobList) {
         	var foundPrintJob = false;
         	
-        	for (printJob of printJobList) {
-        		if (controller.currentPrintJob != null && printJob.id === controller.currentPrintJob.id) {
-        			controller.currentPrintJob = printJob;
+        	for (var i = 0; i < printJobList.length; i++) {
+				// had to change as for ___ of ____ isn't supported in IE11 :(
+        		if (controller.currentPrintJob != null && printJobList[i].id === controller.currentPrintJob.id) {
+        			controller.currentPrintJob = printJobList[i];
         			foundPrintJob = true;
         		}
         	}

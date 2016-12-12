@@ -44,6 +44,7 @@
 				startpage();
 				getLayerData();
 			}
+			
 			function changez(height) {
 				if ((parseInt(document.getElementById("zdata").innerHTML)+parseInt(height))<200) {
 					$.getJSON('../services/printers/moveZ/'+printerName+'/'+height);
@@ -60,18 +61,29 @@
 					}, 5000);
 				}
 			}
+			
 			function homez() {
 				$.getJSON('../services/printers/homeZ/'+printerName);
 				document.getElementById("zdata").innerHTML= 0;
 				$('#zheight').show();
 			}
+			
 			function getLayerData(){
-				layerdata = 0;
-				$.getJSON("../services/printers/get/"+printerName).done( function (data) {
-                        layerdata = parseInt(data.SliceHeight)*1000;
-                        });
-				document.getElementById("ldata").innerHTML = layerdata;
+				var Ink = {};
+				var layerdata = 0;
+				$.getJSON('../services/printers/get/'+printerName).done(function(data){
 				
+				var Ink = data.configuration.slicingProfile.InkConfig;
+				var selected = data.configuration.slicingProfile.SelectedInk;
+					Ink.forEach(function(el){
+						//create a java multidimensional array
+						if (selected === el.Name) {
+							layerdata = parseFloat(el.SliceHeight)*1000;
+							document.getElementById("ldata").innerHTML = layerdata;
+						}
+					});
+				});
+				document.getElementById("ldata").innerHTML = layerdata;
 			}
 			</script>
         <div class="screen">

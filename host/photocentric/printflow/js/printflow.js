@@ -11,14 +11,22 @@ var signalstrength;
 function startpage(){
         //handles page setup and the common things across all pages:
         
+        // do the first updates
+        wifiupdate();
+        document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
+        printredirect();
+       
         setInterval(function() {
                 //time handling/updating
 		document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
-                //wifi updating
-                wifiupdate();
                 //redirect to print dialogue on user initiating a print
                 printredirect();
 	}, 1000);
+        
+        setInterval(function() {
+                //wifi updating
+                wifiupdate();
+	}, 2000);
 }
 
 function wifiupdate(){
@@ -78,6 +86,9 @@ function printredirect(){
                                 elapsedtime = (data.elapsedTime);
                                 averageslicetime = (data.averageSliceTime);
                                 starttime = (data.startTime);
+                                if ((typeof Cookies.get('laststartedjob') === 'undefined')||(Cookies.get('laststartedjob')!=jobId)){
+                                        Cookies.set('laststartedjob',jobId);
+                                }
 			}
 			else{
 				//not printing

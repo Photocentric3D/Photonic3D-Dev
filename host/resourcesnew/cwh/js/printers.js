@@ -19,16 +19,17 @@
         	} else {
         		var printersStarted = 0;
         		var currPrinter = null;
-	        	for (printer of printerList) {
+	        	for (var i = 0; i < printerList.length; i++) {
+				// had to change as for ___ of ____ isn't supported in IE11 :(
 	        		if (printersStarted > 1) {
 	        			break;
 	        		}
-	        		if (printer.started) {
+	        		if (printerList[i].started) {
 	        			printersStarted += 1;
-	        			currPrinter = printer;
+	        			currPrinter = printerList[i];
 	        		}
-	        		if (controller.currentPrinter != null && printer.configuration.name === controller.currentPrinter.configuration.name) {
-	        			controller.currentPrinter = printer;
+	        		if (controller.currentPrinter != null && printerList[i].configuration.name === controller.currentPrinter.configuration.name) {
+	        			controller.currentPrinter = printerList[i];
 	        			foundPrinter = true;
 	        		}
 	        	}

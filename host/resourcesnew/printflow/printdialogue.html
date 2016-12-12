@@ -187,7 +187,7 @@
 			initialsliceurl="";
 			sliceHeight = 0; // set this as 0 to be safe!
 			maxHeight = 0; // set this as 0 too to be safe!
-			
+						
 			function init(){
 				$.getJSON('../services/printJobs/getByPrinterName/'+printerName)
 				.done(function(data){
@@ -234,6 +234,17 @@
 				setInterval(function() {
 					endtime=starttime+elapsedtime+(averageslicetime*(totalslices-currentslice));
 					document.getElementById("vartimeelapsed").innerHTML = moment.duration(endtime-starttime).humanize();
+					
+					// safeguard for job completion
+					if (typeof Cookies.get('laststartedjob') !== 'undefined'){
+						$.getJSON('/services/printJobs/get/'+Cookies.get('laststartedjob'))
+							.done(function(data){
+								if (data.status == "Completed") {
+									window.location.href=("error.html?type=success&errorname=Print Complete!&errordetails=The print of <b>"+data.jobName+"</b> [Job ID: "+data.id+"] has completed, taking "+moment.duration(data.elapsedTime).humanize()+" altogether.&errordetails2=Please remove the print from the platform and store any uncured resin for your next print.");
+								}
+							});
+					}
+					
 					if (currentslice > 0) {
 						if (currentslice<totalslices){
 							document.getElementById("vartimeremaining").innerHTML = moment.duration(endtime-moment().valueOf()).humanize();
@@ -251,6 +262,7 @@
 								}
 							}
 							window.location.href=("error.html?type=success&errorname=Print Complete!&errordetails=The print of <b>"+runningjobName+"</b> [Job ID: "+jobId+"] has completed, taking "+moment.duration(endtime-starttime).humanize()+" altogether.&errordetails2=Please remove the print from the platform and store any uncured resin for your next print.");
+
 						}
 					}
 	
@@ -260,7 +272,7 @@
 				}, 2500);
 			}
 			
-			
+			//  if ((typeof Cookies.get('lastfailedjob') === 'undefined')||(Cookies.get('lastfailedjob')!=jobId)){
 			
 
 			

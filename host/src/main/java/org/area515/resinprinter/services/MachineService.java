@@ -490,12 +490,12 @@ public class MachineService {
 	@Path("setNetworkHostname/{hostname}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public MachineResponse startProjector(@PathParam("hostname") String host) {
-    	Pattern p = Pattern.compile("[^a-zA-Z0-9]");
-    	if (!((Boolean)p.matcher(host).find())){
+    	if (Pattern.matches("^[a-zA-Z0-9\\-]+$", host)){
     		try {
     	    	Class<NetworkManager> managerClass = HostProperties.Instance().getNetworkManagerClass();
     			NetworkManager networkManager = managerClass.newInstance();
     			networkManager.setHostname(host);
+    			logger.debug("Set new hostname to: " + host);
     			return new MachineResponse("setNetworkHostname", true, "Changed hostname to:" + host);
     		} catch (InstantiationException | IllegalAccessException e) {
     			logger.error("Error setting new hostname", e);
@@ -503,8 +503,8 @@ public class MachineService {
     		}
     	}
     	else{
-    		logger.error("Error retrieving network host configuration");
-    		return new MachineResponse("setNetworkHostname", false, "Hostname \""+host+"\" contained invalid characters");
+    		logger.error("Error setting new hostname - RegEx failed");
+    		throw new IllegalArgumentException("Hostname \""+host+"\" contained invalid characters. Please retry with uppercase, lowercase and numeric characters and hyphens [-] only.");
     	}
     }
 	
