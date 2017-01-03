@@ -4,11 +4,12 @@
 # !!! Not needed on 4kscreen !!!
 
 while true; do
-  if [ "ps -A | grep kweb" ]
-    then
-      if [ $(env DISPLAY=:0 xprop -root _NET_ACTIVE_WINDOW | cut -d " " -f5) != $(env DISPLAY=:0 XAUTHORITY=/home/pi/.Xauthority wmctrl -l | grep kweb | cut -d " " -f1) ]
-        then
-          env DISPLAY=:0 XAUTHORITY=/home/pi/.Xauthority wmctrl -a "kweb"
+  if [ "ps -A | grep kweb" ]; then
+      if [ -e /home/pi/.Xauthority ]; then
+        if [ $(env DISPLAY=:0 xprop -root _NET_ACTIVE_WINDOW | cut -d " " -f5) != $(env DISPLAY=:0 XAUTHORITY=/home/pi/.Xauthority wmctrl -l | grep kweb | cut -d " " -f1) ]
+          then
+            env DISPLAY=:0 XAUTHORITY=/home/pi/.Xauthority wmctrl -a "kweb"
+        fi
       fi
   fi
   sleep 1s
