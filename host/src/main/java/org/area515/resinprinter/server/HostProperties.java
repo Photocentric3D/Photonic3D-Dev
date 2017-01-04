@@ -573,10 +573,19 @@ public class HostProperties {
 	}
 	
 	public HostInformation loadHostInformation() {
+		Class<NetworkManager> managerClass = HostProperties.Instance().getNetworkManagerClass();
+		String deviceName = "Daylight Resin Printer";
+		try{
+			NetworkManager networkManager = managerClass.newInstance();
+            		deviceName = networkManager.getHostname();
+		}
+		catch (InstantiationException | IllegalAccessException e) {
+            		logger.error("Error retrieving network host configuration", e);
+		}
 		Properties configurationProperties = getMergedProperties();
 		HostInformation settings = new HostInformation(
-				configurationProperties.getProperty("deviceName", "Photonic 3D Multiprint Host"),
-				configurationProperties.getProperty("manufacturer", "Wes Gilster"));
+				configurationProperties.getProperty("deviceName", deviceName),
+				configurationProperties.getProperty("manufacturer", "Photocentric3D"));
 		return settings;
 	}
 	
