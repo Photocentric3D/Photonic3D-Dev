@@ -33,7 +33,7 @@ function timestamp {
 #log.scrout
 echo "["$(timestamp)"] Starting script"
 #log.screrr
-echo "["$(timestamp)"] Starting script"
+echo "["$(timestamp)"] Starting script" >&2
 
 # require superuser
 if [[ $UID != 0 ]]; then
