@@ -197,8 +197,8 @@
 					totalslices=parseInt(data.totalSlices);
                     jobId = (data.id);
                     runningjobName = (data.jobName);
-                    totalslices = (data.totalSlices);
-					currentslice = (data.currentSlice);
+                    totalslices = parseInt(data.totalSlices);
+					currentslice = parseInt(data.currentSlice);
 					sliceHeight = parseFloat(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].SliceHeight);
 					maxHeight = parseFloat(data.printer.configuration.machineConfig.PlatformZSize);
 					firstlayertime=parseInt(data.printer.configuration.slicingProfile.InkConfig[data.printer.configuration.slicingProfile.selectedInkConfigIndex].FirstLayerTime);
@@ -215,6 +215,7 @@
 					document.getElementById("layerslice").src=initialsliceurl="../services/printJobs/currentSliceImage/"+jobId;
 					document.getElementById("jobid").innerHTML=jobId;
 					document.getElementById("filename").innerHTML=runningjobName;
+					Cookies.set('laststartedjob',jobId);
 				})
 				.fail(function(){
 					jobId="FAKEe43a-f84f-446c-ade8-70182988d92c";
@@ -225,7 +226,7 @@
 					document.getElementById("layerslice").src="http://www.kudo3d.com/wp-content/uploads/2015/07/Pranav_Pancha_model-of-the-Eiffel-Tower.gif";
 					document.getElementById("jobid").innerHTML=jobId;
 					document.getElementById("filename").innerHTML=runningjobName;
-					document.getElementById("vartimeelapsed").innerHTML = moment.duration(endtime-starttime).humanize();
+					document.getElementById("vartimeelapsed").innerHTML = moment.duration(moment().valueOf()-starttime).humanize();
 				});
 				startpage();
 				document.getElementById("filename").innerHTML=runningjobName;
@@ -233,7 +234,7 @@
 				
 				setInterval(function() {
 					endtime=starttime+elapsedtime+(averageslicetime*(totalslices-currentslice));
-					document.getElementById("vartimeelapsed").innerHTML = moment.duration(endtime-starttime).humanize();
+					document.getElementById("vartimeelapsed").innerHTML = moment.duration(moment().valueOf()-starttime).humanize();
 					
 					// safeguard for job completion
 					if (typeof Cookies.get('laststartedjob') !== 'undefined'){
@@ -305,6 +306,7 @@
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
 				<img name="wifi" id="wifi" class="wifi" src="images/pixel.png">
+				<img name="printerstatus" id="printerstatus" class="printerstatus" src="images/pixel.png">
 				<div name="cancellabel" class="cancellabel" id="cancellabel" onClick="cancel();">Cancel</div>
 				<div name="pause" class="pause" id="pause" onClick="pause();">Pause</div>
 				
