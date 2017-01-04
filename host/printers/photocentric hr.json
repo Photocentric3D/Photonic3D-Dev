@@ -46,7 +46,7 @@
         "gCodePreslice": null,
         "gCodeLift": "G1 Z${ZLiftDist} F${ZLiftRate};\nG1 Z-${(ZLiftDist - LayerThickness)} F180;\nM17;\n;<delay> 1500;",
         "gCodeShutter": null,
-        "name": "Daylight Resin Hard - Red 25 micron",
+        "name": "LC HR Slicing",
         "zliftDistanceGCode": null,
         "zliftSpeedGCode": null,
         "selectedInkConfigIndex": 0,
@@ -169,7 +169,7 @@
           ]
       },
       "MachineConfigurationName": "Photocentric 10",
-      "SlicingProfileName": "Daylight Resin Hard - Red 25 micron",
+      "SlicingProfileName": "LC HR Slicing",
       "AutoStart": true,
       "Calibrated": false
     },
