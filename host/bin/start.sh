@@ -27,6 +27,26 @@ function timestamp {
   echo $(date "+%d/%m/%y %H:%M:%S")
 }
 
+function showUpdateScreen {
+	if [ ! -e /usr/bin/convert ]; then
+		#belt and braces to ensure installation of imagemagick.
+		echo "["$(timestamp)"] ImageMagick not installed, installing" >&2
+		apt-get install --yes imagemagick
+	fi
+	if [ -e /opt/cwh/os/Linux/armv61/pdp ]; then
+		echo "["$(timestamp)"] Generating update screen"
+		width=`identify -format %w /etc/updatingBW.png`
+		convert /etc/updatingBW.png \
+			-background '#0008' -fill white -gravity center -size ${width}x30 caption:"Printer: $(hostname).local"  -gravity north  -compose over  -composite  \
+			-background '#0008' -fill white -gravity center -size ${width}x30 caption:"Status: $1" -gravity south -compose over  -composite \
+ 			/etc/photocentric/updating.ppm
+		echo "["$(timestamp)"] Displaying update screen"
+		#give it a stupidly long time like 5000 seconds. Launch it as a child process too
+		/opt/cwh/os/Linux/armv61/pdp 1 5000 /etc/photocentric/updating.ppm &
+		export pdpprocessid=$!
+	fi
+}
+
 ##### MAIN #####
 
 #TimeStamp the output
@@ -119,6 +139,9 @@ if [ $(networkup 20 www.github.com) -eq 1 ]; then
 else 
 	if [ ! -f "/usr/lib/jni/librxtxSerial.so" ]; then
 		echo "["$(timestamp)"] Installing RxTx"
+		if [ ! -v pdpprocessid ]; then
+			showUpdateScreen
+		fi
 		apt-get install --yes --force-yes librxtx-java
 	fi
 
@@ -137,6 +160,9 @@ else
 	fi
 
 	if [ "$javaMinorVersion" -lt 8 -a "$javaMajorVersion" -le 1 ]; then
+		if [ ! -v pdpprocessid ]; then
+			showUpdateScreen "Installing Java"
+		fi
 		downloadJavaFile=`echo ${javaURL} | awk -F/ '{print $(NF)}'`
 		echo "["$(timestamp)"] Either Java is not installed, or an incorrect version of Java is installed. Installing from this URL: ${javaURL}"
 		mkdir -p /usr/lib/jvm
@@ -172,6 +198,11 @@ else
 	echo "["$(timestamp)"] Network Tag: "${NETWORK_TAG}
 
 	if [ -f ${downloadPrefix}.*.zip ]; then
+		if [ -v pdpprocessid ]; then
+			kill $pdpprocessid
+		fi
+		showUpdateScreen "Installing offline version of PrintFlow"
+		
 		OFFLINE_FILE=$(ls ${downloadPrefix}.*.zip)
 		echo "["$(timestamp)"] Performing offline install of ${OFFLINE_FILE}"
 
@@ -187,6 +218,11 @@ else
 		echo "["$(timestamp)"] Couldn't fetch version from GitHub, launching existing install."
 		echo "["$(timestamp)"] WARN: Unable to get version from GitHub" >&2
 	elif [ "${NETWORK_TAG}" != "${LOCAL_TAG}" -o "$2" == "force" ]; then
+		if [ -v pdpprocessid ]; then
+			kill $pdpprocessid
+		fi
+		showUpdateScreen "Downloading version: $NETWORK_TAG"
+		
 		echo "["$(timestamp)"] Installing latest version of ${downloadPrefix}: ${NETWORK_TAG}"
 
 		DL_URL=$(curl -L -s https://api.github.com/repos/${repo}/releases/latest | grep 'browser_' | cut -d\" -f4 | grep -- -${NETWORK_TAG})
@@ -199,7 +235,10 @@ else
 			exit 1
 		fi
 
-
+		if [ -v pdpprocessid ]; then
+			kill $pdpprocessid
+		fi
+		showUpdateScreen "Installing version: $NETWORK_TAG"
 
 		rm -r ${installDirectory}
 		mkdir -p ${installDirectory}
@@ -224,7 +263,10 @@ else
   
 fi
 
-
+if [ -v pdpprocessid ]; then
+	echo "["$(timestamp)"] Hiding update screen"
+	kill $pdpprocessid
+fi
 
 echo "["$(timestamp)"] Turning off screen saver and power saving"
 xset s off         # don't activate screensaver
