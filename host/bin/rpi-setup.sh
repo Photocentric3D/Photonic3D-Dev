@@ -261,7 +261,6 @@ if [ -e printerprofile.json ]; then
 	curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json "http://localhost:$portno/services/printers/save"
 fi
 
-
 # Change hostname
 # left this 'til last for good reasons. Keep it last now.
 export hostn=$(cat /etc/hostname)
