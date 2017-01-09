@@ -190,8 +190,36 @@ html, body {
 }
 .wifi{
 	position: absolute; 
-	top: 30px; 
+	top: 20px; 
 	left: 740px;
+	width: 30px;
+	height: 30px;
+	user-drag: none; 
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+.printerstatus{
+	position: absolute; 
+	top: 20px; 
+	left: 704px;
+	width: 25px;
+	height: 35px;
+	user-drag: none; 
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+.updatestatus{
+	position: absolute; 
+	top: 20px; 
+	left: 668px;
+	width: 30px;
+	height: 30px;
 	user-drag: none; 
 	user-select: none;
 	-moz-user-select: none;

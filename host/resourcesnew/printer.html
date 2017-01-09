@@ -65,7 +65,7 @@
 			</select>
 		</div>
 		<div class="list-group-item">
-			<label>Ink Configuration</label>
+			<label>Resin Configuration</label>
 			<h4 class="list-group-item-heading">{{settingsController.currentPrinter.configuration.slicingProfile.SelectedInk}}
 			<div class="btn-group pull-right" style=" padding-bottom: 5px;" >
 				<button class="btn btn-primary" ng-disabled="settingsController.currentPrinter.started" ng-click="savePrinter(settingsController.currentPrinter)" >
@@ -77,7 +77,7 @@
 				ng-model="settingsController.currentPrinter.configuration.slicingProfile.selectedInkConfigIndex"
 				ng-options="index*1 as item.Name for (index, item) in settingsController.currentPrinter.configuration.slicingProfile.InkConfig track by index"
 				ng-change="settingsController.currentPrinter.configuration.slicingProfile.SelectedInk=settingsController.currentPrinter.configuration.slicingProfile.InkConfig[settingsController.currentPrinter.configuration.slicingProfile.selectedInkConfigIndex].Name">
-			  <option value="">Select an ink configuration...</option>
+			  <option value="">Select a resin configuration...</option>
 			</select>
 		</div>
 		<div class="list-group-item">

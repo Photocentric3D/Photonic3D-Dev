@@ -27,7 +27,7 @@ return $(dpkg-query -W -f='${Status}\n' $1 | head -n1 | awk '{print $3;}' | grep
 echo "Getting updates and installing utilities"
 apt-get update
 apt-get -y upgrade
-apt-get -y install rpi-chromium-mods dos2unix curl librxtx-java fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl lxterminal
+apt-get -y install imagemagick rpi-chromium-mods dos2unix curl librxtx-java fbi git rsync rpi-update matchbox-window-manager uzbl xinit nodm Xorg unclutter feh jq tint2 wmctrl lxterminal
 apt-get -fy install
 
 # Check if a few of our packages installed. If it hasn't, FAIL OUT and do not progress further into the setup script.
@@ -92,10 +92,19 @@ rsync -avr photonic-repo/host/common/ /
 cp photonic-repo/host/os/Linux/armv61/pdp /opt/cwh/os/Linux/armv61/pdp #copy display manager for screen + curing screen printers
 cp photonic-repo/host/resourcesnew/printflow/holdingpage.html /home/pi/holdingpage.html #copy holdingpage for fallback
 #install splash screen
-chown root /etc/splash.png
-chmod 777 /etc/splash.png
-chmod a+x /etc/init.d/aasplashscreen
-insserv /etc/init.d/aasplashscreen
+if [ -e /etc/splash.png ]; then
+	chown root /etc/splash.png
+	chmod 777 /etc/splash.png
+fi
+if [ -e /etc/updating.png ]; then
+	chown root /etc/updating.png
+	chmod 777 /etc/updating.png
+fi
+
+if [ -e /etc/init.d/aasplashscreen ]; then
+	chmod a+x /etc/init.d/aasplashscreen
+	insserv /etc/init.d/aasplashscreen
+fi
 
 echo "disabling screen power down"
 if [ -e "/etc/default/nodm" ]
@@ -211,7 +220,6 @@ if [ "$build" == "4kscreen" ]
 		#TODO - add network time propogation to support 4ktouch. Currently built into WG images, but not setup by shell script yet
 		echo "setting up Photocentric Pro profile"
 		wget https://raw.githubusercontent.com/${repo}/master/host/printers/Photocentric%20Pro.json -O printerprofile.json
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
 		echo var printerName = \"Photocentric Pro\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js
 fi
 
@@ -234,7 +242,6 @@ if [ "$build" == "LC HR" ]
 
 		echo "installing Photocentric Liquid Crystal HR profile"
 		wget https://raw.githubusercontent.com/${repo}/master/host/printers/photocentric%20hr.json -O printerprofile.json
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
 		echo var printerName = \"LC HR\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js
 fi
 
@@ -247,9 +254,13 @@ if [ "$build" == "Photocentric 10" ]
 		sudo sh -c 'echo lcd_rotate=2 >> /boot/config.txt'
 		echo "installing Photocentric 10 profile"
 		wget https://raw.githubusercontent.com/${repo}/master/host/printers/photocentric%2010.json -O printerprofile.json
-		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json "http://localhost:$portno/services/printers/save"
 		echo var printerName = \"Photocentric 10\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js
 fi
+
+if [ -e printerprofile.json ]; then
+	curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json "http://localhost:$portno/services/printers/save"
+fi
+
 
 # Change hostname
 # left this 'til last for good reasons. Keep it last now.

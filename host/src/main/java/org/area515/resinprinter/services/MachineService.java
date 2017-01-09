@@ -460,7 +460,7 @@ public class MachineService {
 	 }
     
  // Early modifications to support fetching of WiFi signal strength. Feel free to discard or replace as necessary.
-    @ApiOperation(value = "Enumerates Printer interfaces' IPs, MACs, and HostName information.")
+    @ApiOperation(value = "Enumerates Printer interfaces' IPs, MACs, HostName and SSID information.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
             @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
@@ -475,6 +475,7 @@ public class MachineService {
 			networkHost.put("MACs", networkManager.getMACs());
 			networkHost.put("IPs", networkManager.getIPs());
 			networkHost.put("Hostname",networkManager.getHostname());
+			networkHost.put("SSID",networkManager.getCurrentSSID());
 			return networkHost;
 		} catch (InstantiationException | IllegalAccessException e) {
 			logger.error("Error retrieving network host configuration", e);
