@@ -15,10 +15,12 @@ fi
 
 # Dev version 0.38
 if [ ! -e /etc/updatingBW.png ]; then
+	sudo wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/common/etc/updatingBW.png
 	sudo mv updatingBW.png /etc/
 fi
 # Dev version 0.38
 if [ ! -e /etc/updating.png ]; then
+	sudo wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/common/etc/updating.png
 	sudo mv updating.png /etc/
 fi
 
