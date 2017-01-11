@@ -166,7 +166,7 @@
             "NumberofBottomLayers": 4,
             "ResinPriceL": 45
           },
-	 	{
+			{
              "PercentageOfPrintMaterialConsideredEmpty": 10,
 -            "Name": "Firm Amber 100 Micron - old",
 -            "SliceHeight": 0.1,
@@ -199,22 +199,16 @@
 -            "SliceHeight": 0.1,
 -            "LayerTime": 35000,
 -            "FirstLayerTime": 200000,
-+            "Name": "Castable 50 Microns",
-+            "SliceHeight": 0.05,
-+            "LayerTime": 20000,
-+            "FirstLayerTime": 150000,
-             "NumberofBottomLayers": 4,
++            "NumberofBottomLayers": 4,
              "ResinPriceL": 45
            },
 -          {
 +		  {
              "PercentageOfPrintMaterialConsideredEmpty": 10,
 -            "Name": "old Firm Green 100 Micron",
-+            "Name": "Castable 100 Microns",
-             "SliceHeight": 0.1,
++            "SliceHeight": 0.1,
 -            "LayerTime": 35000,
-+            "LayerTime": 25000,
-             "FirstLayerTime": 200000,
++            "FirstLayerTime": 200000,
              "NumberofBottomLayers": 4,
              "ResinPriceL": 45
            },
@@ -224,9 +218,6 @@
 -            "Name": "old Firm Grey 100 Micron",
 -            "SliceHeight": 0.1,
 -            "LayerTime": 35000,
-+            "Name": "Firm Amber 50 Microns",
-+            "SliceHeight": 0.05,
-+            "LayerTime": 16000,
              "FirstLayerTime": 200000,
              "NumberofBottomLayers": 4,
              "ResinPriceL": 45
@@ -237,8 +228,7 @@
 -            "Name": "old Firm Red 100 Micron",
 +            "SliceHeight": 0.1,
 -            "LayerTime": 35000,
-+            "LayerTime": 20000,
-             "FirstLayerTime": 200000,
++            "FirstLayerTime": 200000,
              "NumberofBottomLayers": 4,
              "ResinPriceL": 45
            },
@@ -248,9 +238,6 @@
 -            "Name": "old Flexible Amber 100 Micron",
 -            "SliceHeight": 0.1,
 -            "LayerTime": 38000,
-+            "Name": "Firm Color 50 Microns",
-+            "SliceHeight": 0.05,
-+            "LayerTime": 20000,
              "FirstLayerTime": 200000,
              "NumberofBottomLayers": 4,
              "ResinPriceL": 45
@@ -259,9 +246,7 @@
 +		  {
              "PercentageOfPrintMaterialConsideredEmpty": 10,
 -            "Name": "old Flexible Black 100 Micron",
-+            "Name": "Firm Color 100 Microns",
              "SliceHeight": 0.1,
--            "LayerTime": 45000,
 +            "LayerTime": 25000,
              "FirstLayerTime": 200000,
              "NumberofBottomLayers": 4,
@@ -273,9 +258,6 @@
 -            "Name": "old Flexible Blue 100 Micron",
 -            "SliceHeight": 0.1,
 -            "LayerTime": 45000,
-+            "Name": "Hard Amber 50 Microns",
-+            "SliceHeight": 0.05,
-+            "LayerTime": 16000,
              "FirstLayerTime": 200000,
              "NumberofBottomLayers": 4,
              "ResinPriceL": 45
@@ -283,10 +265,8 @@
 -          {
 +		  {
              "PercentageOfPrintMaterialConsideredEmpty": 10,
--            "Name": "old Flexible Cream 100 Micron",
 +            "SliceHeight": 0.1,
 -            "LayerTime": 45000,
-+            "LayerTime": 20000,
              "FirstLayerTime": 200000,
              "NumberofBottomLayers": 4,
              "ResinPriceL": 45
@@ -297,9 +277,6 @@
 -            "Name": "old Flexible Green 100 Micron",
 -            "SliceHeight": 0.1,
 -            "LayerTime": 45000,
-+            "Name": "Hard Color 50 Microns",
-+            "SliceHeight": 0.05,
-+            "LayerTime": 20000,
              "FirstLayerTime": 200000,
              "NumberofBottomLayers": 4,
              "ResinPriceL": 45
