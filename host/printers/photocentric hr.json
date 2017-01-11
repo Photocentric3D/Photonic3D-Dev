@@ -44,7 +44,7 @@
         "gCodeHeader": "G91;\nM17;\nG1 Z10 F50;\nG1 Z-10 F50;",
         "gCodeFooter": "M18",
         "gCodePreslice": null,
-        "gCodeLift": "G1 Z${ZLiftDist} F${ZLiftRate};\nG1 Z-${(ZLiftDist - LayerThickness)} F180;\nM17;\n;<delay> 1500;",
+        "gCodeLift": "G1 Z${ZLiftDist} F${ZLiftRate};\nG1 Z-${(ZLiftDist - LayerThickness)} F10;\nM17;\n;<delay> 1500;",
         "gCodeShutter": null,
         "name": "LC HR Slicing",
         "zliftDistanceGCode": null,
@@ -70,7 +70,7 @@
         "FlipX": false,
         "FlipY": true,
         "ZLiftDistanceCalculator": "var minLift = 4.5;\nvar value = 8.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = minLift  +  0.0015*Math.pow($buildAreaMM,1);\n}\nvalue",
-        "ZLiftSpeedCalculator": "var value = 50.0;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = 100.0 - 0.02 * Math.pow($buildAreaMM,1);\n}\nif (value < 30.0){\n\tvalue = 30.0;\n}\nvalue",
+        "ZLiftSpeedCalculator": "var value = 10.0;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = 100.0 - 0.02 * Math.pow($buildAreaMM,1);\n}\nif (value < 30.0){\n\tvalue = 30.0;\n}\nvalue",
         "ExposureTimeCalculator": "var value = $FirstLayerTime;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = $LayerTime\n}\nvalue",
         "SelectedInk": "Hard Amber 50 Microns",
         "MinTestExposure": 0,
@@ -165,7 +165,280 @@
             "FirstLayerTime": 200000,
             "NumberofBottomLayers": 4,
             "ResinPriceL": 45
-          }
+          },
+	 	{
+             "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "Firm Amber 100 Micron - old",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 28000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "Firm Black 100 Micron - old",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 35000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "Firm Blue 100 Micron - old",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 35000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Firm Cream 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 35000,
+-            "FirstLayerTime": 200000,
++            "Name": "Castable 50 Microns",
++            "SliceHeight": 0.05,
++            "LayerTime": 20000,
++            "FirstLayerTime": 150000,
+             "NumberofBottomLayers": 4,
+             "ResinPriceL": 45
+           },
+-          {
++		  {
+             "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Firm Green 100 Micron",
++            "Name": "Castable 100 Microns",
+             "SliceHeight": 0.1,
+-            "LayerTime": 35000,
++            "LayerTime": 25000,
+             "FirstLayerTime": 200000,
+             "NumberofBottomLayers": 4,
+             "ResinPriceL": 45
+           },
+-          {
++		  {
+             "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Firm Grey 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 35000,
++            "Name": "Firm Amber 50 Microns",
++            "SliceHeight": 0.05,
++            "LayerTime": 16000,
+             "FirstLayerTime": 200000,
+             "NumberofBottomLayers": 4,
+             "ResinPriceL": 45
+           },
+-          {
++		  {
+             "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Firm Red 100 Micron",
++            "SliceHeight": 0.1,
+-            "LayerTime": 35000,
++            "LayerTime": 20000,
+             "FirstLayerTime": 200000,
+             "NumberofBottomLayers": 4,
+             "ResinPriceL": 45
+           },
+-          {
++		  {
+             "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Flexible Amber 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 38000,
++            "Name": "Firm Color 50 Microns",
++            "SliceHeight": 0.05,
++            "LayerTime": 20000,
+             "FirstLayerTime": 200000,
+             "NumberofBottomLayers": 4,
+             "ResinPriceL": 45
+           },
+-          {
++		  {
+             "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Flexible Black 100 Micron",
++            "Name": "Firm Color 100 Microns",
+             "SliceHeight": 0.1,
+-            "LayerTime": 45000,
++            "LayerTime": 25000,
+             "FirstLayerTime": 200000,
+             "NumberofBottomLayers": 4,
+             "ResinPriceL": 45
+           },
+-          {
++		  {
+             "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Flexible Blue 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 45000,
++            "Name": "Hard Amber 50 Microns",
++            "SliceHeight": 0.05,
++            "LayerTime": 16000,
+             "FirstLayerTime": 200000,
+             "NumberofBottomLayers": 4,
+             "ResinPriceL": 45
+           },
+-          {
++		  {
+             "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Flexible Cream 100 Micron",
++            "SliceHeight": 0.1,
+-            "LayerTime": 45000,
++            "LayerTime": 20000,
+             "FirstLayerTime": 200000,
+             "NumberofBottomLayers": 4,
+             "ResinPriceL": 45
+           },
+-          {
++		  {
+             "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Flexible Green 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 45000,
++            "Name": "Hard Color 50 Microns",
++            "SliceHeight": 0.05,
++            "LayerTime": 20000,
+             "FirstLayerTime": 200000,
+             "NumberofBottomLayers": 4,
+             "ResinPriceL": 45
+           },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Flexible Grey 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 45000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Flexible Red 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 42000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Hard Amber 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 22000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Hard Black 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 32000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Hard Blue 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 30000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Hard Cream 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 32000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Hard Green 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 30000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Hard Grey 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 30000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Hard Red 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 30000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Low Shrinkage Amber 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 28000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Low Shrinkage Black 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 40000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Low Shrinkage Blue 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 35000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Low Shrinkage Cream 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 35000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Low Shrinkage Green 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 35000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          },
+-          {
+-            "PercentageOfPrintMaterialConsideredEmpty": 10,
+-            "Name": "old Low Shrinkage Grey 100 Micron",
+-            "SliceHeight": 0.1,
+-            "LayerTime": 35000,
+-            "FirstLayerTime": 200000,
+-            "NumberofBottomLayers": 4,
+-            "ResinPriceL": 45
+-          }
           ]
       },
       "MachineConfigurationName": "Photocentric 10",
