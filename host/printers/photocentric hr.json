@@ -44,7 +44,7 @@
   			"gCodeHeader": "G91;\nM17;\nG1 Z10 F50;\nG1 Z-10 F50;",
   			"gCodeFooter": "M18",
   			"gCodePreslice": null,
-  			"gCodeLift": "G1 Z1.0 F50.0;\n;<delay> 3000;\nG1 Z-(1.0 - {$LayerThickness}) F10;\nM17;\n;<delay> 7000;",
+  			"gCodeLift": "G1 Z1.0 F50.0;\n;<delay> 3000;\nG1 Z-${(1.0 - LayerThickness)} F10;\nM17;\n;<delay> 7000;",
   			"gCodeShutter": null,
   			"name": "LC HR Slicing",
   			"zliftDistanceGCode": null,
