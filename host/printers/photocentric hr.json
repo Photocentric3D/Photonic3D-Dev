@@ -79,81 +79,81 @@
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "Castable 50 Microns",
   				"SliceHeight": 0.05,
-  				"LayerTime": 20000,
-  				"FirstLayerTime": 150000,
-  				"NumberofBottomLayers": 4,
+  				"LayerTime": 17000,
+  				"FirstLayerTime": 80000,
+  				"NumberofBottomLayers": 20,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "Castable 100 Microns",
   				"SliceHeight": 0.1,
   				"LayerTime": 25000,
-  				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"FirstLayerTime": 80000,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "Firm Amber 50 Microns",
   				"SliceHeight": 0.05,
   				"LayerTime": 16000,
-  				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"FirstLayerTime": 80000,
+  				"NumberofBottomLayers": 20,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "Firm Amber 100 Microns",
   				"SliceHeight": 0.1,
-  				"LayerTime": 20000,
-  				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"LayerTime": 21000,
+  				"FirstLayerTime": 80000,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "Firm Color 50 Microns",
   				"SliceHeight": 0.05,
-  				"LayerTime": 20000,
-  				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"LayerTime": 19000,
+  				"FirstLayerTime": 80000,
+  				"NumberofBottomLayers": 20,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "Firm Color 100 Microns",
   				"SliceHeight": 0.1,
-  				"LayerTime": 25000,
-  				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"LayerTime": 26000,
+  				"FirstLayerTime": 80000,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "Hard Amber 50 Microns",
   				"SliceHeight": 0.05,
   				"LayerTime": 16000,
-  				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"FirstLayerTime": 80000,
+  				"NumberofBottomLayers": 20,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "Hard Amber 100 Microns",
   				"SliceHeight": 0.1,
-  				"LayerTime": 20000,
-  				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"LayerTime": 21000,
+  				"FirstLayerTime": 80000,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "Hard Color 50 Microns",
   				"SliceHeight": 0.05,
   				"LayerTime": 20000,
-  				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"FirstLayerTime": 80000,
+  				"NumberofBottomLayers": 20,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "Hard Color 100 Microns",
   				"SliceHeight": 0.1,
-  				"LayerTime": 25000,
-  				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"LayerTime": 26000,
+  				"FirstLayerTime": 80000,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -161,7 +161,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 28000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -169,7 +169,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
