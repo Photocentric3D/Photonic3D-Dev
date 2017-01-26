@@ -5,9 +5,8 @@
 
 		.wifisettings{
 			position: absolute; 
-			top: 182px; 
-			left: 40px; 
-			width:50px;
+			top: 195px; 
+			left: 50px; 
 		}
 
 		.Nettitle { 
@@ -90,10 +89,7 @@
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
 
-        <!-- jQuery library -->
-        <script src="../jquery/jquery.min.js"></script>
-
-        <!-- Latest compiled JavaScript -->
+       <!-- Latest compiled JavaScript -->
         <script src="../bootstrap/js/bootstrap.min.js"></script>
 
         <!-- Latest v1 Angular -->
@@ -124,13 +120,6 @@
 			
 			function init(){
 				startpage();
-				
-				var pass = document.getElementById("pass");
-				pass.addEventListener("keydown", function (e) {
-				    if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
-						saveWifi();
-				    }		
-				});
 			}
 	
 			function saveWifi(){
@@ -139,7 +128,7 @@
 				parentinterface = null;
 				found = false;
 
-				$.getJSON('/services/machine/wirelessNetworks/list')
+				$.getJSON('../services/machine/wirelessNetworks/list')
 				.done(function(data){
 					$.each(data, function (key, val) {
 						if (val.ssid==document.getElementById("SSID").value){
@@ -159,36 +148,17 @@
 						console.log(data);
 						$.ajax({
 							method: 'PUT',
-							url: "/services/machine/wirelessConnect",
+							url: "../services/machine/wirelessConnect",
 							headers: {"Content-Type": "application/json" },
 							data: JSON.stringify(data),
 							dataType: 'json',
 							success: function(resp) {
-								var tries = 0;
+								document.getElementById("warn").setAttribute("color","green");
+								document.getElementById("warn").innerHTML="Settings saved!";
 								console.log(resp);
-								setInterval(function(){
-									if (tries <6) {
-										$.getJSON('/services/machine/getNetworkHostConfiguration')
-										.done(function(data){
-											console.log(data.SSID);
-											if (((typeof data !== 'undefined')&&(data.SSID !== null))&&(document.getElementById("SSID").value==data.SSID)){
-												document.getElementById("warn").setAttribute("color","green");
-												document.getElementById("warn").innerHTML="Settings saved!";
-											
-											setTimeout(function() {
-												location.href="wifisettings.html";
-											}, 1000);
-											}
-										})
-										.fail(function(){
-										});
-										tries++;
-									}
-									else {
-										window.location.href=("error.html?errorname=Saving WiFi connection failed&errordetails=Saving wifi connection "+document.getElementById("SSID").value+" failed.&errordetails2=The printer was unable to find the wireless access point "+document.getElementById("SSID").value+". Your settings have not been changed.");
-									}
-								},1500);
-								
+								setTimeout(function() {
+									location.href="wifisettings.html";
+								}, 2000);
 							},	
 							error: function(xhr, status, error) {
 								console.log(status + ":" + error);
@@ -234,8 +204,7 @@
 				</map>
 				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
 				<img name="wifi" id="wifi" class="wifi" src="images/pixel.png">
-				<img name="printerstatus" id="printerstatus" class="printerstatus" src="images/pixel.png">
-				<img name="wifisettings" id="wifisettings" class="wifisettings" src="images/wifi-btn.png" onClick="location.href='wifisettings.html';">
+				<img name="wifisettings" id="wifisettings" class="wifisettings" src="images/wifi-3.png" onClick="location.href='wifisettings.html';">
 				<div name="SSIDlabel" class="SSIDlabel" id="SSIDlabel">SSID:</div>
 				<input name="SSID" class="SSID" id="SSID" value=""></input>
 				<div name="passlabel" class="passlabel" id="passlabel">Password:</div>

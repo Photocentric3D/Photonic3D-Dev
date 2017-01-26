@@ -83,13 +83,6 @@ sudo ./rpi-setup.sh
 
 Photonic3D will be installed into `/opt/cwh` and an init script will be added to `/etc/init.d` to launch the server on boot.
 
-Windows Installation Quickstart
-------------------------------------------
-* Download the latest stable or development version: 
- * [Stable repo Github Releases](https://github.com/area515/Creation-Workshop-Host/releases) or [Development repo Github Releases](https://github.com/WesGilster/Creation-Workshop-Host/releases) or [Kudo3D repo Github Releases](https://github.com/Kudo3D/Photonic3D/releases) 
-* Unzip the zip file into the directory of your choice.
-* Double click on `start.bat`.
-
 Client Tools
 ----------------------------------------------------------------------
 There are also a number of tools designed to run on your client desktop that are bundled with the installation.
