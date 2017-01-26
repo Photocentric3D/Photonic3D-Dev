@@ -72,7 +72,7 @@
   			"ZLiftDistanceCalculator": "var value = 1.0;",
   			"ZLiftSpeedCalculator": "var value = 50.0;",
   			"ExposureTimeCalculator": "var value = $FirstLayerTime;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = $LayerTime\n}\nvalue",
-  			"SelectedInk": "Hard Amber 50 Microns",
+  			"SelectedInk": "v.II Hard Amber 100 Microns",
   			"MinTestExposure": 0,
   			"TestExposureStep": 0,
   			"InkConfig": [{
