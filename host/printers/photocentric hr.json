@@ -1,4 +1,4 @@
-  {
+    {
   	"configuration": {
   		"name": "LC HR",
   		"machineConfig": {
@@ -230,13 +230,6 @@
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "old Flexible Blue 100 Micron",
-  				"SliceHeight": 0.1,
-  				"LayerTime": 45000,
-  				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
-  				"ResinPriceL": 45
-  			}, {
-  				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"SliceHeight": 0.1,
   				"LayerTime": 45000,
   				"FirstLayerTime": 200000,
