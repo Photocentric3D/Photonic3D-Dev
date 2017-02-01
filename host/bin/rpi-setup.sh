@@ -255,8 +255,6 @@ if [ "$build" == "Photocentric 10" ]
 		echo hdmi_group=2 >> /boot/config.txt
 		echo hdmi_mode=87 >> /boot/config.txt
 		echo hdmi_cvt=1024 600 60 3 0 0 0 >> /boot/config.txt
-		hdmi_group=2
-
 		echo "installing Photocentric 10 profile"
 		wget https://raw.githubusercontent.com/${repo}/master/host/printers/photocentric%2010.json -O printerprofile.json
 		echo var printerName = \"Photocentric 10\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js
