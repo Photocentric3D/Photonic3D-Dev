@@ -157,7 +157,7 @@
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
-  				"Name": "v.II Firm Amber 100 Micron - old",
+  				"Name": "v.II Firm Amber 100 Micron",
   				"SliceHeight": 0.1,
   				"LayerTime": 28000,
   				"FirstLayerTime": 200000,
@@ -165,7 +165,7 @@
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
-  				"Name": "v.II Firm Black 100 Micron - old",
+  				"Name": "v.II Firm Black 100 Micron",
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
@@ -173,7 +173,7 @@
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
-  				"Name": "v.II Firm Blue 100 Micron - old",
+  				"Name": "v.II Firm Blue 100 Micron",
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
