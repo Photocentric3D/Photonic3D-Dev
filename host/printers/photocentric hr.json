@@ -23,7 +23,7 @@
   					"Handshake": "None"
   				}
   			},
-5  			"MonitorDriverConfig": {
+  			"MonitorDriverConfig": {
   				"DLP_X_Res": 2048,
   				"DLP_Y_Res": 1536,
   				"MonitorID": "DISPLAY1",
