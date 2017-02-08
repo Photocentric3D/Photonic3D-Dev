@@ -78,7 +78,7 @@
         "InkConfig": [
           {
             "PercentageOfPrintMaterialConsideredEmpty": 10,
-            "Name": "Castable 50 Microns",
+            "Name": "v.I Castable 50 Microns",
             "SliceHeight": 0.05,
             "LayerTime": 20000,
             "FirstLayerTime": 150000,
@@ -87,7 +87,7 @@
           },
 		  {
             "PercentageOfPrintMaterialConsideredEmpty": 10,
-            "Name": "Castable 100 Microns",
+            "Name": "v.I Castable 100 Microns",
             "SliceHeight": 0.1,
             "LayerTime": 25000,
             "FirstLayerTime": 200000,
@@ -96,7 +96,43 @@
           },
 		  {
             "PercentageOfPrintMaterialConsideredEmpty": 10,
-            "Name": "Firm Amber 50 Microns",
+            "Name": "v.I Firm Amber 50 Microns",
+            "SliceHeight": 0.05,
+            "LayerTime": 16000,
+            "FirstLayerTime": 250000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+		  {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "v.I Firm Amber 100 Microns",
+            "SliceHeight": 0.1,
+            "LayerTime": 28000,
+            "FirstLayerTime": 200000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+		  {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "v.I Firm Color 50 Microns",
+            "SliceHeight": 0.05,
+            "LayerTime": 25000,
+            "FirstLayerTime": 250000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+		  {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "v.I Firm Color 100 Microns",
+            "SliceHeight": 0.1,
+            "LayerTime": 35000,
+            "FirstLayerTime": 250000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+		  {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "v.I Hard Amber 50 Microns",
             "SliceHeight": 0.05,
             "LayerTime": 16000,
             "FirstLayerTime": 200000,
@@ -105,16 +141,16 @@
           },
 		  {
             "PercentageOfPrintMaterialConsideredEmpty": 10,
-            "Name": "Firm Amber 100 Microns",
+            "Name": "v.I Hard Amber 100 Microns",
             "SliceHeight": 0.1,
-            "LayerTime": 20000,
+            "LayerTime": 22000,
             "FirstLayerTime": 200000,
             "NumberofBottomLayers": 4,
             "ResinPriceL": 45
           },
 		  {
             "PercentageOfPrintMaterialConsideredEmpty": 10,
-            "Name": "Firm Color 50 Microns",
+            "Name": "v.I Hard Color 50 Microns",
             "SliceHeight": 0.05,
             "LayerTime": 20000,
             "FirstLayerTime": 200000,
@@ -123,45 +159,9 @@
           },
 		  {
             "PercentageOfPrintMaterialConsideredEmpty": 10,
-            "Name": "Firm Color 100 Microns",
+            "Name": "v.I Hard Color 100 Microns",
             "SliceHeight": 0.1,
-            "LayerTime": 25000,
-            "FirstLayerTime": 200000,
-            "NumberofBottomLayers": 4,
-            "ResinPriceL": 45
-          },
-		  {
-            "PercentageOfPrintMaterialConsideredEmpty": 10,
-            "Name": "Hard Amber 50 Microns",
-            "SliceHeight": 0.05,
-            "LayerTime": 16000,
-            "FirstLayerTime": 200000,
-            "NumberofBottomLayers": 4,
-            "ResinPriceL": 45
-          },
-		  {
-            "PercentageOfPrintMaterialConsideredEmpty": 10,
-            "Name": "Hard Amber 100 Microns",
-            "SliceHeight": 0.1,
-            "LayerTime": 20000,
-            "FirstLayerTime": 200000,
-            "NumberofBottomLayers": 4,
-            "ResinPriceL": 45
-          },
-		  {
-            "PercentageOfPrintMaterialConsideredEmpty": 10,
-            "Name": "Hard Color 50 Microns",
-            "SliceHeight": 0.05,
-            "LayerTime": 20000,
-            "FirstLayerTime": 200000,
-            "NumberofBottomLayers": 4,
-            "ResinPriceL": 45
-          },
-		  {
-            "PercentageOfPrintMaterialConsideredEmpty": 10,
-            "Name": "Hard Color 100 Microns",
-            "SliceHeight": 0.1,
-            "LayerTime": 25000,
+            "LayerTime": 26000,
             "FirstLayerTime": 200000,
             "NumberofBottomLayers": 4,
             "ResinPriceL": 45
