@@ -132,6 +132,15 @@
           },
 		  {
             "PercentageOfPrintMaterialConsideredEmpty": 10,
+            "Name": "v.I Firm black 100 Microns",
+            "SliceHeight": 0.1,
+            "LayerTime": 40000,
+            "FirstLayerTime": 250000,
+            "NumberofBottomLayers": 4,
+            "ResinPriceL": 45
+          },
+		  {
+            "PercentageOfPrintMaterialConsideredEmpty": 10,
             "Name": "v.I Hard Amber 50 Microns",
             "SliceHeight": 0.05,
             "LayerTime": 16000,
