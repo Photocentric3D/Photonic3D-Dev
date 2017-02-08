@@ -366,7 +366,7 @@
   			}
 						 ]
   		},
-  		"MachineConfigurationName": "Photocentric 10",
+  		"MachineConfigurationName": "LC HR",
   		"SlicingProfileName": "LC HR Slicing",
   		"AutoStart": true,
   		"Calibrated": false
