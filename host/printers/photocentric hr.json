@@ -177,7 +177,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -185,7 +185,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -193,7 +193,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -201,7 +201,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -209,7 +209,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -217,7 +217,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 38000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -225,7 +225,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 25000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -233,7 +233,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 45000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -241,7 +241,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 45000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -249,7 +249,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 45000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -257,7 +257,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 42000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -265,7 +265,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 22000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -273,7 +273,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 32000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -281,7 +281,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 30000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -289,7 +289,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 32000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -297,7 +297,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 30000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -305,7 +305,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 30000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -313,7 +313,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 30000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -321,7 +321,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 28000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -329,7 +329,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 40000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -337,7 +337,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -345,7 +345,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -353,7 +353,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
@@ -361,7 +361,7 @@
   				"SliceHeight": 0.1,
   				"LayerTime": 35000,
   				"FirstLayerTime": 200000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 10,
   				"ResinPriceL": 45
   			}
 						 ]
