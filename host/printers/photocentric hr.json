@@ -317,6 +317,14 @@
   				"ResinPriceL": 45
   			}, {
   				"PercentageOfPrintMaterialConsideredEmpty": 10,
+  				"Name": "v.I Castable 100 Micron",
+  				"SliceHeight": 0.1,
+  				"LayerTime": 30000,
+  				"FirstLayerTime": 200000,
+  				"NumberofBottomLayers": 10,
+  				"ResinPriceL": 45
+			}, {
+  				"PercentageOfPrintMaterialConsideredEmpty": 10,
   				"Name": "v.I Low Shrinkage Amber 100 Micron",
   				"SliceHeight": 0.1,
   				"LayerTime": 28000,
