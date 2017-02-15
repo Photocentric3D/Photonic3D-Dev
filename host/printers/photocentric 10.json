@@ -72,7 +72,7 @@
         "ZLiftDistanceCalculator": "var minLift = 4.5;\nvar value = 8.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = minLift  +  0.0015*Math.pow($buildAreaMM,1);\n}\nvalue",
         "ZLiftSpeedCalculator": "var value = 50.0;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = 100.0 - 0.02 * Math.pow($buildAreaMM,1);\n}\nif (value < 30.0){\n\tvalue = 30.0;\n}\nvalue",
         "ExposureTimeCalculator": "var value = $FirstLayerTime;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = $LayerTime\n}\nvalue",
-        "SelectedInk": "Firm Amber 100 Microns",
+        "SelectedInk": "v.I Firm Color 100 Microns",
         "MinTestExposure": 0,
         "TestExposureStep": 0,
         "InkConfig": [
