@@ -44,6 +44,7 @@ import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -56,6 +57,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.StreamingOutput;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -212,7 +216,8 @@ public class MachineService {
 			return false;
 		}
 	}
-	
+    
+	//TODO: getWirelessStrength
     @ApiOperation(value="Retrieves all of the supported file types that are returned from the each of the org.area515.resinprinter.job.PrintFileProcessor.getFileExtensions()."
     		+ SwaggerMetadata.PRINT_FILE_PROCESSOR)
     @ApiResponses(value = {
@@ -259,7 +264,7 @@ public class MachineService {
 		}
 	}
 	
-    @ApiOperation(value="Upload TrueType fonts to be used with 2D file processing.")
+    @ApiOperation(value="Enumerates the list of available fonts to be used with 2D file printing.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
             @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
@@ -388,11 +393,11 @@ public class MachineService {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
             @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
-	 @GET
-	 @Path("wirelessNetworks/list")
-	 @Produces(MediaType.APPLICATION_JSON)
-	 public List<WirelessNetwork> getWirelessNetworks() {
-		Class<NetworkManager> managerClass = HostProperties.Instance().getNetworkManagerClass();
+    @GET
+    @Path("wirelessNetworks/list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<WirelessNetwork> getWirelessNetworks() {
+    	Class<NetworkManager> managerClass = HostProperties.Instance().getNetworkManagerClass();
 		try {
 			NetworkManager networkManager = managerClass.newInstance();
 			List<NetInterface> interfaces = networkManager.getNetworkInterfaces();
@@ -409,16 +414,16 @@ public class MachineService {
 			logger.error("Error retrieving wireless networks", e);
 			return null;
 		}
-	 }
+    }
 	 
     @ApiOperation(value = "Connects to the supplied wireless SSID using the provided passphrase and Wireless settings.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
             @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
-	 @PUT
-	 @Path("wirelessConnect")
-	 @Consumes(MediaType.APPLICATION_JSON)
-	 public void connectToWifiSSID(WirelessNetwork network) {
+    @PUT
+    @Path("wirelessConnect")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void connectToWifiSSID(WirelessNetwork network) {
 		Class<NetworkManager> managerClass = HostProperties.Instance().getNetworkManagerClass();
 		try {
 			NetworkManager networkManager = managerClass.newInstance();
@@ -513,10 +518,10 @@ public class MachineService {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
             @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
-	 @GET
-	 @Path("serialPorts/list")
-	 @Produces(MediaType.APPLICATION_JSON)
-	 public List<String> getSerialPorts() {
+    @GET
+    @Path("serialPorts/list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getSerialPorts() {
 		 List<SerialCommunicationsPort> identifiers = SerialManager.Instance().getSerialDevices();
 		 List<String> identifierStrings = new ArrayList<String>();
 		 for (SerialCommunicationsPort current : identifiers) {
@@ -524,16 +529,16 @@ public class MachineService {
 		 }
 		 
 		 return identifierStrings;
-	 }
+    }
 	 
     @ApiOperation(value = "Enumerates the list of graphics displays that are available on the Photonic 3D host.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
             @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
-	 @GET
-	 @Path("graphicsDisplays/list")
-	 @Produces(MediaType.APPLICATION_JSON)
-	 public List<String> getDisplays() {
+    @GET
+    @Path("graphicsDisplays/list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getDisplays() {
 		 List<GraphicsDevice> devices = DisplayManager.Instance().getDisplayDevices();
 		 List<String> deviceStrings = new ArrayList<String>();
 		 for (GraphicsDevice current : devices) {
@@ -541,25 +546,81 @@ public class MachineService {
 		 }
 		 
 		 return deviceStrings;
-	 }
+	}
 	 
-    @ApiOperation(value = "Enumerates the list of machine configurations that are available on the Photonic 3D host.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
-            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
-	 @GET
-	 @Path("machineConfigurations/list")
-	 public List<MachineConfig> getMachineConfigurations() {
-		 return HostProperties.Instance().getConfigurations(HostProperties.Instance().MACHINE_DIR, HostProperties.MACHINE_EXTENSION, MachineConfig.class);
-	 }
-	 
+    
+    
+	@ApiOperation(value = "Enumerates the list of machine configurations that are available on the Photonic 3D host.")
+	@ApiResponses(value = {
+	        @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+	        @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@GET
+	@Path("machineConfigurations/list")
+	public List<MachineConfig> getMachineConfigurations() {
+		return HostProperties.Instance().getConfigurations(HostProperties.Instance().MACHINE_DIR, HostProperties.MACHINE_EXTENSION, MachineConfig.class);
+	}
+	
+	@ApiOperation(value = "Save a machine configuration to the machine config directory of Photonic 3D host.")
+	@ApiResponses(value = {
+	        @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+	        @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("machineConfigurations")
+	public void saveMachineConfiguration(MachineConfig machineConfig) throws JAXBException {
+		File machineFile = new File(HostProperties.Instance().MACHINE_DIR, machineConfig.getName() + HostProperties.MACHINE_EXTENSION);
+		JAXBContext jaxbContext = JAXBContext.newInstance(MachineConfig.class);
+		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		jaxbMarshaller.marshal(machineConfig, machineFile);
+	}
+	
+	@ApiOperation(value = "Deletes a machine configuration(by name) from the machine config directory of Photonic 3D host.")
+	@ApiResponses(value = {
+	        @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+	        @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@DELETE
+	@Path("machineConfigurations/{machineConfigurationName}")
+	public void deleteMachineConfiguration(@PathParam("machineConfigurationName") String machineConfig) throws JAXBException {
+		File machineFile = new File(HostProperties.Instance().MACHINE_DIR, machineConfig + HostProperties.MACHINE_EXTENSION);
+		machineFile.delete();
+	}
+	
+	
+	
     @ApiOperation(value = "Enumerates the list of slicing profiles that are available on the Photonic 3D host.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
             @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
-	 @GET
-	 @Path("slicingProfiles/list")
-	 public List<SlicingProfile> getSlicingProfiles() {
-		 return HostProperties.Instance().getConfigurations(HostProperties.Instance().PROFILES_DIR, HostProperties.PROFILES_EXTENSION, SlicingProfile.class);
-	 }
+	@GET
+	@Path("slicingProfiles/list")
+	public List<SlicingProfile> getSlicingProfiles() {
+	    	return HostProperties.Instance().getConfigurations(HostProperties.Instance().PROFILES_DIR, HostProperties.PROFILES_EXTENSION, SlicingProfile.class);
+	}
+    
+	@ApiOperation(value = "Save a slicing profile to the slicing profile directory of Photonic 3D host.")
+	@ApiResponses(value = {
+	        @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+	        @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("slicingProfiles")
+	public void saveSlicingProfile(SlicingProfile slicingProfile) throws JAXBException {
+		File profileFile = new File(HostProperties.Instance().PROFILES_DIR, slicingProfile.getName() + HostProperties.PROFILES_EXTENSION);
+		JAXBContext jaxbContext = JAXBContext.newInstance(SlicingProfile.class);
+		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		jaxbMarshaller.marshal(slicingProfile, profileFile);
+	}
+	
+	@ApiOperation(value = "Deletes a slicing profile from the slicing profile directory of Photonic 3D host.")
+	@ApiResponses(value = {
+	        @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+	        @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@DELETE
+	@Path("slicingProfiles/{slicingProfileName}")
+	public void deleteSlicingProfile(@PathParam("slicingProfileName") String profile) throws JAXBException {
+		File profileFile = new File(HostProperties.Instance().PROFILES_DIR, profile + HostProperties.PROFILES_EXTENSION);
+		profileFile.delete();
+	}
 }

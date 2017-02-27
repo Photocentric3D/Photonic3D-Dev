@@ -83,7 +83,7 @@ public class PrinterService {
 		String shutterGCode = printer.getConfiguration().getSlicingProfile().getgCodeShutter();
 		if (shutterGCode != null && shutterGCode.trim().length() > 0) {
 			printer.setShutterOpen(shutter);
-			return new MachineResponse(name, true, printer.getGCodeControl().executeGCodeWithTemplating(job, printer.getConfiguration().getSlicingProfile().getgCodeShutter()));
+			return new MachineResponse(name, true, printer.getGCodeControl().executeGCodeWithTemplating(job, printer.getConfiguration().getSlicingProfile().getgCodeShutter(), false));
 		}
 		
 		return new MachineResponse(name, false, "This printer doesn't support a shutter.");
@@ -480,6 +480,10 @@ public class PrinterService {
 				throw new InappropriateDeviceException("Printer:" + printerName + " not started");
 			}
 			
+			if (currentPrinter.isDisplayBusy()) {
+				throw new InappropriateDeviceException("Printer:" + printerName + " display is busy, try again later.");
+			}
+			
 			currentPrinter.showGridImage(pixels);
 			return new MachineResponse("gridscreenshown", true, "Showed calibration screen on:" + printerName);
 		} catch (InappropriateDeviceException e) {
@@ -501,6 +505,10 @@ public class PrinterService {
 			Printer currentPrinter = PrinterManager.Instance().getPrinter(printerName);
 			if (currentPrinter == null) {
 				throw new InappropriateDeviceException("Printer:" + printerName + " not started");
+			}
+			
+			if (currentPrinter.isDisplayBusy()) {
+				throw new InappropriateDeviceException("Printer:" + printerName + " display is busy, try again later.");
 			}
 			
 			logger.info("Showing calibration screen for xPixels:{} yPixels:{}", xPixels, yPixels);
@@ -565,6 +573,10 @@ public class PrinterService {
 			Printer currentPrinter = PrinterManager.Instance().getPrinter(printerName);
 			if (currentPrinter == null) {
 				throw new InappropriateDeviceException("Printer:" + printerName + " not started");
+			}
+			
+			if (currentPrinter.isDisplayBusy()) {
+				throw new InappropriateDeviceException("Printer:" + printerName + " display is busy, try again later.");
 			}
 			
 			currentPrinter.showBlankImage();
@@ -802,6 +814,9 @@ public class PrinterService {
     @Produces(MediaType.APPLICATION_JSON)
 	public MachineResponse printWithCustomizer(@PathParam("customizerName") String customizerName) {
     	Customizer customizer = CustomizerService.INSTANCE.getCustomizer(customizerName, null);
+    	if (customizer == null) {
+    		return new MachineResponse("startJob", false, "Customizer:" + customizerName + " not found");
+    	}
     	return startPrintJob(customizer.getPrinterName(), customizer.getPrintableName() + "." + customizer.getPrintableExtension(), customizer);
 	}
 

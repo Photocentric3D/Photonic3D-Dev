@@ -16,6 +16,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.text.translate.AggregateTranslator;
+import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
+import org.apache.commons.lang3.text.translate.EntityArrays;
+import org.apache.commons.lang3.text.translate.LookupTranslator;
+import org.apache.commons.lang3.text.translate.NumericEntityUnescaper;
+import org.apache.commons.lang3.text.translate.UnicodeUnescaper;
 import org.area515.util.IOUtilities;
 import org.area515.util.IOUtilities.ParseAction;
 import org.area515.util.IOUtilities.SearchStyle;
@@ -90,6 +97,25 @@ public class LinuxNetworkManager implements NetworkManager {
 		String[] output = IOUtilities.executeNativeCommand(new String[]{"hostname"}, null, (String) null);
 		return output[0];
 	}
+
+    public static final CharSequenceTranslator UNESCAPE_UNIX = 
+            new AggregateTranslator(
+                new LookupTranslator(EntityArrays.BASIC_UNESCAPE()),
+                new LookupTranslator(EntityArrays.ISO8859_1_UNESCAPE()),
+                new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE()),
+                new NumericEntityUnescaper(),       //&#9786;
+                //new OctalUnescaper(),             // .between('\1', '\377'),
+                new UnicodeUnescaper(),             //\u0044
+                new HexUnescaper(),                 //\x45
+                //new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_UNESCAPE()),
+                new LookupTranslator(
+                          new String[][] { 
+                                {"\\\\", "\\"},
+                                {"\\\"", "\""},
+                                {"\\'", "'"},
+                                {"\\", ""}
+                          })
+            );
 	
 	private void buildWirelessInfo(String nicName, NetInterface netFace) {
 		Pattern networkEncryptionClass = Pattern.compile("\\[([\\+\\-\\w]+)\\]");
@@ -109,7 +135,10 @@ public class LinuxNetworkManager implements NetworkManager {
 			
 			WirelessNetwork currentWireless = new WirelessNetwork();
 			netFace.getWirelessNetworks().add(currentWireless);
-			currentWireless.setSsid(lines[4]);
+			currentWireless.setSsid(UNESCAPE_UNIX.translate(lines[4]));
+			if (currentWireless.getSsid().startsWith("\u0000")) {
+				currentWireless.setHidden(true);
+			}
 			currentWireless.setParentInterfaceName(netFace.getName());
 			currentWireless.setSignalStrength(lines[2]);
 			Matcher matcher = networkEncryptionClass.matcher(lines[3]);

@@ -70,6 +70,7 @@ public class DisplayManager {
 		logger.info("Display:{} assigned to Printer:{}", device, newPrinter);
 	}
 	
+	//TODO: org.area515.resinprinter.display.GraphicsOutputInterface needs to be the interface we use that is returned from here instead of java.awt.GraphicsDevice
 	public List<GraphicsDevice> getDisplayDevices() {
 		List<GraphicsDevice> devices = new ArrayList<GraphicsDevice>();
 		try {
@@ -83,9 +84,7 @@ public class DisplayManager {
 			devices.add(new CustomNamedDisplayDevice(SIMULATED_DISPLAY));
 		}
 		
-		if (HostProperties.Instance().getCustomPhotocentricDisplay()) {
-			devices.add(new CustomPhotocentricDisplayDevice(CUSTOM_PHOTOCENTRIC_DISPLAY));
-		}
+		devices.addAll(HostProperties.Instance().getDisplayDevices());
 		return devices;
 	}
 
@@ -123,7 +122,6 @@ public class DisplayManager {
 			return;
 		
 		graphicsDevicesByPrinter.remove(printer);
-		
 		String deviceId = printer.getDisplayDeviceID();
 		if (deviceId == null)
 			return;

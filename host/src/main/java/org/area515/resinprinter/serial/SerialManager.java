@@ -3,8 +3,6 @@ package org.area515.resinprinter.serial;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -290,11 +288,9 @@ public class SerialManager {
 	}
 	
 	public SerialCommunicationsPort getSerialDevice(String comport) throws InappropriateDeviceException {
-		// if the rxtx has problems, it will fail in getSerial
-		// problem found in win 7 rxtx no class def found: io.gnu.rxtx... something like that in getSerialDevices - CommPortIdentifier.getPortIdentifiers()
-		// this will start
-		
-		// this line shortcuts the problem for my testing.
+		if (comport == null) {
+			throw new InappropriateDeviceException("No communications port was specified");
+		}
 		if(ConsoleCommPort.GCODE_RESPONSE_SIMULATION.equalsIgnoreCase(comport)){
 			return new ConsoleCommPort();
 		}
@@ -345,7 +341,7 @@ public class SerialManager {
 		
 		return idents;
 	}
-	
+    
 	/**
 	 * This should be called when you stop using the port.
 	 * This will prevent port locking on platforms like Linux.
