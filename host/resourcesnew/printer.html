@@ -25,7 +25,7 @@
 		<div class="list-group-item">
 			<span class="fa-stack fa-lg">
 			  <i class="fa fa-stack-2x fa-2x fa-print"></i>
-			  <i class="fa fa-stack-2x fa-2x fa-refresh fa-spin text-danger" ng-show="settingsController.currentPrinter.configuration.AutoStart"></i>
+			  <i class="fa fa-stack-2x fa-2x fa-play text-danger" ng-show="settingsController.currentPrinter.configuration.AutoStart"></i>
 			</span>
 			<label>Name</label>
 			<h4 class="list-group-item-heading">{{settingsController.currentPrinter.configuration.name}}</h4>
@@ -64,7 +64,7 @@
 			  <option value="">{{settingsController.loadingProfilesMessage}}</option>
 			</select>
 		</div>
-		<div class="list-group-item">
+		<div class="list-group-item verbergen">
 			<label>Resin Configuration</label>
 			<h4 class="list-group-item-heading">{{settingsController.currentPrinter.configuration.slicingProfile.SelectedInk}}
 			<div class="btn-group pull-right" style=" padding-bottom: 5px;" >
@@ -80,7 +80,7 @@
 			  <option value="">Select a resin configuration...</option>
 			</select>
 		</div>
-		<div class="list-group-item">
+		<div class="list-group-item verbergen">
 			<label>Advanced Settings</label><br/>
 			<button class="btn btn-danger" ng-click="settingsController.toggleAdvanced()">
 				<i class="fa fa-wrench" style="width: 0px"; ></i> 

@@ -126,12 +126,12 @@
 	  <!-- Navigator Bar -->
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav" >
-          <li ng-class="{active:index.currentPage == 'dashboardPage'}">
-            <a href="dashboardPage" ng-click="index.currentPage = 'dashboardPage'"  style="padding-bottom: 8px; padding-top: 8px;">
-              <img src="/images/homeicon39.png" alt="Home" height="35" width="35"> Home
-            </a>
+           <li ng-class="{active:index.currentPage == 'printablesPage'}">
+            <a href="./printablesPage" ng-click="index.currentPage = 'printablesPage'" ng-show='visibleCards.indexOf("printables") > -1'  style="padding-bottom: 8px; padding-top: 8px;">
+              <img src="/images/iconPRINTABLES_for_printflow_menu.png" alt="Printables" height="35" width="35"> Printables
+            </a>          
           </li>
-          <li ng-class="{active:index.currentPage == 'printersPage'}">
+		  <li ng-class="{active:index.currentPage == 'printersPage'}">
             <a href="printerControlsPage" ng-click="index.currentPage = 'printersPage'" ng-show='visibleCards.indexOf("printers") > -1'  style="padding-bottom: 8px; padding-top: 8px;">
               <img src="/images/iconPRINTER_for_menu.png" alt="Controls" height="35" width="20"> Controls
             </a>          
@@ -139,11 +139,6 @@
           <li ng-class="{active:index.currentPage == 'printJobsPage'}">
             <a href="./printJobsPage" ng-click="index.currentPage = 'printJobsPage'" ng-show='visibleCards.indexOf("printJobs") > -1'  style="padding-bottom: 8px; padding-top: 8px;">
               <img src="/images/iconSCREW_for_printflow_menu.png" alt="Print Jobs" height="35" width="35"> Print Jobs
-            </a>          
-          </li>
-          <li ng-class="{active:index.currentPage == 'printablesPage'}">
-            <a href="./printablesPage" ng-click="index.currentPage = 'printablesPage'" ng-show='visibleCards.indexOf("printables") > -1'  style="padding-bottom: 8px; padding-top: 8px;">
-              <img src="/images/iconPRINTABLES_for_printflow_menu.png" alt="Printables" height="35" width="35"> Printables
             </a>          
           </li>
           <li ng-class="{active:index.currentPage == 'usersPage'}">

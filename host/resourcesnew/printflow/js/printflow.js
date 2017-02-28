@@ -41,12 +41,12 @@ function startpage(){
         
         
         // do the first updates
-        document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
+        //document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
         printredirect();
        
         setInterval(function() {
                 //time handling/updating
-		document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
+		//document.getElementById("time").innerHTML = moment().format("HH:mm:ss[<br>]DD-MMM-YY");
                 //redirect to print dialogue on user initiating a print
                 printredirect();
                 printerStatus();

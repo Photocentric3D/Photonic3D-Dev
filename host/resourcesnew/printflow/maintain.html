@@ -134,11 +134,9 @@
 						//create a java multidimensional array
 						if (selected === el.Name) {
 							layerdata = parseFloat(el.SliceHeight)*1000;
-							document.getElementById("ldata").innerHTML = layerdata;
 						}
 					});
 				});
-				document.getElementById("ldata").innerHTML = layerdata;
 			}
 			</script>
         <div class="screen">
@@ -155,11 +153,9 @@
 					<area  alt="" title="homeZ" shape="rect" coords="252,172,608,236" style="outline:none;" target="_self" onclick="homez();"    />
 					<area  alt="" title="testDisplay" shape="rect" coords="252,238,608,302" style="outline:none;" target="_self" onclick="$.getJSON('../services/printers/showGridScreen/'+printerName+'/50');"     />
 				</map>
-				<div name="time" id="time" class="time"><script>document.write(moment().format("HH:mm:ss[<br>]DD-MMM-YY"));</script></div>
 				<img name="wifi" id="wifi" class="wifi" src="images/pixel.png">
 				<img name="printerstatus" id="printerstatus" class="printerstatus" src="images/pixel.png">
 				<div name="zheight" id="zheight" class="zheight collapse">Current Z Height:<br><span name="zdata" id="zdata">0</span> mm</div>
-				<div name="layerheight" id="layerheight" class="layerheight">Print Layer Height:<br><span name="ldata" id="ldata">__</span> microns</div>
 				<div name="warn" id="warn" class="warn"><div id="warning" role="alert" class="alert alert-danger collapse" ><strong>Error</strong><br>Cannot move past Z axis limits!</div></div>
 				<div name="togglebutton" class="togglebutton" id="togglebutton" onClick="togglePrinter();"></div>
 				
