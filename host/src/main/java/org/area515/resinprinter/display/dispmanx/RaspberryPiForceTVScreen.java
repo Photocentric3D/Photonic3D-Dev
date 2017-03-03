@@ -4,6 +4,6 @@ import org.area515.resinprinter.display.InappropriateDeviceException;
 
 public class RaspberryPiForceTVScreen extends DispManXDevice {
 	public RaspberryPiForceTVScreen() throws InappropriateDeviceException {
-		super("Raspberry Pi Force TV", SCREEN.DISPMANX_ID_FORCE_TV);
+		super("Photocentric Custom Display", SCREEN.DISPMANX_ID_FORCE_TV);
 	}
 }
