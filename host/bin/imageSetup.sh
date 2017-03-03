@@ -45,7 +45,7 @@ echo "installing common files"
 if [ -e photonic-repo ]; then
 	rm -rf photonic-repo
 fi
-git clone https://github.com/Photocentric3D/Photonic3D.git photonic-repo
+git clone https://github.com/Photocentric3D/Photonic3D-Dev.git photonic-repo
 rsync -avr photonic-repo/host/common/ /
 cp photonic-repo/host/os/Linux/armv61/pdp /opt/cwh/os/Linux/armv61/pdp #copy display manager for screen + curing screen printers
 #install splash screen
@@ -164,7 +164,7 @@ if [ "$OCTOPI_PHOTOCENTRIC_HARDWARE" == "4kscreen" ]
 		
 		#TODO - add network time propogation to support 4ktouch. Currently built into WG images, but not setup by shell script yet
 		echo "setting up Photocentric Pro profile"
-		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/Photocentric%20Pro.json -O printerprofile.json
+		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D-Dev/master/host/printers/Photocentric%20Pro.json -O printerprofile.json
 		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
 		echo var printerName = \"Photocentric Pro\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js
 fi
@@ -186,7 +186,7 @@ if [ "$OCTOPI_PHOTOCENTRIC_HARDWARE" == "LCHR" ]
 
 
 		echo "installing Photocentric Liquid Crystal HR profile"
-		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%20hr.json -O printerprofile.json
+		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D-Dev/master/host/printers/photocentric%20hr.json -O printerprofile.json
 		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json 'http://localhost:$portno/services/printers/save'
 		echo var printerName = \"LC HR\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js
 fi
@@ -197,7 +197,7 @@ if [ "$OCTOPI_PHOTOCENTRIC_HARDWARE" == "standalone" ]
 		echo "creating standalone image..."
 		#TODO
 		echo "installing Photocentric 10 profile"
-		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/printers/photocentric%2010.json -O printerprofile.json
+		wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D-Dev/master/host/printers/photocentric%2010.json -O printerprofile.json
 		curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @printerprofile.json "http://localhost:$portno/services/printers/save"
 		echo var printerName = \"Photocentric 10\"\; > /opt/cwh/resourcesnew/printflow/js/printerconfig.js
 fi

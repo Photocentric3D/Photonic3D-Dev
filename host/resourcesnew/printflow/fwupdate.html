@@ -67,7 +67,7 @@
 			var log="";
 			$.getJSON('../services/settings/releaseTagName').done(function (data){
 						var currentfirmwarerevision=data;
-						$.getJSON('https://api.github.com/repos/Photocentric3D/Photonic3D/releases/latest').done(function (remotedata){
+						$.getJSON('https://api.github.com/repos/Photocentric3D/Photonic3D-Dev/releases/latest').done(function (remotedata){
 							var remotefirmwarerevision=remotedata.tag_name;
 							log="Local firmware version:\n&nbsp;&nbsp;&nbsp;&nbsp;"+currentfirmwarerevision+"\n";
 							log+="Server firmware version:\n&nbsp;&nbsp;&nbsp;&nbsp;"+remotefirmwarerevision+"\n\n";

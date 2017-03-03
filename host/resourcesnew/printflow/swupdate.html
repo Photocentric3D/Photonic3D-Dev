@@ -68,7 +68,7 @@
 			$.getJSON('../services/settings/releaseTagName').done(function (data){
 						var currentsoftwarerevision=data;
 						if (typeof repo === 'undefined'){
-							repo = "Photocentric3D/Photonic3D";
+							repo = "Photocentric3D/Photonic3D-Dev";
 							//override to master repo if repo hasn't been populated by printerconfig.js
 						}
 						$.getJSON('https://api.github.com/repos/'+repo+'/releases/latest').done(function (remotedata){
