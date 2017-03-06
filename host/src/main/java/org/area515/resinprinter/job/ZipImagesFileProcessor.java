@@ -119,4 +119,21 @@ public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor {
 	public String getFriendlyName() {
 		return "Zip of Slice Images";
 	}
+	
+	private SortedMap<String, File> findImages(File jobFile) throws JobManagerException {
+		String [] extensions = {"png", "PNG"};
+		boolean recursive = true;
+		
+		Collection<File> files =
+				FileUtils.listFiles(buildExtractionDirectory(jobFile.getName()),
+				extensions, recursive);
+
+		TreeMap<String, File> images = new TreeMap<>(new AlphanumericComparator());
+
+		for (File file : files) {
+			images.put(file.getName(), file);
+		}
+		
+		return images;
+	}
 }
