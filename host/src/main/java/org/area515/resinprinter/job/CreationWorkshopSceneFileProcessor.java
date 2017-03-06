@@ -12,9 +12,13 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -27,12 +31,18 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.area515.resinprinter.exception.SliceHandlingException;
+import org.area515.resinprinter.job.AbstractPrintFileProcessor.DataAid;
+import org.area515.resinprinter.job.render.RenderedData;
 import org.area515.resinprinter.notification.NotificationManager;
 import org.area515.resinprinter.printer.Printer;
 import org.area515.resinprinter.server.HostProperties;
+import org.area515.resinprinter.twodim.SimpleImageRenderer;
 import org.area515.util.IOUtilities;
 
-public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcessor<Object,Object> {
+import se.sawano.java.text.AlphanumericComparator;
+
+public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcessor<Object,Object> implements Previewable{
 	private static final Logger logger = LogManager.getLogger();
 	private HashMap<PrintJob, BufferedImage> currentlyDisplayedImage = new HashMap<PrintJob, BufferedImage>();
 	
@@ -273,6 +283,55 @@ public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcess
 		}
 	}
 	
+
+	@Override
+	public BufferedImage renderPreviewImage(DataAid dataAid) throws SliceHandlingException {
+		try {
+			prepareEnvironment(dataAid.printJob.getJobFile(), dataAid.printJob);
+			
+			SortedMap<String, File> imageFiles = findImages(dataAid.printJob.getJobFile());
+			
+			dataAid.printJob.setTotalSlices(imageFiles.size());
+			Iterator<File> imgIter = imageFiles.values().iterator();
+	
+			// Preload first image then loop
+			int sliceIndex = dataAid.customizer.getNextSlice();
+			while (imgIter.hasNext() && sliceIndex > 0) {
+				sliceIndex--;
+				imgIter.next();
+			}
+			
+			if (!imgIter.hasNext()) {
+				throw new IOException("No Image Found for index:" + dataAid.customizer.getNextSlice());
+			}
+			File imageFile = imgIter.next();
+			
+			SimpleImageRenderer renderer = new SimpleImageRenderer(dataAid, this, imageFile);
+			RenderedData stdImage = renderer.call();
+			return stdImage.getPrintableImage();
+		} catch (IOException | JobManagerException e) {
+			throw new SliceHandlingException(e);
+		}
+	}
+
+	
+	private SortedMap<String, File> findImages(File jobFile) throws JobManagerException {
+		String [] extensions = {"png", "PNG"};
+		boolean recursive = true;
+		
+		Collection<File> files =
+				FileUtils.listFiles(buildExtractionDirectory(jobFile.getName()),
+				extensions, recursive);
+
+		TreeMap<String, File> images = new TreeMap<>(new AlphanumericComparator());
+
+		for (File file : files) {
+			images.put(file.getName(), file);
+		}
+		
+		return images;
+	}
+
 	@Override
 	public void prepareEnvironment(File processingFile, PrintJob printJob) throws JobManagerException {
 		List<PrintJob> printJobs = PrintJobManager.Instance().getJobsByFilename(processingFile.getName());
@@ -406,7 +465,7 @@ public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcess
 	public String getFriendlyName() {
 		return "Creation Workshop Scene";
 	}
-
+	
 	@Override
 	public boolean isThreeDimensionalGeometryAvailable() {
 		return false;

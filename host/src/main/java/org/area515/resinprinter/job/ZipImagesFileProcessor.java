@@ -19,7 +19,7 @@ import org.area515.resinprinter.twodim.SimpleImageRenderer;
 
 import se.sawano.java.text.AlphanumericComparator;
 
-public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor implements Previewable {
+public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor {
 	private static final Logger logger = LogManager.getLogger();
 
 	@Override
@@ -116,54 +116,7 @@ public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor i
 	}
 
 	@Override
-	public BufferedImage renderPreviewImage(DataAid dataAid) throws SliceHandlingException {
-		try {
-			prepareEnvironment(dataAid.printJob.getJobFile(), dataAid.printJob);
-			
-			SortedMap<String, File> imageFiles = findImages(dataAid.printJob.getJobFile());
-			
-			dataAid.printJob.setTotalSlices(imageFiles.size());
-			Iterator<File> imgIter = imageFiles.values().iterator();
-	
-			// Preload first image then loop
-			int sliceIndex = dataAid.customizer.getNextSlice();
-			while (imgIter.hasNext() && sliceIndex > 0) {
-				sliceIndex--;
-				imgIter.next();
-			}
-			
-			if (!imgIter.hasNext()) {
-				throw new IOException("No Image Found for index:" + dataAid.customizer.getNextSlice());
-			}
-			File imageFile = imgIter.next();
-			
-			SimpleImageRenderer renderer = new SimpleImageRenderer(dataAid, this, imageFile);
-			RenderedData stdImage = renderer.call();
-			return stdImage.getPrintableImage();
-		} catch (IOException | JobManagerException e) {
-			throw new SliceHandlingException(e);
-		}
-	}
-
-	@Override
 	public String getFriendlyName() {
 		return "Zip of Slice Images";
-	}
-	
-	private SortedMap<String, File> findImages(File jobFile) throws JobManagerException {
-		String [] extensions = {"png", "PNG"};
-		boolean recursive = true;
-		
-		Collection<File> files =
-				FileUtils.listFiles(buildExtractionDirectory(jobFile.getName()),
-				extensions, recursive);
-
-		TreeMap<String, File> images = new TreeMap<>(new AlphanumericComparator());
-
-		for (File file : files) {
-			images.put(file.getName(), file);
-		}
-		
-		return images;
 	}
 }
