@@ -81,9 +81,9 @@
 		    //$httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
 
     	    $routeProvider.when('/dashboardPage', {
-    	        templateUrl: '/printables.html',
-     	        controller: 'PrintablesController',
-     	        controllerAs: 'printablesController'
+    	        templateUrl: '/dashboard.html',
+    	        controller: 'Dashboard',
+    	        controllerAs: 'dashboard'
     	    })
     	    $routeProvider.when('/printersPage', {
     	        templateUrl: '/printers.html',
