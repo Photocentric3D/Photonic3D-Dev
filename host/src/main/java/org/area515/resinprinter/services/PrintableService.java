@@ -66,7 +66,7 @@ import com.google.common.io.ByteStreams;
 public class PrintableService {
     private static final Logger logger = LogManager.getLogger();
     public static PrintableService INSTANCE = new PrintableService();
-	public static final String UNKNOWN_FILE = "I don't know how do deal with a file of this type:";
+	public static final String UNKNOWN_FILE = "There is an error with this file, please see the manual and reslice:";
 	public static final String NO_FILE = "You didn't attempt to upload a file, or the filename was Blank.";
 	public static final String NO_FILE_MIME = "No file specified in multipart mime!";
 	

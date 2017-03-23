@@ -11,5 +11,6 @@
 <listAttribute key="tasks">
 <listEntry value="fullRelease"/>
 </listAttribute>
+<booleanAttribute key="use_gradle_distribution_from_import" value="false"/>
 <stringAttribute key="working_dir" value="${workspace_loc:/photonic3d}"/>
 </launchConfiguration>
