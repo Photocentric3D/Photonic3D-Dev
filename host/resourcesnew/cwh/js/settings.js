@@ -1,6 +1,6 @@
 (function() {
 	var cwhApp = angular.module('cwhApp');
-	cwhApp.controller("SettingsController", ['$scope', '$http', '$location', '$routeParams', '$interval', 'cwhWebSocket', function ($scope, $http, $location, $routeParams, $interval, cwhWebSocket) {
+	cwhApp.controller("SettingsController", ['$scope', '$http', '$location', '$routeParams', '$uibModal', '$interval', 'cwhWebSocket', function ($scope, $http, $location, $routeParams, $uibModal, $interval, cwhWebSocket) {
 		controller = this;
 		var timeoutValue = 500;
 		var maxUnmatchedPings = 3;//Maximum number of pings before we assume that we lost our connection
@@ -76,6 +76,7 @@
 			   $http.post(service, targetPrinter).then(
 	       			function(response) {
 	        			$scope.$emit("MachineResponse", {machineResponse: {command:"Settings Saved!", message:"Your new settings have been saved. Please start the printer to make use of these new settings!.", response:true}, successFunction:null, afterErrorFunction:null});
+	       			refreshPrinters();
 	       			}, 
 	       			function(response) {
  	        			$scope.$emit("HTTPError", {status:response.status, statusText:response.data});
@@ -159,7 +160,7 @@
 	    }
 		
 		this.createNewPrinter = function createNewPrinter(editTitle) {
-			if (controller.currentPrinter === null) {
+			if (controller.currentPrinter == null) {
 		        $http.post('/services/printers/createTemplatePrinter').success(
 		        		function (data) {
 		        			controller.editPrinter = data;

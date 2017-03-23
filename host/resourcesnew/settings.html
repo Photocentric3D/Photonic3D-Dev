@@ -100,9 +100,8 @@
 					<div class="list-group-item">
 						<i class="fa fa-2x fa-plug pull-left"></i>
 						<h4>Access Point</h4>
-						<select name="type" id="AccessPoint" class="form-control" ng-model="settingsController.selectedNetworkInterface" ng-options="item.ssid group by item.parentInterfaceName for item in settingsController.networkInterfaces" required>
+						<select name="type" id="AccessPoint" class="form-control" ng-model="settingsController.selectedNetworkInterface" ng-options="item.ssid group by item.parentInterfaceName for item in settingsController.networkInterfaces|filter:{hidden: 'false'}"	required>
 						  <option value="">{{settingsController.loadingNetworksMessage}}</option>
-						</select>
 					</div>
 					<div class="list-group-item">
 						<i class="fa fa-2x fa-key pull-left"></i>
