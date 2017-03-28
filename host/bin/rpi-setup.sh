@@ -10,7 +10,7 @@ export newpassword=photocentric
 # *** IMPORTANT NOTE *** declaring this as a variable in an open source project is totally insecure!
 # Ideally the password should be changed offline, and this repo should never be updated to match that.
 # but it's still better than sending out the hardware with the default pi user and password unchanged. Obviously.
-export repo="Photocentric3D/Photonic3D"
+export repo="Photocentric3D/Photonic3D-dev"
 
 #require SU
 if [[ $UID != 0 ]]; then
