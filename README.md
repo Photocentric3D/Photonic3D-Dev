@@ -67,7 +67,7 @@ If you are experienced with Linux, you can quickly install Photonic3D for Photoc
 
 Latest:
 ```
-sudo wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D/master/host/bin/rpi-setup.sh
+sudo wget https://raw.githubusercontent.com/Photocentric3D/Photonic3D-Dev/master/host/bin/rpi-setup.sh
 sudo chmod 777 rpi-setup.sh
 sudo pico rpi-setup.sh
 ```
