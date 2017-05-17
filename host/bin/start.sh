@@ -64,13 +64,6 @@ if [[ $UID != 0 ]]; then
     exit 1
 fi
 
-if [ "$printername" != "Photocentric 10" ]; then
-	# enable wlan0 after the boot overlay
-	echo "["$(timestamp)"] Enabling external WiFi"
-	echo "["$(timestamp)"] INFO: wlan0 enabled" >&2
-	ifconfig wlan0 up
-fi	
-
 source "$(dirname $(readlink -f $0))/repoconfig.sh"
 
 echo "["$(timestamp)"] Local Config: $CONFIG_PROPS"
@@ -292,6 +285,14 @@ echo var printerName = \"$printername\"\; > photocentric/printflow/js/printercon
 echo var repo = \"$repo\"\; >> photocentric/printflow/js/printerconfig.js
 echo var printerName = \"$printername\"\; > resourcesnew/printflow/js/printerconfig.js
 echo var repo = \"$repo\"\; >> resourcesnew/printflow/js/printerconfig.js
+
+
+if [ "$printername" != "Photocentric 10" ]; then
+	# disable wlan0 because we don't want to use it
+	echo "["$(timestamp)"] Disabling on-board wireless"
+	echo "["$(timestamp)"] INFO: wlan0 disabled" >&2
+	ifconfig wlan0 down
+fi	
 
 if [ ! -f "/etc/init.d/cwhservice" ]; then
 	echo "["$(timestamp)"] Installing Photonic3D as a service"

@@ -117,9 +117,7 @@ fi
 # this already happens once due to our rsync of an X11 config, but why not just make sure, eh?
 
 echo "Working on per printer settings..."
-echo \# Photocentric mods >> /boot/
-echo dtoverlay=pi3-disable-wifi >> /boot/config.txt
-echo dtoverlay=pi3-disable-bt >> /boot/config.txt
+echo \# Photocentric mods >> /boot/config.txt
 
 if [ "$build" != "4kscreen" ]; then
 	# Touchscreen pis only
