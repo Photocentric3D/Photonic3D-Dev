@@ -62,7 +62,7 @@ public class LinuxNetworkManager implements NetworkManager {
 		}
 		// no-one cares about loopback
 		if (MACs.containsKey("lo")) MACs.remove("lo");
-		// photocentric specific code we want wlan0 again!
+		// photocentric specific code
 		// if (MACs.containsKey("wlan1")) MACs.remove("wlan0");
 		return MACs;
 	}
@@ -88,7 +88,7 @@ public class LinuxNetworkManager implements NetworkManager {
 		}
 		// noone cares about loopback
 		if (IPs.containsKey("lo")) IPs.remove("lo");
-		// photocentric specific code we want wlan0 again!
+		// photocentric specific code
 		// if (IPs.containsKey("wlan1")) IPs.remove("wlan0");
 		return IPs;
 	}
