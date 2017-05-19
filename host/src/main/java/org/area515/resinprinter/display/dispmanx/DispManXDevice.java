@@ -45,6 +45,11 @@ public class DispManXDevice extends CustomNamedDisplayDevice implements Graphics
     private Memory calibrationAndGridPixels;
     private BufferedImage calibrationAndGridImage;
     
+    // Robin for correcting delays
+    private long startingTimeForCurrentSlice;
+    private long timeAfterShowingTheSlice;
+    public long timeWaitedForPreviousSliceToShow;
+    
     public DispManXDevice(String displayName, SCREEN screen) throws InappropriateDeviceException {
 		super(displayName);
 		this.screen = screen;
@@ -296,6 +301,7 @@ public class DispManXDevice extends CustomNamedDisplayDevice implements Graphics
 	
 	@Override
 	public void showImage(BufferedImage image) {
+		startingTimeForCurrentSlice = System.currentTimeMillis();
 		logger.debug("Image assigned:{}", () -> Log4jTimer.startTimer(IMAGE_REALIZE_TIMER));
 		if (image.getWidth() == imageWidth && image.getHeight() == imageHeight) {
 			imagePixels = showImage(imagePixels, image);
@@ -305,6 +311,9 @@ public class DispManXDevice extends CustomNamedDisplayDevice implements Graphics
 		imageWidth = image.getWidth();
 		imageHeight = image.getHeight();
 		logger.debug("Image realized:{}", () -> Log4jTimer.completeTimer(IMAGE_REALIZE_TIMER));
+		timeAfterShowingTheSlice = System.currentTimeMillis();
+		timeWaitedForPreviousSliceToShow = timeAfterShowingTheSlice - startingTimeForCurrentSlice;
+		logger.info("time waited " + timeWaitedForPreviousSliceToShow);
 	}
 	
 	@Override
