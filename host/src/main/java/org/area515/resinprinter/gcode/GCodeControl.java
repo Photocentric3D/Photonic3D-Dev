@@ -21,6 +21,9 @@ import org.area515.util.TemplateEngine;
 
 import freemarker.template.TemplateException;
 
+// robin code to import variable needed for the delay
+import org.area515.resinprinter.display.dispmanx.DispManXDevice;
+
 public abstract class GCodeControl {
 	public static Logger logger = LogManager.getLogger();
 	private int SUGGESTED_TIMEOUT_FOR_ONE_GCODE = 1000 * 60 * 2;//2 minutes
@@ -32,6 +35,11 @@ public abstract class GCodeControl {
     private int parseLocation = 0;
     private int gcodeTimeout;
     private boolean restartSerialOnTimeout;
+    
+    // var to confirm we just went down
+    private boolean LastMoveWasDown;
+    // var to keep possibly correct timing
+    private int sleepTimeCorrected;
     
     public GCodeControl(Printer printer) {
     	this.printer = printer;
@@ -89,6 +97,11 @@ public abstract class GCodeControl {
         		cmd += "\n";
         	}
         	
+        	if(cmd.indexOf('-')!=-1){
+        		LastMoveWasDown = true;
+        		logger.info("The next move is down");
+        	} 
+        	
         	StringBuilder builder = new StringBuilder();
         	boolean mustAttempt = true;
         	for (int attempt = 0; mustAttempt; attempt++) {
@@ -132,7 +145,6 @@ public abstract class GCodeControl {
         	if (!cmd.endsWith("\n")) {
         		cmd += "\n";
         	}
-        	
         	logger.info("Write: {}", cmd);
         	getPrinter().getPrinterFirmwareSerialPort().write(cmd.getBytes());
         	PrinterResponse response = readUntilOkOrStoppedPrinting(false);
@@ -207,8 +219,18 @@ public abstract class GCodeControl {
 		if (matcher.matches()) {
 			try {
 				int sleepTime = Integer.parseInt(matcher.group(1));
+			    // robins dirty fix
+			    int lastDelay = DispManXDevice.gettingLastDelay();
+			    logger.info("last slice delay : " + lastDelay);
 				logger.info("Sleep:{}", sleepTime);
-				Thread.sleep(sleepTime);
+				if(LastMoveWasDown){
+					sleepTimeCorrected = sleepTime - lastDelay;
+					LastMoveWasDown = false;
+				} else {
+					sleepTimeCorrected = sleepTime;
+				}
+				logger.info("Actual Sleep:{}", sleepTimeCorrected);
+				Thread.sleep(sleepTimeCorrected);
 				logger.info("Sleep complete");
 			} catch (InterruptedException e) {
 				logger.error("Interrupted while waiting for sleep to complete.", e);

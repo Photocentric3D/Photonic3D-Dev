@@ -48,13 +48,20 @@ public class DispManXDevice extends CustomNamedDisplayDevice implements Graphics
     // Robin for correcting delays
     private long startingTimeForCurrentSlice;
     private long timeAfterShowingTheSlice;
-    public long timeWaitedForPreviousSliceToShow;
+    public static long timeWaitedForPreviousSliceToShow;
+    private long oldTimeWaitedForPreviousSliceToShow;
+    private long delayTimingOffBy;
     
     public DispManXDevice(String displayName, SCREEN screen) throws InappropriateDeviceException {
 		super(displayName);
 		this.screen = screen;
 	}
     
+    public static int gettingLastDelay(){
+    	int lastDelay = (int) timeWaitedForPreviousSliceToShow;
+    	return lastDelay;
+    }
+   
     private static void bcmHostInit() {
     	if (BCM_INIT) {
     		return;
@@ -311,9 +318,13 @@ public class DispManXDevice extends CustomNamedDisplayDevice implements Graphics
 		imageWidth = image.getWidth();
 		imageHeight = image.getHeight();
 		logger.debug("Image realized:{}", () -> Log4jTimer.completeTimer(IMAGE_REALIZE_TIMER));
+		
 		timeAfterShowingTheSlice = System.currentTimeMillis();
 		timeWaitedForPreviousSliceToShow = timeAfterShowingTheSlice - startingTimeForCurrentSlice;
+		delayTimingOffBy = timeWaitedForPreviousSliceToShow - oldTimeWaitedForPreviousSliceToShow;
+		oldTimeWaitedForPreviousSliceToShow = timeWaitedForPreviousSliceToShow;
 		logger.info("time waited " + timeWaitedForPreviousSliceToShow);
+		logger.info("The timing was wrong by " + delayTimingOffBy + "ms");
 	}
 	
 	@Override
