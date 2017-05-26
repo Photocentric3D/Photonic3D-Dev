@@ -174,6 +174,10 @@ public class SerialManager {
 			identifier = null;
 			String[] identifiers = SerialManager.Instance().getPortNames();
 			for (String currentIdentifier : identifiers) {
+				if (currentIdentifier.equals(ConsoleCommPort.GCODE_RESPONSE_SIMULATION)) {
+					continue;
+				}
+
 				logger.debug("Autodetection trying against serial device:{}", currentIdentifier);
 				
 				//Auto detection will continue to override settings that haven't been set on the command line
@@ -292,7 +296,7 @@ public class SerialManager {
 			throw new InappropriateDeviceException("No communications port was specified");
 		}
 		if(ConsoleCommPort.GCODE_RESPONSE_SIMULATION.equalsIgnoreCase(comport)){
-			return new ConsoleCommPort();
+			return ConsoleCommPort.getNextAvailableConsoleCommPort();
 		}
 		for (SerialCommunicationsPort current : getSerialDevices()) {
 			if  (current.getName().equals(comport)) {
@@ -335,8 +339,7 @@ public class SerialManager {
 		idents.add(new CustomCommPort(AUTO_DETECT_PROJECTOR));
 		
 		if (HostProperties.Instance().getFakeSerial()) {
-			ConsoleCommPort consolePort = new ConsoleCommPort();
-			idents.add(consolePort);
+			idents.add(ConsoleCommPort.getSelectableConsoleCommPort());
 		}
 		
 		return idents;

@@ -1,22 +1,15 @@
 package org.area515.resinprinter.printer;
 
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.swing.JFrame;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.area515.resinprinter.display.DisplayManager;
 import org.area515.resinprinter.display.GraphicsOutputInterface;
 import org.area515.resinprinter.display.InappropriateDeviceException;
 import org.area515.resinprinter.display.PrinterDisplayFrame;
@@ -37,8 +30,8 @@ public class Printer {
 	private boolean started;
 	private boolean shutterOpen;
 	private Integer bulbHours;
-	private String displayDeviceID;
 	private long currentSlicePauseTime;
+	private String displayDeviceID;
 	
 	//For Serial Ports
 	private SerialCommunicationsPort printerFirmwareSerialPort;
@@ -227,7 +220,7 @@ public class Printer {
 	public String getDisplayDeviceID() {
 		return displayDeviceID;
 	}
-
+	
 	public void showBlankImage() {	
 		refreshFrame.showBlankImage();
 	}
@@ -240,11 +233,17 @@ public class Printer {
 		refreshFrame.showGridImage(pixels);
 	}
 	
-	public void showImage(BufferedImage image) {
-		refreshFrame.showImage(image);
+	public void showImage(BufferedImage image, boolean performFullUpdate) {
+		refreshFrame.showImage(image, performFullUpdate);
 	}
 	
+	@JsonIgnore
+	@XmlTransient
 	public boolean isDisplayBusy() {
+		if (refreshFrame == null) {
+			return false;
+		}
+		
 		return refreshFrame.isDisplayBusy();
 	}
 
@@ -364,10 +363,15 @@ public class Printer {
 		if (refreshFrame != null) {
 			refreshFrame.dispose();
 		}
-		bulbHours = null;
 		started = false;
 	}
 
+	public void disassociateDisplay() {
+		this.bulbHours = null;
+		this.refreshFrame = null;
+		this.displayDeviceID = null;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -1,35 +1,24 @@
 package org.area515.resinprinter.job;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.concurrent.Future;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.area515.resinprinter.exception.SliceHandlingException;
+import org.area515.resinprinter.job.render.CurrentImageRenderer;
 import org.area515.resinprinter.job.render.RenderedData;
 import org.area515.resinprinter.server.Main;
 import org.area515.resinprinter.twodim.SimpleImageRenderer;
 
 import se.sawano.java.text.AlphanumericComparator;
-
 public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor {
 	private static final Logger logger = LogManager.getLogger();
 
 	@Override
 	public String[] getFileExtensions() {
 		return new String[]{"imgzip"};
-	}
-	
-	@Override
-	public BufferedImage getCurrentImage(PrintJob printJob) {
-		return getCurrentImageFromCache(printJob);
 	}
 	
 	@Override
@@ -69,13 +58,13 @@ public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor {
 			// Preload first image then loop
 			if (imgIter.hasNext()) {
 				File imageFile = imgIter.next();
-
-				Future<RenderedData> prepareImage = Main.GLOBAL_EXECUTOR.submit(new SimpleImageRenderer(dataAid, this, imageFile));
+				CurrentImageRenderer currentRendering = new SimpleImageRenderer(dataAid, this, imageFile);
+				Future<RenderedData> prepareImage = Main.GLOBAL_EXECUTOR.submit(currentRendering);
 				boolean slicePending = true;
 
 				do {
 
-					JobStatus status = performPreSlice(dataAid, null);
+					JobStatus status = performPreSlice(dataAid, currentRendering.getScriptEngine(), null);
 					if (status != null) {
 						return status;
 					}
@@ -85,12 +74,13 @@ public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor {
 					
 					if (imgIter.hasNext()) {
 						imageFile = imgIter.next();
-						prepareImage = Main.GLOBAL_EXECUTOR.submit(new SimpleImageRenderer(dataAid, this, imageFile));
+						currentRendering = new SimpleImageRenderer(dataAid, this, imageFile);
+						prepareImage = Main.GLOBAL_EXECUTOR.submit(currentRendering);
 					} else {
 						slicePending = false;
 					}
 
-					status = printImageAndPerformPostProcessing(dataAid, imageData.getPrintableImage());
+					status = printImageAndPerformPostProcessing(dataAid, imageData.getScriptEngine(), imageData.getPrintableImage());
 
 					if (status != null) {
 						return status;
@@ -106,8 +96,8 @@ public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor {
 	
 	@Override
 	public Double getBuildAreaMM(PrintJob processingFile) {
-		DataAid aid = super.getDataAid(processingFile);
-		
+		DataAid aid = getDataAid(processingFile);
+		aid.cache.getOrCreateIfMissing(aid.cache.getCurrentRenderingPointer());
 		if (aid == null || aid.cache.getCurrentArea() == null) {
 			return null;
 		}
@@ -137,3 +127,4 @@ public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor {
 		return images;
 	}
 }
+

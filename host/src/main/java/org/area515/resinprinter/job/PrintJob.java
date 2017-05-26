@@ -1,12 +1,13 @@
 package org.area515.resinprinter.job;
 
+import java.awt.Font;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import javax.script.Compilable;
 import javax.script.CompiledScript;
@@ -15,8 +16,11 @@ import javax.script.ScriptException;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.area515.resinprinter.display.InappropriateDeviceException;
+import org.area515.resinprinter.job.AbstractPrintFileProcessor.DataAid;
 import org.area515.resinprinter.printer.Printer;
 import org.area515.resinprinter.printer.SlicingProfile.InkConfig;
+import org.area515.resinprinter.printer.SlicingProfile.TwoDimensionalSettings;
+import org.area515.resinprinter.services.PrinterService;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,10 +45,11 @@ public class PrintJob {
 	private volatile boolean overrideZLiftDistance;
 	private volatile double zLiftDistance;
 
+	private DataAid dataAid;
 	private UUID id = UUID.randomUUID();
 	private File jobFile;
 	private Printer printer;
-	private Future<JobStatus> futureJobStatus;
+	private CompletableFuture<JobStatus> futureJobStatus;
 	private CountDownLatch futureJobStatusAssigned = new CountDownLatch(1);
 	private Map<String, CompiledScript> scriptsByName = new HashMap<>();
 
@@ -59,6 +64,14 @@ public class PrintJob {
 	}
 	
 	@JsonIgnore
+	DataAid getDataAid() {
+		return dataAid;
+	}
+	void setDataAid(DataAid dataAid) {
+		this.dataAid = dataAid;
+	}
+
+	@JsonIgnore
 	public File getJobFile() {
 		return jobFile;
 	}
@@ -69,6 +82,25 @@ public class PrintJob {
 		}
 		
 		return jobFile.getName();
+	}
+	
+	public Font buildFont() {
+		org.area515.resinprinter.printer.SlicingProfile.Font cwhFont = dataAid != null && dataAid.slicingProfile != null && dataAid.slicingProfile.getTwoDimensionalSettings() != null?
+				dataAid.slicingProfile.getTwoDimensionalSettings().getFont():
+				new org.area515.resinprinter.printer.SlicingProfile.Font();
+		if (cwhFont == null) {
+			cwhFont = PrinterService.DEFAULT_FONT;
+		}
+		
+		if (cwhFont.getName() == null) {
+			cwhFont.setName(PrinterService.DEFAULT_FONT.getName());
+		}
+		
+		if (cwhFont.getSize() == 0) {
+			cwhFont.setSize(PrinterService.DEFAULT_FONT.getSize());
+		}
+		
+		return new Font(cwhFont.getName(), Font.PLAIN, cwhFont.getSize());
 	}
 	
 	public long getElapsedTime() {
@@ -151,9 +183,10 @@ public class PrintJob {
 		return JobStatus.Failed;
 	}
 	
-	public void initializePrintJob(Future<JobStatus> futureJobStatus) {
+	public void initializePrintJob(CompletableFuture<JobStatus> futureJobStatus) {
 		this.futureJobStatus = futureJobStatus;
 		futureJobStatusAssigned.countDown();
+		futureJobStatus.whenComplete((s, e) -> scriptsByName.clear());
 	}
 	
 	public String getErrorDescription() {

@@ -168,6 +168,10 @@
 			controller.editPrinter.configuration.MachineConfigurationName = controller.editPrinter.configuration.name;
 			controller.editPrinter.configuration.SlicingProfileName = controller.editPrinter.configuration.name;
 			openSavePrinterDialog(editTitle, true);
+
+        this.executeGCode = function executeGCode() {
+			$http.get("services/printers/executeGCode/" + encodeURIComponent(printerName) + "/" + encodeURIComponent(controller.gCodeToSend)).then(gCodeSuccess, errorFunction)
+
 		}
 		
 		this.startCurrentPrinter = function startCurrentPrinter() {

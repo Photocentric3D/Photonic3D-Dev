@@ -260,7 +260,12 @@
 		
 		this.writeDrainHoldCode = function writeDrainHoldCode() {
 			controller.currentCustomizer.imageManipulationCalculator = 
-			"var drainHoleInMM = { centerX:centerX, centerY:centerY, widthX:5, widthY:5, depth:5};\n\n" +
+			"var drainHoleInMM = {\n" +
+			"  centerX:centerX,\n" +
+			"  centerY:centerY,\n" +
+			"  widthX:5,\n" +
+			"  widthY:5,\n" +
+			"  depth:5};\n\n" +
 			"if (($CURSLICE * $LayerThickness) <= drainHoleInMM.depth) {\n" +
 			"   buildPlatformGraphics.setColor(java.awt.Color.BLACK);\n" + 
 			"   buildPlatformGraphics.fillOval(\n" +
@@ -273,23 +278,106 @@
 			controller.clearExternalCacheAndSaveCustomizer();
 		};
 		
+		this.writeCenteredTextCode = function writeCenteredTextCode() {
+			controller.currentCustomizer.imageManipulationCalculator = 
+				"var serial = \"123456\";\n" +
+				"var twoDFont = job.buildFont();\n" +
+				"var metrics = buildPlatformGraphics.getFontMetrics(twoDFont);\n" +
+				"buildPlatformGraphics.setFont(twoDFont);\n" +
+				"buildPlatformGraphics.setColor(java.awt.Color.WHITE);\n" +
+				"buildPlatformGraphics.drawString(serial, centerX - metrics.stringWidth(serial) / 2, centerY - metrics.getHeight() / 2 + metrics.getAscent());\n"
+				
+				controller.clearExternalCacheAndSaveCustomizer();
+		};
+			
 		this.writeDuplicationGridCode = function writeDuplicationGridCode() {
 			controller.currentCustomizer.imageManipulationCalculator = 
-				"var gridDataInMM = {distanceBetweenImagesX: 1, distanceBetweenImagesY: 1, numberOfRows:3, numberOfColumns:3 };\n\n" +
+				"var gridDataInMM = {\n" +
+				"  distanceBetweenImagesX: 1,\n" +
+				"  distanceBetweenImagesY: 1,\n" +
+				"  numberOfRows:3,\n" +
+				"  numberOfColumns:3};\n\n" +
 				"for (var x = 0; x < gridDataInMM.numberOfColumns; x++) {\n" +
 				"   for (var y = 0; y < gridDataInMM.numberOfRows; y++) {\n" +
 				"      if (x > 0 || y > 0) {\n" +
 				"         var currentTransform = new java.awt.geom.AffineTransform(affineTransform);\n" +
 				"         currentTransform.translate(\n" +
-				"            (x * gridDataInMM.distanceBetweenImagesX * pixelsPerMMX) + (x * printImage.getWidth()),\n" +
-				"            (y * gridDataInMM.distanceBetweenImagesY * pixelsPerMMY) + (y * printImage.getHeight()));\n" +
+				"            Math.round(x * gridDataInMM.distanceBetweenImagesX * pixelsPerMMX) + (x * printableShape.getWidth()),\n" +
+				"            Math.round(y * gridDataInMM.distanceBetweenImagesY * pixelsPerMMY) + (y * printableShape.getHeight()));\n" +
 				"         buildPlatformGraphics.drawImage(printImage, currentTransform, null);\n" +
 				"      }\n" +
 				"   }\n" +
 				"}\n";
-				
 				controller.clearExternalCacheAndSaveCustomizer();
 		};
+		
+		this.writeDuplicationGridWithVariableExposureTimeCode = function writeDuplicationGridWithVariableExposureTimeCode() {
+			controller.currentCustomizer.imageManipulationCalculator = 
+				"var gridDataInMM = {\n" +
+				"  distanceBetweenImagesX: 1,\n" +
+				"  distanceBetweenImagesY: 1,\n" +
+				"  numberOfRows:3,\n" +
+				"  numberOfColumns:3,\n" +
+				"  exposureTimeDecrementMillis:1000};\n\n" +
+				"for (var x = 0; x < gridDataInMM.numberOfColumns; x++) {\n" +
+				"   for (var y = 0; y < gridDataInMM.numberOfRows; y++) {\n" +
+				"      if (x > 0 || y > 0) {\n" +
+				"         var currentTransform = new java.awt.geom.AffineTransform(affineTransform);\n" +
+				"         currentTransform.translate(\n" +
+				"            Math.round(x * gridDataInMM.distanceBetweenImagesX * pixelsPerMMX) + (x * printableShape.getWidth()),\n" +
+				"            Math.round(y * gridDataInMM.distanceBetweenImagesY * pixelsPerMMY) + (y * printableShape.getHeight()));\n" +
+				"         buildPlatformGraphics.drawImage(printImage, currentTransform, null);\n" +
+				"         exposureTimers.add({\n" +
+				"            delayMillis:$LayerTime - ((y * gridDataInMM.numberOfColumns) + x) * gridDataInMM.exposureTimeDecrementMillis,\n" + 
+				"            parameter:currentTransform.createTransformedShape(printableShape),\n" +
+                "            function:function(blackRect) {\n" +
+                "               buildPlatformGraphics.setColor(java.awt.Color.BLACK);\n" +
+                "               buildPlatformGraphics.fill(blackRect);\n" + 
+				"            }\n" + 
+				"         });\n" +
+				"      }\n" +
+				"   }\n" +
+				"}\n";
+				controller.clearExternalCacheAndSaveCustomizer();
+		};
+		
+		this.writeDuplicationGridWithSerialNumber = function() {
+			controller.currentCustomizer.imageManipulationCalculator = 
+			        "var gridDataInMM = {\n" + 
+					"  distanceBetweenImagesX: 1,\n" + 
+					"  distanceBetweenImagesY: 1,\n" + 
+					"  numberOfRows:3,\n" + 
+					"  numberOfColumns:3,\n" + 
+					"  startingSerialNumber:888,\n" + 
+					"  serialNumberCenterXPixels: printableShape.getWidth() / 2,\n" + 
+					"  serialNumberCenterYPixels: printableShape.getHeight() / 2,\n" + 
+					"  serialNumberDepth:0.5};\n\n" + 
+					"var twoDFont = job.buildFont();\n" + 
+					"var metrics = buildPlatformGraphics.getFontMetrics(twoDFont);\n" + 
+					"var oldTransform = buildPlatformGraphics.getTransform();\n" + 
+					"buildPlatformGraphics.setFont(twoDFont);\n" + 
+					"buildPlatformGraphics.setColor(java.awt.Color.BLACK);\n" + 
+					"for (var x = 0; x < gridDataInMM.numberOfColumns; x++) {\n" + 
+					"   for (var y = 0; y < gridDataInMM.numberOfRows; y++) {\n" + 
+					"      var currentTransform = new java.awt.geom.AffineTransform(affineTransform);\n" + 
+					"      if (x > 0 || y > 0) {\n" + 
+					"         currentTransform.translate(\n" + 
+					"            Math.round(x * gridDataInMM.distanceBetweenImagesX * pixelsPerMMX) + (x * printableShape.getWidth()),\n" + 
+					"            Math.round(y * gridDataInMM.distanceBetweenImagesY * pixelsPerMMY) + (y * printableShape.getHeight()));\n" + 
+					"         buildPlatformGraphics.drawImage(printImage, currentTransform, null);\n" + 
+					"      }\n" + 
+					"      if (($CURSLICE * $LayerThickness) <= gridDataInMM.serialNumberDepth) {\n" + 
+					"         buildPlatformGraphics.setTransform(currentTransform);\n" +
+					"         var nextSerialNumber = new java.lang.Integer(gridDataInMM.startingSerialNumber + (x * gridDataInMM.numberOfRows) + y).toString(16).toUpperCase();\n" + 
+					"         buildPlatformGraphics.drawString(nextSerialNumber, \n" + 
+					"            gridDataInMM.serialNumberCenterXPixels - metrics.stringWidth(nextSerialNumber) / 2, \n" + 
+					"            gridDataInMM.serialNumberCenterYPixels - metrics.getHeight() / 2 + metrics.getAscent());\n" + 
+					"         buildPlatformGraphics.setTransform(oldTransform);\n" + 
+					"      }\n" + 
+					"   }\n" + 
+					"}\n";
+					controller.clearExternalCacheAndSaveCustomizer();
+		}
 		
 		this.write3dTwistCode = function write3dTwistCode() {
 			controller.currentCustomizer.affineTransformSettings.affineTransformScriptCalculator = 

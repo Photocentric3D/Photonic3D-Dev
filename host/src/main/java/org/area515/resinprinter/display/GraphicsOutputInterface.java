@@ -3,20 +3,21 @@ package org.area515.resinprinter.display;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-//TODO: This needs to be the interface we use that is returned from the DisplayManager instead of java.awt.GraphicsDevice
 public interface GraphicsOutputInterface {
-	public boolean isDisplayBusy();	//It's not necessary, but it's helpful to let the user know that the display might be busy in a gui...
+	public boolean isDisplayBusy();	//It's not necessary, but it's helpful to let the user know(via a gui) that the display might be busy
 	public void resetSliceCount();
 	public void dispose();
 	public void showBlankImage();
 	public void showCalibrationImage(int xPixels, int yPixels);
 	public void showGridImage(int pixels);
-	public void showImage(BufferedImage image);
-	public Rectangle getBoundry();
+	public void showImage(BufferedImage image, boolean incrementSlice);
+	public Rectangle getBoundary();
+	public String getIDstring();
+	public String buildIDString();
+	public GraphicsOutputInterface initializeDisplay(String displayId);
 	
 	public static void showGrid(Graphics2D g2, Rectangle screenSize, int gridSquareSize) {
 		g2.setBackground(Color.black);
