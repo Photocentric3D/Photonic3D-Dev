@@ -19,10 +19,6 @@ public class DisplayManager {
     private static final Logger logger = LogManager.getLogger();
 
     private static DisplayManager INSTANCE = null;
-
-	public static final String LAST_AVAILABLE_DISPLAY = "Last available display";
-	public static final String SIMULATED_DISPLAY = "Simulated display";
-	public static final String CUSTOM_PHOTOCENTRIC_DISPLAY = "Photocentric Custom Display";
 	private GraphicsEnvironment ge = null;
 	private ConcurrentHashMap<Printer, String> displayIdsByPrinter = new ConcurrentHashMap<Printer, String>();
 	private ConcurrentHashMap<String, Printer> printersByDisplayIDString = new ConcurrentHashMap<String, Printer>();

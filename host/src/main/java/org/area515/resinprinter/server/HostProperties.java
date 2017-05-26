@@ -77,8 +77,6 @@ public class HostProperties {
 	private File printDir;
 	private String hostGUI;
 	private boolean fakeSerial = false;
-	private boolean fakedisplay = false;
-	private boolean customPhotocentricDisplay = true;
 	private boolean removeJobOnCompletion = true;
 	private boolean forceCalibrationOnFirstUse = false;
 	private boolean limitLiveStreamToOneCPU = false;
@@ -192,9 +190,6 @@ public class HostProperties {
 		uploadDirString = configurationProperties.getProperty("uploaddir");
 		
 		fakeSerial = new Boolean(configurationProperties.getProperty("fakeserial", "false"));
-		fakedisplay = new Boolean(configurationProperties.getProperty("fakedisplay", "false"));
-		customPhotocentricDisplay = new Boolean(configurationProperties.getProperty("customPhotocentricDisplay", "true"));
-
 		hostGUI = configurationProperties.getProperty("hostGUI", "resources");
 		visibleCards = Arrays.asList(configurationProperties.getProperty("visibleCards", "printers,printJobs,printables,users,settings").split(","));
 		
@@ -492,10 +487,6 @@ public class HostProperties {
 		return fakeSerial;
 	}
 	
-	public boolean getFakeDisplay(){
-		return fakedisplay;
-	}
-
 	public String getSSLKeypairPassword() {
 		return sslKeypairPassword;
 	}
@@ -602,19 +593,10 @@ public class HostProperties {
 	}
 	
 	public HostInformation loadHostInformation() {
-		Class<NetworkManager> managerClass = HostProperties.Instance().getNetworkManagerClass();
-		String deviceName = "Daylight Resin Printer";
-		try{
-			NetworkManager networkManager = managerClass.newInstance();
-            		deviceName = networkManager.getHostname();
-		}
-		catch (InstantiationException | IllegalAccessException e) {
-            		logger.error("Error retrieving network host configuration", e);
-		}
 		Properties configurationProperties = getMergedProperties();
 		HostInformation settings = new HostInformation(
-				configurationProperties.getProperty("deviceName", deviceName),
-				configurationProperties.getProperty("manufacturer", "Photocentric3D"));
+				configurationProperties.getProperty("deviceName", "Photonic 3D Multiprint Host"),
+				configurationProperties.getProperty("manufacturer", "Wes Gilster"));
 		return settings;
 	}
 	
