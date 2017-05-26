@@ -246,6 +246,11 @@
 							});
 					}
 					
+					if (currentslice == 0 && jobId!="") {
+						initialsliceurl="../services/printJobs/currentSliceImage/"+jobId;
+						document.getElementById("layerslice").src=initialsliceurl+"?q="+currentslice;
+					}
+					
 					if (currentslice > 0) {
 						if (currentslice<totalslices){
 							document.getElementById("vartimeremaining").innerHTML = moment.duration(endtime-moment().valueOf()).humanize();

@@ -415,6 +415,7 @@ public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcess
 		try {
 			zipFile = new ZipFile(jobFile, Charset.forName("CP437"));
 			Enumeration<? extends ZipEntry> entries = zipFile.entries();
+			logger.info("Zipfile started unpacking");
 			while (entries.hasMoreElements()) {
 				ZipEntry entry = entries.nextElement();
 				File entryDestination = new File(extractDirectory, entry.getName());
@@ -436,6 +437,7 @@ public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcess
 			throw ioe;
 		} finally {
 			zipFile.close();
+			logger.info("zipfile done unpacking");
 		}
 	}
 	

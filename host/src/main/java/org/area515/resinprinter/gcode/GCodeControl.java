@@ -226,6 +226,11 @@ public abstract class GCodeControl {
 				if(LastMoveWasDown){
 					sleepTimeCorrected = sleepTime - lastDelay;
 					LastMoveWasDown = false;
+					// without this we can get negatives delays... #Could it be an even dirtier fix...?
+					if(sleepTimeCorrected < 0){
+						sleepTimeCorrected = 0;
+					}
+				
 				} else {
 					sleepTimeCorrected = sleepTime;
 				}
