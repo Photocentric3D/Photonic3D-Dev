@@ -12,7 +12,6 @@ import org.area515.resinprinter.job.render.RenderedData;
 import org.area515.resinprinter.server.Main;
 import org.area515.resinprinter.twodim.SimpleImageRenderer;
 
-import se.sawano.java.text.AlphanumericComparator;
 public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor {
 	private static final Logger logger = LogManager.getLogger();
 
@@ -109,22 +108,4 @@ public class ZipImagesFileProcessor extends CreationWorkshopSceneFileProcessor {
 	public String getFriendlyName() {
 		return "Zip of Slice Images";
 	}
-	
-	private SortedMap<String, File> findImages(File jobFile) throws JobManagerException {
-		String [] extensions = {"png", "PNG"};
-		boolean recursive = true;
-		
-		Collection<File> files =
-				FileUtils.listFiles(buildExtractionDirectory(jobFile.getName()),
-				extensions, recursive);
-
-		TreeMap<String, File> images = new TreeMap<>(new AlphanumericComparator());
-
-		for (File file : files) {
-			images.put(file.getName(), file);
-		}
-		
-		return images;
-	}
 }
-

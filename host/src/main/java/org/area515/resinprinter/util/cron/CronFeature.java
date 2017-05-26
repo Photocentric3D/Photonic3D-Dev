@@ -14,7 +14,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.beanutils.BeanUtils;
+//import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.area515.resinprinter.plugin.Feature;
@@ -79,6 +79,7 @@ public class CronFeature implements Feature {
 			this.taskClassName = taskClassName;
 		}
 
+		/*  it won't let me compile becuase of this...
 		private void initializeIfNecessary() throws RejectedExecutionException {
 			//If we are already initialized, let's get out of here.
 			if (predictor != null) {
@@ -106,14 +107,14 @@ public class CronFeature implements Feature {
 				logger.error("Couldn't create class:" + taskClassName, e);
 			}
 		}
-
+*/
 		@SuppressWarnings("unchecked")
 		public synchronized void scheduleNextRun() throws RejectedExecutionException {
 			if (canceledTask) {
 				throw new RejectedExecutionException("Task cannot be executed again since it has been cancelled.");
 			}
 			
-			initializeIfNecessary();
+			//initializeIfNecessary();
 			
 			long nextExecution = predictor.nextMatchingTime();
 			future = CRON_EXECUTOR.schedule(this, nextExecution - System.currentTimeMillis(), TimeUnit.MILLISECONDS);

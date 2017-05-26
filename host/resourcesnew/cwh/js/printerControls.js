@@ -265,6 +265,6 @@
 		refreshSlicingProfiles();
 		refreshMachineConfigurations();
 		refreshPrinters();
-	}])
+	})
 
 })();

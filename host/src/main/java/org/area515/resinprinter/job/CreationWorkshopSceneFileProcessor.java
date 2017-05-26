@@ -14,10 +14,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-<<<<<<< HEAD
-import java.util.HashMap;
-=======
->>>>>>> b48404235183a1197e5827ccd5696d4110719bba
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedMap;
@@ -45,11 +41,7 @@ import org.area515.util.IOUtilities;
 
 import se.sawano.java.text.AlphanumericComparator;
 
-<<<<<<< HEAD
-public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcessor<Object,Object> implements Previewable{
-=======
 public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcessor<Object,Object> implements Previewable {
->>>>>>> b48404235183a1197e5827ccd5696d4110719bba
 	private static final Logger logger = LogManager.getLogger();
 	
 	@Override
@@ -323,55 +315,6 @@ public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcess
 		}
 	}
 	
-
-	@Override
-	public BufferedImage renderPreviewImage(DataAid dataAid) throws SliceHandlingException {
-		try {
-			prepareEnvironment(dataAid.printJob.getJobFile(), dataAid.printJob);
-			
-			SortedMap<String, File> imageFiles = findImages(dataAid.printJob.getJobFile());
-			
-			dataAid.printJob.setTotalSlices(imageFiles.size());
-			Iterator<File> imgIter = imageFiles.values().iterator();
-	
-			// Preload first image then loop
-			int sliceIndex = dataAid.customizer.getNextSlice();
-			while (imgIter.hasNext() && sliceIndex > 0) {
-				sliceIndex--;
-				imgIter.next();
-			}
-			
-			if (!imgIter.hasNext()) {
-				throw new IOException("No Image Found for index:" + dataAid.customizer.getNextSlice());
-			}
-			File imageFile = imgIter.next();
-			
-			SimpleImageRenderer renderer = new SimpleImageRenderer(dataAid, this, imageFile);
-			RenderedData stdImage = renderer.call();
-			return stdImage.getPrintableImage();
-		} catch (IOException | JobManagerException e) {
-			throw new SliceHandlingException(e);
-		}
-	}
-
-	
-	private SortedMap<String, File> findImages(File jobFile) throws JobManagerException {
-		String [] extensions = {"png", "PNG"};
-		boolean recursive = true;
-		
-		Collection<File> files =
-				FileUtils.listFiles(buildExtractionDirectory(jobFile.getName()),
-				extensions, recursive);
-
-		TreeMap<String, File> images = new TreeMap<>(new AlphanumericComparator());
-
-		for (File file : files) {
-			images.put(file.getName(), file);
-		}
-		
-		return images;
-	}
-
 	@Override
 	public void prepareEnvironment(File processingFile, PrintJob printJob) throws JobManagerException {
 		List<PrintJob> printJobs = PrintJobManager.Instance().getJobsByFilename(processingFile.getName());
@@ -455,7 +398,6 @@ public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcess
 		try {
 			zipFile = new ZipFile(jobFile, Charset.forName("CP437"));
 			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-			logger.info("Zipfile started unpacking");
 			while (entries.hasMoreElements()) {
 				ZipEntry entry = entries.nextElement();
 				File entryDestination = new File(extractDirectory, entry.getName());
@@ -475,7 +417,6 @@ public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcess
 			//findGcodeFile(jobFile);
 		} finally {
 			zipFile.close();
-			logger.info("zipfile done unpacking");
 		}
 	}
 	
@@ -505,7 +446,7 @@ public class CreationWorkshopSceneFileProcessor extends AbstractPrintFileProcess
 	public String getFriendlyName() {
 		return "Creation Workshop Scene";
 	}
-	
+
 	@Override
 	public boolean isThreeDimensionalGeometryAvailable() {
 		return false;

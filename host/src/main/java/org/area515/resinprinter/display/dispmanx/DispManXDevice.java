@@ -306,7 +306,6 @@ public class DispManXDevice implements GraphicsOutputInterface {
 	}
 	
 	@Override
-<<<<<<< HEAD
 	public void showImage(BufferedImage image, boolean performFullUpdate) {
 		logger.debug("Image assigned:{}", () -> Log4jUtil.startTimer(IMAGE_REALIZE_TIMER));
 		startingTimeForCurrentSlice = System.currentTimeMillis();
