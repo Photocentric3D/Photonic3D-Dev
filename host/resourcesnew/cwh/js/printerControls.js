@@ -2,7 +2,7 @@
 	var cwhApp = angular.module('cwhApp');
 	cwhApp.controller("PrinterControlsController", ['$scope', '$http', '$location', '$routeParams', 'cwhWebSocket', 'photonicUtils', function ($scope, $http, $location, $routeParams, cwhWebSocket, photonicUtils) {
 		controller = this;
-		this.currentPrintJob = null;
+		this.currentPrintJob = null; 
 		this.gcodeProcessing = "";
 		this.gCodeToSend = "";
 		this.squarePixelSize = 10;

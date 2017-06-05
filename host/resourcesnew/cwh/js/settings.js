@@ -1,6 +1,6 @@
 (function() {
 	var cwhApp = angular.module('cwhApp');
-	cwhApp.controller("SettingsController", ['$scope', '$http', '$location', '$routeParams', '$uibModal', '$interval', 'cwhWebSocket', function ($scope, $http, $location, $routeParams, $uibModal, $interval, cwhWebSocket) {
+	cwhApp.controller("SettingsController", ['$scope', '$http', '$location', '$anchorScroll', '$routeParams', '$uibModal', '$interval', 'cwhWebSocket', 'photonicUtils', function ($scope, $http, $location, $anchorScroll, $routeParams, $uibModal, $interval, cwhWebSocket, photonicUtils) {
 		controller = this;
 		var timeoutValue = 500;
 		var maxUnmatchedPings = 3;//Maximum number of pings before we assume that we lost our connection
@@ -9,7 +9,7 @@
 		var thankYouMessage = " Thank you for unplugging the network cable. This configuration process could take a few minutes to complete. You can close your browser now and use the Photonic3D Client to find your printer.";
 		this.loadingNetworksMessage = "--- Loading wifi networks from server ---"
 		
-		var PRINTERS_DIRECTORY = "printers";
+		var PRINTERS_DIRECTORY = "printers"; 
 		var BRANCH = "master";
 		var REPO = $scope.repo;
 		
@@ -76,7 +76,9 @@
 			   $http.post(service, targetPrinter).then(
 	       			function(response) {
 	        			$scope.$emit("MachineResponse", {machineResponse: {command:"Settings Saved!", message:"Your new settings have been saved. Please start the printer to make use of these new settings!.", response:true}, successFunction:null, afterErrorFunction:null});
-	       			refreshPrinters();
+	       				refreshPrinters();
+	       				refreshSlicingProfiles();
+	                	refreshMachineConfigurations();
 	       			}, 
 	       			function(response) {
  	        			$scope.$emit("HTTPError", {status:response.status, statusText:response.data});
@@ -112,7 +114,7 @@
 			executeActionAndRefreshPrinters("Save Printer", "No printer selected to save.", '/services/printers/save', printer, true);
 	        controller.editPrinter = null;
 	        controller.openType = null;
-			cacheControl.clearPreviewExternalState();
+			photonicUtils.clearPreviewExternalState();
 		}
 		
 		function openSavePrinterDialog(editTitle, isNewPrinter) {
@@ -214,25 +216,6 @@
         	$location.path('/printerControlsPage').search({printerName: controller.currentPrinter.configuration.name})
         };
         
-		this.testScript = function testScript(scriptName, returnType, script) {
-			var printerNameEn = encodeURIComponent(controller.currentPrinter.configuration.name);
-			var scriptNameEn = encodeURIComponent(scriptName);
-			var returnTypeEn = encodeURIComponent(returnType);
-			
-			$http.post('/services/printers/testScript/' + printerNameEn + "/" + scriptNameEn + "/" + returnTypeEn, script).success(function (data) {
-				controller.graph = data.result;
-				if (data.error) {
-	     			$scope.$emit("MachineResponse", {machineResponse: {command:scriptName, message:data.errorDescription}, successFunction:null, afterErrorFunction:null});
-	     		} else if (returnType.indexOf("[") > -1){
-					$('#graphScript').modal();
-				} else {
-	     			$scope.$emit("MachineResponse", {machineResponse: {command:scriptName, message:"Successful execution. Script returned:" + JSON.stringify(data.result), response:true}, successFunction:null, afterErrorFunction:null});
-				}
-			}).error(function (data, status, headers, config, statusText) {
-     			$scope.$emit("HTTPError", {status:status, statusText:data});
-    		})
-		}
-		
 		this.testTemplate = function testTemplate(scriptName, script) {
 			var printerNameEn = encodeURIComponent(controller.currentPrinter.configuration.name);
 			var scriptNameEn = encodeURIComponent(scriptName);
@@ -268,23 +251,32 @@
 					controller.loadingFontsMessage = "Select a font...";
 				});
 		
-		$http.get('/services/machine/slicingProfiles/list').success(
-				function (data) {
-					controller.slicingProfiles = data;
-					controller.loadingProfilesMessage = "Select a slicing profile...";
-				});
+				
+		function refreshSlicingProfiles() {
+			$http.get('/services/machine/slicingProfiles/list').success(
+					function (data) {
+						controller.slicingProfiles = data;
+						controller.loadingProfilesMessage = "Select a slicing profile...";
+					});
+		}
 		
-		$http.get('/services/machine/machineConfigurations/list').success(
-				function (data) {
-					controller.machineConfigurations = data;
-					controller.loadingMachineConfigMessage = "Select a machine configuration...";
-				});
+		function refreshMachineConfigurations() {
+			$http.get('/services/machine/machineConfigurations/list').success(
+					function (data) {
+						controller.machineConfigurations = data;
+						controller.loadingMachineConfigMessage = "Select a machine configuration...";
+					});
+		}
 		//https://raw.githubusercontent.com/WesGilster/Creation-Workshop-Host/master/host/printers/mUVe%201.json
 		$http.get("https://api.github.com/repos/" + $scope.repo + "/contents/host/" + PRINTERS_DIRECTORY + "?ref=" + BRANCH).success(
 			function (data) {
 				$scope.communityPrinters = data;
 			}
 		);
+		
+		this.testScript = function testScript(scriptName, returnType, script) {
+			photonicUtils.testScript(controller, scriptName, returnType, script);
+		};
 		
 		controller.inkDetectors = [{name:"Visual Ink Detector", className:"org.area515.resinprinter.inkdetection.visual.VisualPrintMaterialDetector"}];
 		refreshPrinters();

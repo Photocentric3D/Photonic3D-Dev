@@ -31,6 +31,7 @@
 	    			var returnTypeEn = encodeURIComponent(returnType);
 	    			
 	    			$http.post('/services/printers/testScript/' + printerNameEn + "/" + scriptNameEn + "/" + returnTypeEn, script).success(function (data) {
+	    				console.log('/services/printers/testScript/' + printerNameEn + "/" + scriptNameEn + "/" + returnTypeEn, script);
 	    				controller.graph = data.result;
 	    				if (data.error) {
 	    					$rootScope.$emit("MachineResponse", {machineResponse: {command:scriptName, message:data.errorDescription}, successFunction:null, afterErrorFunction:null});
