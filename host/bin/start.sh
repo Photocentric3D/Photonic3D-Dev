@@ -99,6 +99,8 @@ then
         echo "LC10 Detected"
 		#Check for 1400 value and if present replace with 1024
         sudo sh -c "sed -i 's/1400/1024/g' '/root/Profiles/Photocentric 10 Slicing.slicing'"
+else 
+	echo "Printer is not LC10"        
 fi
 
 # get argument as to photocentric build flavour
