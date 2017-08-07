@@ -93,6 +93,13 @@ else
 	installDirectory=/opt/cwh
 fi;
 
+#Check if printer is an LC10
+if [ -f /root/Profiles/Photocentric\ 10\ Slicing.slicing  ]
+then
+        echo "LC10 Detected"
+		#Check for 1400 value and if present replace with 1024
+        sudo sh -c "sed -i 's/1400/1024/g' '/root/Profiles/Photocentric 10 Slicing.slicing'"
+fi
 
 # get argument as to photocentric build flavour
 if [ ! -z "$3" ]; then
