@@ -1,0 +1,102 @@
+{
+  	"configuration": {
+  		"name": "Photocentric Precision",
+  		"machineConfig": {
+  			"name": "Photocentric Precision",
+  			"FileVersion": 0,
+  			"PlatformXSize": 120.96,
+  			"PlatformYSize": 68.04,
+  			"PlatformZSize": 250,
+  			"MaxXFeedRate": 0,
+  			"MaxYFeedRate": 0,
+  			"MaxZFeedRate": 0,
+  			"XRenderSize": 2560,
+  			"YRenderSize": 1440,
+  			"MotorsDriverConfig": {
+  				"DriverType": "Photocentric",
+  				"ComPortSettings": {
+  					"PortName": "Autodetect 3d printer firmware",
+  					"Speed": 115200,
+  					"Databits": 8,
+  					"Parity": "None",
+  					"Stopbits": "One",
+  					"Handshake": "None"
+  				}
+  			},
+  			"MonitorDriverConfig": {
+  				"DLP_X_Res": 2560,
+  				"DLP_Y_Res": 1440,
+  				"MonitorID": "DISPLAY1",
+  				"OSMonitorID": "Photocentric Custom Display",
+  				"DisplayCommEnabled": false,
+  				"ComPortSettings": {
+  					"Handshake": "None"
+  				},
+  				"MonitorTop": 0,
+  				"MonitorLeft": 0,
+  				"MonitorRight": 0,
+  				"MonitorBottom": 0,
+  				"UseMask": false
+  			},
+  			"PauseOnPrinterResponseRegEx": ".*door.*open.*"
+  		},
+  		"slicingProfile": {
+  			"gCodeHeader": "G91;\nM17;\nG1 Z10 F50;\nG1 Z-10 F50;",
+  			"gCodeFooter": "M18",
+  			"gCodePreslice": null,
+  			"gCodeLift": "G1 Z1.0 F50.0;\n;<delay> 3000;\nG1 Z-${(1.0 - LayerThickness)} F50;\nM17;\n;<delay> 7000;",
+  			"gCodeShutter": null,
+  			"name": "Photocentric Precision Slicing",
+  			"zliftDistanceGCode": null,
+  			"zliftSpeedGCode": null,
+  			"selectedInkConfigIndex": 0,
+  			"DotsPermmX": 21.1640212,
+  			"DotsPermmY": 21.1640212,
+  			"XResolution": 2560,
+  			"YResolution": 1440,
+  			"BlankTime": 0,
+  			"PlatformTemp": 0,
+  			"ExportSVG": 0,
+  			"Export": false,
+  			"ExportPNG": false,
+  			"Direction": "Bottom_Up",
+  			"LiftDistance": 5,
+  			"SlideTiltValue": 0,
+  			"AntiAliasing": true,
+  			"UseMainLiftGCode": false,
+  			"AntiAliasingValue": 10,
+  			"LiftFeedRate": 50,
+  			"LiftRetractRate": 0,
+  			"FlipX": false,
+  			"FlipY": true,
+  			"ZLiftDistanceCalculator": "var value = 1.0;",
+  			"ZLiftSpeedCalculator": "var value = 50.0;",
+  			"ExposureTimeCalculator": "var value = $FirstLayerTime;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = $LayerTime\n}\nvalue",
+  			"SelectedInk": "v.II Hard Amber 100 Microns",
+  			"MinTestExposure": 0,
+  			"TestExposureStep": 0,
+  			"InkConfig": [{
+  				"PercentageOfPrintMaterialConsideredEmpty": 10,
+  				"Name": "v.II Castable 50 Microns",
+  				"SliceHeight": 0.05,
+  				"LayerTime": 9000,
+  				"FirstLayerTime": 40000,
+  				"NumberofBottomLayers": 4,
+  				"ResinPriceL": 45
+  			}
+			]
+  		},
+  		"MachineConfigurationName": "Photocentric Precision",
+  		"SlicingProfileName": "Photocentric Precision Slicing",
+  		"AutoStart": true,
+  		"Calibrated": false
+  	},
+  	"started": true,
+  	"shutterOpen": false,
+  	"displayDeviceID": "Photocentric Custom Display",
+  	"currentSlicePauseTime": 0,
+  	"status": "Ready",
+  	"printPaused": false,
+  	"cachedBulbHours": null,
+  	"printInProgress": false
+  }
