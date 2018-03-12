@@ -4,14 +4,14 @@
   		"machineConfig": {
   			"name": "Photocentric Precision",
   			"FileVersion": 0,
-  			"PlatformXSize": 120.96,
-  			"PlatformYSize": 68.04,
+  			"PlatformXSize": 68.04,
+  			"PlatformYSize": 120.96,
   			"PlatformZSize": 250,
   			"MaxXFeedRate": 0,
   			"MaxYFeedRate": 0,
   			"MaxZFeedRate": 0,
-  			"XRenderSize": 2560,
-  			"YRenderSize": 1440,
+  			"XRenderSize": 1440,
+  			"YRenderSize": 2560,
   			"MotorsDriverConfig": {
   				"DriverType": "Photocentric",
   				"ComPortSettings": {
@@ -24,8 +24,8 @@
   				}
   			},
   			"MonitorDriverConfig": {
-  				"DLP_X_Res": 2560,
-  				"DLP_Y_Res": 1440,
+  				"DLP_X_Res": 1440,
+  				"DLP_Y_Res": 2560,
   				"MonitorID": "DISPLAY1",
   				"OSMonitorID": "Photocentric Custom Display",
   				"DisplayCommEnabled": false,
@@ -52,8 +52,8 @@
   			"selectedInkConfigIndex": 0,
   			"DotsPermmX": 21.1640212,
   			"DotsPermmY": 21.1640212,
-  			"XResolution": 2560,
-  			"YResolution": 1440,
+  			"XResolution": 1440,
+  			"YResolution": 2560,
   			"BlankTime": 0,
   			"PlatformTemp": 0,
   			"ExportSVG": 0,
