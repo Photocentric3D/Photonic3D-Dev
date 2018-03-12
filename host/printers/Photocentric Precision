@@ -72,7 +72,7 @@
   			"ZLiftDistanceCalculator": "var value = 1.0;",
   			"ZLiftSpeedCalculator": "var value = 50.0;",
   			"ExposureTimeCalculator": "var value = $FirstLayerTime;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = $LayerTime\n}\nvalue",
-  			"SelectedInk": "v.II Hard Amber 100 Microns",
+  			"SelectedInk": "v.II Castable 50 Microns",
   			"MinTestExposure": 0,
   			"TestExposureStep": 0,
   			"InkConfig": [{
@@ -81,7 +81,7 @@
   				"SliceHeight": 0.05,
   				"LayerTime": 9000,
   				"FirstLayerTime": 40000,
-  				"NumberofBottomLayers": 4,
+  				"NumberofBottomLayers": 2,
   				"ResinPriceL": 45
   			}
 			]
